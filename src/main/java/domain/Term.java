@@ -17,7 +17,9 @@ public class Term {
     private String name;
 
     @RelatedTo(type = "MATCHES_FOR", direction = Direction.OUTGOING)
-    private @Fetch Set<VehicleModel> relatedModels;
+    private
+    @Fetch
+    Set<VehicleModel> relatedModels;
 
     public String getName() {
         return name;
@@ -27,10 +29,14 @@ public class Term {
         this.name = name;
     }
 
-    public void isRelatedTo(final VehicleModel model) {
+    public void addRelationTo(final VehicleModel model) {
         if (relatedModels == null) {
             relatedModels = new HashSet<>();
         }
         relatedModels.add(model);
+    }
+
+    public Set<VehicleModel> getRelatedModels() {
+        return relatedModels;
     }
 }
