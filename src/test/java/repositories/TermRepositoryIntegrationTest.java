@@ -36,10 +36,7 @@ public class TermRepositoryIntegrationTest {
         final Term term = new Term();
         term.setName("Audi");
 
-        try (Transaction tx = _graphDatabaseService.beginTx()) {
-            _termRepository.save(term);
-            tx.success();
-        }
+        _termRepository.save(term);
 
         final Term resultTerm;
         try (Transaction tx = _graphDatabaseService.beginTx()) {
@@ -57,11 +54,8 @@ public class TermRepositoryIntegrationTest {
         final Term otherTerm = new Term();
         otherTerm.setName("Audi");
 
-        try (Transaction tx = _graphDatabaseService.beginTx()) {
-            _termRepository.save(term);
-            _termRepository.save(otherTerm);
-            tx.success();
-        }
+        _termRepository.save(term);
+        _termRepository.save(otherTerm);
 
         List<Term> resultTerm = new ArrayList<>();
         try (Transaction tx = _graphDatabaseService.beginTx()) {
