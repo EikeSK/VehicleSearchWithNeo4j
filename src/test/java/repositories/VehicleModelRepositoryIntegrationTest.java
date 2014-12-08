@@ -32,6 +32,10 @@ public class VehicleModelRepositoryIntegrationTest {
     @Qualifier("graphDatabaseService")
     private GraphDatabaseService _graphDatabaseService;
 
+    @Before
+    public void setUp() {
+        _vehicleModelRepository.deleteAll();
+    }
 
     @Test
     public void testCRUD() throws Exception {
