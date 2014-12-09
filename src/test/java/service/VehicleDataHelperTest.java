@@ -8,6 +8,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import config.ProductiveContext;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ProductiveContext.class})
 public class VehicleDataHelperTest {
@@ -22,7 +25,7 @@ public class VehicleDataHelperTest {
         _vehicleDataPersistenceService.tokenizeAndSave(vehicleModelWithName("BMW 1er E87 Coupe"));
         _vehicleDataPersistenceService.tokenizeAndSave(vehicleModelWithName("BMW 1er F21 Coupe"));
         _vehicleDataPersistenceService.tokenizeAndSave(vehicleModelWithName("VW Bora 1J Limousine"));
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleModelWithName("VW Golf 7 Kombi"));
+        _vehicleDataPersistenceService.tokenizeAndSave(vehicleModelWithName("VW Golf 7 Kombi"), new HashSet<>(Arrays.asList("benzin", "2008")));
     }
 
     private VehicleModel vehicleModelWithName(final String name) {

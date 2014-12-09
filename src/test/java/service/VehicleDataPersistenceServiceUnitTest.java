@@ -9,7 +9,9 @@ import org.mockito.ArgumentMatcher;
 import repositories.TermRepository;
 import repositories.VehicleModelRepository;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import static org.mockito.Matchers.argThat;
@@ -87,6 +89,22 @@ public class VehicleDataPersistenceServiceUnitTest {
                 final Term resultTerm = result.iterator().next();
                 final Set<VehicleModel> relatedModels = resultTerm.getRelatedModels();
                 return relatedModels.size() == 2;
+            }
+        }));
+    }
+
+    @Test
+    public void shouldSaveAdditionalMetaData() throws Exception {
+        final VehicleModel vehicleModel = vehicleModelWithName("Test Model");
+        final Set<String> additionalMetaData = new HashSet<>(Arrays.asList("benzin"));
+
+        _vehicleDataPersistenceService.tokenizeAndSave(vehicleModel, additionalMetaData);
+
+        verify(_termRepository).save(argThat(new ArgumentMatcher<Collection<Term>>() {
+            @Override
+            public boolean matches(Object o) {
+                @SuppressWarnings("unchecked") final Collection<Term> result = (Collection<Term>) o;
+                return result.size() == 3;
             }
         }));
     }

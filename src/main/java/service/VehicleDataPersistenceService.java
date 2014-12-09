@@ -1,6 +1,5 @@
 package service;
 
-import com.google.common.base.Splitter;
 import domain.Term;
 import domain.VehicleModel;
 import repositories.TermRepository;
@@ -9,7 +8,6 @@ import support.StringSplitterUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 public class VehicleDataPersistenceService {
@@ -23,15 +21,21 @@ public class VehicleDataPersistenceService {
     }
 
     public void tokenizeAndSave(final VehicleModel vehicleModel) {
+        tokenizeAndSave(vehicleModel, null);
+    }
+
+    public void tokenizeAndSave(final VehicleModel vehicleModel, final Set<String> additionalMetaData) {
         final Collection<Term> termsFromTokens = getTermsFrom(vehicleModel);
+        if (additionalMetaData != null) {
+            termsFromTokens.addAll(getTermsFor(vehicleModel, additionalMetaData));
+        }
         _vehicleModelRepository.save(vehicleModel);
         _termRepository.save(termsFromTokens);
     }
 
-    private Collection<Term> getTermsFrom(final VehicleModel vehicleModel) {
-        final Set<String> tokenziedModelName = StringSplitterUtils.tokenize(vehicleModel);
+    private Collection<Term> getTermsFor(final VehicleModel vehicleModel, final Set<String> tokens) {
         final Collection<Term> terms = new ArrayList<>();
-        for (String token : tokenziedModelName) {
+        for (String token : tokens) {
             Term term = _termRepository.findByName(token);
             if (term == null) {
                 term = new Term();
@@ -41,6 +45,11 @@ public class VehicleDataPersistenceService {
             terms.add(term);
         }
         return terms;
+    }
+
+    private Collection<Term> getTermsFrom(final VehicleModel vehicleModel) {
+        final Set<String> tokenizedModelName = StringSplitterUtils.tokenize(vehicleModel);
+        return getTermsFor(vehicleModel, tokenizedModelName);
     }
 
 }
