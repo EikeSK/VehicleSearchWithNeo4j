@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 import support.TestContext;
 
 import java.util.ArrayList;
@@ -18,7 +19,6 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -60,6 +60,7 @@ public class VehicleModelRepositoryIntegrationTest {
     }
 
     @Test
+    @Transactional
     public void testFindByName() throws Exception {
         final String modelName = "Audi A4 Kombi";
         final VehicleModel vehicleModel = new VehicleModel();
@@ -70,11 +71,7 @@ public class VehicleModelRepositoryIntegrationTest {
             tx.success();
         }
 
-        final List<VehicleModel> result;
-        try (Transaction tx = _graphDatabaseService.beginTx()) {
-            result = IteratorUtil.asList(_vehicleModelRepository.findByName(modelName));
-            tx.success();
-        }
+        final List<VehicleModel> result = IteratorUtil.asList(_vehicleModelRepository.findByName(modelName));
 
         assertThat(result, hasSize(1));
         assertThat(result.get(0).getName(), equalTo(modelName));
