@@ -1,4 +1,4 @@
-package support;
+package config;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.test.TestGraphDatabaseFactory;

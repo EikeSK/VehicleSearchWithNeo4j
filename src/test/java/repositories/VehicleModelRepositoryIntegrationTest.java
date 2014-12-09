@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import support.TestContext;
+import config.TestContext;
 
 import java.util.ArrayList;
 import java.util.List;

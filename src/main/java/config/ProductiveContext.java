@@ -1,7 +1,6 @@
-package support;
+package config;
 
 import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.test.TestGraphDatabaseFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
