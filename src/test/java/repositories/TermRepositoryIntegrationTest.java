@@ -38,10 +38,7 @@ public class TermRepositoryIntegrationTest {
 
         _termRepository.save(term);
 
-        final Term resultTerm;
-        try (Transaction tx = _graphDatabaseService.beginTx()) {
-            resultTerm = _termRepository.findByName("Audi");
-        }
+        final Term resultTerm = _termRepository.findByName("Audi");
 
         assertThat(resultTerm, notNullValue());
         assertThat(resultTerm.getName(), equalTo("Audi"));
