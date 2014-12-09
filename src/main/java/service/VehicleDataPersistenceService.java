@@ -31,9 +31,12 @@ public class VehicleDataPersistenceService {
         final Set<String> tokenziedModelName = tokenize(vehicleModel);
         final Collection<Term> terms = new ArrayList<>();
         for (String token : tokenziedModelName) {
-            final Term term = new Term();
+            Term term = _termRepository.findByName(token);
+            if (term == null) {
+                term = new Term();
+            }
             term.setName(token);
-            term.addRelationTo(vehicleModel);   //TODO: Relation an vorhandenen Token setzten, wenn verfügbar, statt zu überschreiben
+            term.addRelationTo(vehicleModel);
             terms.add(term);
         }
         return terms;

@@ -71,7 +71,7 @@ public class VehicleDataPersistenceServiceUnitTest {
 
     @Test
     public void shouldUpdateRelationIfTermAlreadyExists() throws Exception {
-        final VehicleModel vehicleModel = vehicleModelWithName("Test Entity");
+        final VehicleModel vehicleModel = vehicleModelWithName("Test");
         final Term term = new Term();
         term.setName("Test");
         term.addRelationTo(vehicleModelWithName("Test"));
@@ -86,7 +86,7 @@ public class VehicleDataPersistenceServiceUnitTest {
                 @SuppressWarnings("unchecked") final Collection<Term> result = (Collection<Term>) o;
                 final Term resultTerm = result.iterator().next();
                 final Set<VehicleModel> relatedModels = resultTerm.getRelatedModels();
-                return relatedModels.size() == 2 && relatedModels.contains(vehicleModel);
+                return relatedModels.size() == 2;
             }
         }));
     }
