@@ -5,6 +5,7 @@ import domain.Term;
 import domain.VehicleModel;
 import repositories.TermRepository;
 import repositories.VehicleModelRepository;
+import support.StringSplitterUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,7 +29,7 @@ public class VehicleDataPersistenceService {
     }
 
     private Collection<Term> getTermsFrom(final VehicleModel vehicleModel) {
-        final Set<String> tokenziedModelName = tokenize(vehicleModel);
+        final Set<String> tokenziedModelName = StringSplitterUtils.tokenize(vehicleModel);
         final Collection<Term> terms = new ArrayList<>();
         for (String token : tokenziedModelName) {
             Term term = _termRepository.findByName(token);
@@ -42,15 +43,4 @@ public class VehicleDataPersistenceService {
         return terms;
     }
 
-    private Set<String> tokenize(final VehicleModel vehicleModel) {
-        final Set<String> tokens = new HashSet<>();
-        final Splitter splitter = Splitter.on(" ").omitEmptyStrings().trimResults();
-        if (vehicleModel != null) {
-            final Iterable<String> tokenIterable = splitter.split(vehicleModel.getName());
-            for (String token : tokenIterable) {
-                tokens.add(token);  // TODO: toLowerCase für einheitliche Terms in der Datenbank?
-            }
-        }
-        return tokens;
-    }
 }
