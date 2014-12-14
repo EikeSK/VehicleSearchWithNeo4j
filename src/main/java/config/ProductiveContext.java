@@ -9,7 +9,7 @@ import org.springframework.data.neo4j.config.Neo4jConfiguration;
 import org.springframework.data.neo4j.rest.SpringRestGraphDatabase;
 import org.springframework.data.neo4j.support.Neo4jTemplate;
 import repositories.TermRepository;
-import repositories.VehicleModelRepository;
+import repositories.VehicleNodeRepository;
 import service.VehicleDataPersistenceService;
 
 @Configuration
@@ -32,11 +32,11 @@ public class ProductiveContext extends Neo4jConfiguration {
 
     @Bean
     public VehicleDataPersistenceService vehicleDataPersistenceService() {
-        return new VehicleDataPersistenceService(vehicleModelRepository, termRepository);
+        return new VehicleDataPersistenceService(_vehicleNodeRepository, termRepository);
     }
 
     @Autowired
-    public VehicleModelRepository vehicleModelRepository;
+    public VehicleNodeRepository _vehicleNodeRepository;
 
     @Autowired
     public TermRepository termRepository;

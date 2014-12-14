@@ -18,7 +18,7 @@ import static org.junit.Assert.assertThat;
 public class VehicleNodeRepositoryImplIntegrationTest {
 
     @Autowired
-    private VehicleModelRepository _vehicleModelRepository;
+    private VehicleNodeRepository _vehicleNodeRepository;
 
     @Test
     @Transactional
@@ -26,11 +26,11 @@ public class VehicleNodeRepositoryImplIntegrationTest {
         final VehicleNode vehicleNode = new VehicleNode();
         vehicleNode.setName("Test entity");
 
-        _vehicleModelRepository.save(vehicleNode);
+        _vehicleNodeRepository.save(vehicleNode);
 
         final String query = "MATCH (n) RETURN n";
 
-        final Iterable<VehicleNode> modelsByQuery = _vehicleModelRepository.findModelsByQuery(query);
+        final Iterable<VehicleNode> modelsByQuery = _vehicleNodeRepository.findModelsByQuery(query);
         final VehicleNode result = modelsByQuery.iterator().next();
 
         assertThat(result, notNullValue());

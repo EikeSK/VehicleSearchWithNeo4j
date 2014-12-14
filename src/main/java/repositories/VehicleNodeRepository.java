@@ -3,7 +3,7 @@ package repositories;
 import domain.VehicleNode;
 import org.springframework.data.repository.CrudRepository;
 
-public interface VehicleModelRepository extends CrudRepository<VehicleNode, String>, VehicleModelRepositoryCustom {
+public interface VehicleNodeRepository extends CrudRepository<VehicleNode, String>, VehicleNodeRepositoryCustom {
 
     public Iterable<VehicleNode> findByName(final String name);
 }

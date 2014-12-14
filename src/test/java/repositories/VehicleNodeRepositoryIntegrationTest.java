@@ -26,7 +26,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 public class VehicleNodeRepositoryIntegrationTest {
 
     @Autowired
-    private VehicleModelRepository _vehicleModelRepository;
+    private VehicleNodeRepository _vehicleNodeRepository;
 
     @Autowired
     @Qualifier("graphDatabaseService")
@@ -34,7 +34,7 @@ public class VehicleNodeRepositoryIntegrationTest {
 
     @Before
     public void setUp() {
-        _vehicleModelRepository.deleteAll();
+        _vehicleNodeRepository.deleteAll();
     }
 
     @Test
@@ -46,12 +46,12 @@ public class VehicleNodeRepositoryIntegrationTest {
         List<VehicleNode> vehicleNodes = new ArrayList<>();
 
         try (Transaction tx = _graphDatabaseService.beginTx()) {
-            _vehicleModelRepository.save(vehicleNode);
+            _vehicleNodeRepository.save(vehicleNode);
             tx.success();
         }
 
         try (Transaction tx = _graphDatabaseService.beginTx()) {
-            vehicleNodes = IteratorUtil.asList(_vehicleModelRepository.findAll());
+            vehicleNodes = IteratorUtil.asList(_vehicleNodeRepository.findAll());
             tx.success();
         }
 
@@ -67,11 +67,11 @@ public class VehicleNodeRepositoryIntegrationTest {
         vehicleNode.setName(modelName);
 
         try (Transaction tx = _graphDatabaseService.beginTx()) {
-            _vehicleModelRepository.save(vehicleNode);
+            _vehicleNodeRepository.save(vehicleNode);
             tx.success();
         }
 
-        final List<VehicleNode> result = IteratorUtil.asList(_vehicleModelRepository.findByName(modelName));
+        final List<VehicleNode> result = IteratorUtil.asList(_vehicleNodeRepository.findByName(modelName));
 
         assertThat(result, hasSize(1));
         assertThat(result.get(0).getName(), equalTo(modelName));

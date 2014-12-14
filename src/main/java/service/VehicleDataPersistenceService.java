@@ -3,7 +3,7 @@ package service;
 import domain.Term;
 import domain.VehicleNode;
 import repositories.TermRepository;
-import repositories.VehicleModelRepository;
+import repositories.VehicleNodeRepository;
 import support.StringSplitterUtils;
 
 import java.util.ArrayList;
@@ -12,11 +12,11 @@ import java.util.Set;
 
 public class VehicleDataPersistenceService {
 
-    private final VehicleModelRepository _vehicleModelRepository;
+    private final VehicleNodeRepository _vehicleNodeRepository;
     private final TermRepository _termRepository;
 
-    public VehicleDataPersistenceService(VehicleModelRepository vehicleModelRepository, TermRepository termRepository) {
-        _vehicleModelRepository = vehicleModelRepository;
+    public VehicleDataPersistenceService(VehicleNodeRepository vehicleNodeRepository, TermRepository termRepository) {
+        _vehicleNodeRepository = vehicleNodeRepository;
         _termRepository = termRepository;
     }
 
@@ -29,7 +29,7 @@ public class VehicleDataPersistenceService {
         if (additionalMetaData != null) {
             termsFromTokens.addAll(getTermsFor(vehicleNode, additionalMetaData));
         }
-        _vehicleModelRepository.save(vehicleNode);
+        _vehicleNodeRepository.save(vehicleNode);
         _termRepository.save(termsFromTokens);
     }
 

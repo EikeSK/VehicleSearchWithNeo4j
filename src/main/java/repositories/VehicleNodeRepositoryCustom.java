@@ -3,7 +3,7 @@ package repositories;
 
 import domain.VehicleNode;
 
-public interface VehicleModelRepositoryCustom {
+public interface VehicleNodeRepositoryCustom {
 
     public Iterable<VehicleNode> findModelsByQuery(final String query);
 }

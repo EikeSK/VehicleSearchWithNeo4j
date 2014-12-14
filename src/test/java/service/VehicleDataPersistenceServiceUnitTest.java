@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
 import repositories.TermRepository;
-import repositories.VehicleModelRepository;
+import repositories.VehicleNodeRepository;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,14 +19,14 @@ import static org.mockito.Mockito.*;
 public class VehicleDataPersistenceServiceUnitTest {
 
     private VehicleDataPersistenceService _vehicleDataPersistenceService;
-    private VehicleModelRepository _vehicleModelRepository;
+    private VehicleNodeRepository _vehicleNodeRepository;
     private TermRepository _termRepository;
 
     @Before
     public void setUp() throws Exception {
         _termRepository = mock(TermRepository.class);
-        _vehicleModelRepository = mock(VehicleModelRepository.class);
-        _vehicleDataPersistenceService = new VehicleDataPersistenceService(_vehicleModelRepository, _termRepository);
+        _vehicleNodeRepository = mock(VehicleNodeRepository.class);
+        _vehicleDataPersistenceService = new VehicleDataPersistenceService(_vehicleNodeRepository, _termRepository);
     }
 
     @Test
@@ -35,8 +35,8 @@ public class VehicleDataPersistenceServiceUnitTest {
 
         _vehicleDataPersistenceService.tokenizeAndSave(vehicleNode);
 
-        verify(_vehicleModelRepository).save(vehicleNode);
-        verifyNoMoreInteractions(_vehicleModelRepository);
+        verify(_vehicleNodeRepository).save(vehicleNode);
+        verifyNoMoreInteractions(_vehicleNodeRepository);
     }
 
     @Test
