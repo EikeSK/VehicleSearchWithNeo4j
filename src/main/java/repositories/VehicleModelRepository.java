@@ -1,9 +1,9 @@
 package repositories;
 
-import domain.VehicleModel;
+import domain.VehicleNode;
 import org.springframework.data.repository.CrudRepository;
 
-public interface VehicleModelRepository extends CrudRepository<VehicleModel, String>, VehicleModelRepositoryCustom {
+public interface VehicleModelRepository extends CrudRepository<VehicleNode, String>, VehicleModelRepositoryCustom {
 
-    public Iterable<VehicleModel> findByName(final String name);
+    public Iterable<VehicleNode> findByName(final String name);
 }

@@ -3,21 +3,21 @@ package support;
 import java.util.HashSet;
 import java.util.Set;
 
-public class VehicleModelSearchQuery {
+public class VehicleNodeSearchQuery {
 
     private String _startTerm;
     private Set<String> _terms = new HashSet<>();
 
-    public static VehicleModelSearchQuery query() {
-        return new VehicleModelSearchQuery();
+    public static VehicleNodeSearchQuery query() {
+        return new VehicleNodeSearchQuery();
     }
 
-    public VehicleModelSearchQuery withStartTerm(final String startTerm) {
+    public VehicleNodeSearchQuery withStartTerm(final String startTerm) {
         _startTerm = startTerm;
         return this;
     }
 
-    public VehicleModelSearchQuery withTerm(final String term) {
+    public VehicleNodeSearchQuery withTerm(final String term) {
         _terms.add(term);
         return this;
     }

@@ -1,8 +1,7 @@
 package service;
 
 import domain.Term;
-import domain.VehicleModel;
-import org.aspectj.weaver.PerTypeWithinTargetTypeMunger;
+import domain.VehicleNode;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
@@ -32,35 +31,35 @@ public class VehicleDataPersistenceServiceUnitTest {
 
     @Test
     public void shouldInvokeSaveOnVehicleModelRepository() throws Exception {
-        final VehicleModel vehicleModel = vehicleModelWithName("Test Entity");
+        final VehicleNode vehicleNode = vehicleModelWithName("Test Entity");
 
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleModel);
+        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNode);
 
-        verify(_vehicleModelRepository).save(vehicleModel);
+        verify(_vehicleModelRepository).save(vehicleNode);
         verifyNoMoreInteractions(_vehicleModelRepository);
     }
 
     @Test
     public void shouldInvokeSaveOnTermRepositoryForTermInName() throws Exception {
-        final VehicleModel vehicleModel = vehicleModelWithName("Testmodel");
+        final VehicleNode vehicleNode = vehicleModelWithName("Testmodel");
 
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleModel);
+        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNode);
 
         verify(_termRepository).save(argThat(new ArgumentMatcher<Collection<Term>>() {
             @Override
             public boolean matches(Object o) {
                 @SuppressWarnings("unchecked") final Collection<Term> result = (Collection<Term>) o;
                 final Term resultTerm = result.iterator().next();
-                return resultTerm.getName().equals("Testmodel") && resultTerm.getRelatedModels().contains(vehicleModel);
+                return resultTerm.getName().equals("Testmodel") && resultTerm.getRelatedModels().contains(vehicleNode);
             }
         }));
     }
 
     @Test
     public void shouldInvokeSaveOnTermRepositoryForTermsInNameWithMultipleEntries() {
-        final VehicleModel vehicleModel = vehicleModelWithName("Test Entity");
+        final VehicleNode vehicleNode = vehicleModelWithName("Test Entity");
 
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleModel);
+        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNode);
 
         verify(_termRepository).save(argThat(new ArgumentMatcher<Collection<Term>>() {
             @Override
@@ -73,21 +72,21 @@ public class VehicleDataPersistenceServiceUnitTest {
 
     @Test
     public void shouldUpdateRelationIfTermAlreadyExists() throws Exception {
-        final VehicleModel vehicleModel = vehicleModelWithName("Test");
+        final VehicleNode vehicleNode = vehicleModelWithName("Test");
         final Term term = new Term();
         term.setName("Test");
         term.addRelationTo(vehicleModelWithName("Test"));
 
         when(_termRepository.findByName("Test")).thenReturn(term);
 
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleModel);
+        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNode);
 
         verify(_termRepository).save(argThat(new ArgumentMatcher<Collection<Term>>() {
             @Override
             public boolean matches(Object o) {
                 @SuppressWarnings("unchecked") final Collection<Term> result = (Collection<Term>) o;
                 final Term resultTerm = result.iterator().next();
-                final Set<VehicleModel> relatedModels = resultTerm.getRelatedModels();
+                final Set<VehicleNode> relatedModels = resultTerm.getRelatedModels();
                 return relatedModels.size() == 2;
             }
         }));
@@ -95,10 +94,10 @@ public class VehicleDataPersistenceServiceUnitTest {
 
     @Test
     public void shouldSaveAdditionalMetaData() throws Exception {
-        final VehicleModel vehicleModel = vehicleModelWithName("Test Model");
+        final VehicleNode vehicleNode = vehicleModelWithName("Test Model");
         final Set<String> additionalMetaData = new HashSet<>(Arrays.asList("benzin"));
 
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleModel, additionalMetaData);
+        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNode, additionalMetaData);
 
         verify(_termRepository).save(argThat(new ArgumentMatcher<Collection<Term>>() {
             @Override
@@ -109,9 +108,9 @@ public class VehicleDataPersistenceServiceUnitTest {
         }));
     }
 
-    private VehicleModel vehicleModelWithName(final String name) {
-        final VehicleModel vehicleModel = new VehicleModel();
-        vehicleModel.setName(name);
-        return vehicleModel;
+    private VehicleNode vehicleModelWithName(final String name) {
+        final VehicleNode vehicleNode = new VehicleNode();
+        vehicleNode.setName(name);
+        return vehicleNode;
     }
 }

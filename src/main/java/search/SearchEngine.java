@@ -1,10 +1,10 @@
 package search;
 
-import domain.VehicleModel;
+import domain.VehicleNode;
 
 public class SearchEngine {
 
-    public VehicleModel search(final String searchString) {
+    public VehicleNode search(final String searchString) {
         return null;
     }
 }

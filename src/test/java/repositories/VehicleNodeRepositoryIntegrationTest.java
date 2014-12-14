@@ -1,6 +1,6 @@
 package repositories;
 
-import domain.VehicleModel;
+import domain.VehicleNode;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +23,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestContext.class})
-public class VehicleModelRepositoryIntegrationTest {
+public class VehicleNodeRepositoryIntegrationTest {
 
     @Autowired
     private VehicleModelRepository _vehicleModelRepository;
@@ -40,38 +40,38 @@ public class VehicleModelRepositoryIntegrationTest {
     @Test
     public void testCRUD() throws Exception {
         final String modelName = "Audi A4 Kombi";
-        final VehicleModel vehicleModel = new VehicleModel();
-        vehicleModel.setName(modelName);
+        final VehicleNode vehicleNode = new VehicleNode();
+        vehicleNode.setName(modelName);
 
-        List<VehicleModel> vehicleModels = new ArrayList<>();
+        List<VehicleNode> vehicleNodes = new ArrayList<>();
 
         try (Transaction tx = _graphDatabaseService.beginTx()) {
-            _vehicleModelRepository.save(vehicleModel);
+            _vehicleModelRepository.save(vehicleNode);
             tx.success();
         }
 
         try (Transaction tx = _graphDatabaseService.beginTx()) {
-            vehicleModels = IteratorUtil.asList(_vehicleModelRepository.findAll());
+            vehicleNodes = IteratorUtil.asList(_vehicleModelRepository.findAll());
             tx.success();
         }
 
-        assertThat(vehicleModels, hasSize(1));
-        assertThat(vehicleModels.get(0).getName(), equalTo(modelName));
+        assertThat(vehicleNodes, hasSize(1));
+        assertThat(vehicleNodes.get(0).getName(), equalTo(modelName));
     }
 
     @Test
     @Transactional
     public void testFindByName() throws Exception {
         final String modelName = "Audi A4 Kombi";
-        final VehicleModel vehicleModel = new VehicleModel();
-        vehicleModel.setName(modelName);
+        final VehicleNode vehicleNode = new VehicleNode();
+        vehicleNode.setName(modelName);
 
         try (Transaction tx = _graphDatabaseService.beginTx()) {
-            _vehicleModelRepository.save(vehicleModel);
+            _vehicleModelRepository.save(vehicleNode);
             tx.success();
         }
 
-        final List<VehicleModel> result = IteratorUtil.asList(_vehicleModelRepository.findByName(modelName));
+        final List<VehicleNode> result = IteratorUtil.asList(_vehicleModelRepository.findByName(modelName));
 
         assertThat(result, hasSize(1));
         assertThat(result.get(0).getName(), equalTo(modelName));

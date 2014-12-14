@@ -1,7 +1,7 @@
 package service;
 
 import domain.Term;
-import domain.VehicleModel;
+import domain.VehicleNode;
 import repositories.TermRepository;
 import repositories.VehicleModelRepository;
 import support.StringSplitterUtils;
@@ -20,20 +20,20 @@ public class VehicleDataPersistenceService {
         _termRepository = termRepository;
     }
 
-    public void tokenizeAndSave(final VehicleModel vehicleModel) {
-        tokenizeAndSave(vehicleModel, null);
+    public void tokenizeAndSave(final VehicleNode vehicleNode) {
+        tokenizeAndSave(vehicleNode, null);
     }
 
-    public void tokenizeAndSave(final VehicleModel vehicleModel, final Set<String> additionalMetaData) {
-        final Collection<Term> termsFromTokens = getTermsFrom(vehicleModel);
+    public void tokenizeAndSave(final VehicleNode vehicleNode, final Set<String> additionalMetaData) {
+        final Collection<Term> termsFromTokens = getTermsFrom(vehicleNode);
         if (additionalMetaData != null) {
-            termsFromTokens.addAll(getTermsFor(vehicleModel, additionalMetaData));
+            termsFromTokens.addAll(getTermsFor(vehicleNode, additionalMetaData));
         }
-        _vehicleModelRepository.save(vehicleModel);
+        _vehicleModelRepository.save(vehicleNode);
         _termRepository.save(termsFromTokens);
     }
 
-    private Collection<Term> getTermsFor(final VehicleModel vehicleModel, final Set<String> tokens) {
+    private Collection<Term> getTermsFor(final VehicleNode vehicleNode, final Set<String> tokens) {
         final Collection<Term> terms = new ArrayList<>();
         for (String token : tokens) {
             Term term = _termRepository.findByName(token);
@@ -41,15 +41,15 @@ public class VehicleDataPersistenceService {
                 term = new Term();
             }
             term.setName(token);
-            term.addRelationTo(vehicleModel);
+            term.addRelationTo(vehicleNode);
             terms.add(term);
         }
         return terms;
     }
 
-    private Collection<Term> getTermsFrom(final VehicleModel vehicleModel) {
-        final Set<String> tokenizedModelName = StringSplitterUtils.tokenize(vehicleModel);
-        return getTermsFor(vehicleModel, tokenizedModelName);
+    private Collection<Term> getTermsFrom(final VehicleNode vehicleNode) {
+        final Set<String> tokenizedModelName = StringSplitterUtils.tokenize(vehicleNode);
+        return getTermsFor(vehicleNode, tokenizedModelName);
     }
 
 }

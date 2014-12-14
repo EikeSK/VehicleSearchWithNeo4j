@@ -4,7 +4,7 @@ import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 
 @NodeEntity
-public class VehicleModel {
+public class VehicleNode {
 
     @GraphId
     private Long _id;

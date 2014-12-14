@@ -6,7 +6,7 @@ import static com.google.common.base.Ascii.toLowerCase;
 
 public class VehicleSearchQueryGenerator {
 
-    public String generateCypherQueryFrom(final VehicleModelSearchQuery searchQuery) {
+    public String generateCypherQueryFrom(final VehicleNodeSearchQuery searchQuery) {
         final StringBuilder sb = new StringBuilder();
         final String startTerm = searchQuery.getStartTerm();
         final Set<String> terms = searchQuery.getTerms();

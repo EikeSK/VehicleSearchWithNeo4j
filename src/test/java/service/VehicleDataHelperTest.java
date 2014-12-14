@@ -1,6 +1,6 @@
 package service;
 
-import domain.VehicleModel;
+import domain.VehicleNode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +28,9 @@ public class VehicleDataHelperTest {
         _vehicleDataPersistenceService.tokenizeAndSave(vehicleModelWithName("VW Golf 7 Kombi"), new HashSet<>(Arrays.asList("benzin", "2008")));
     }
 
-    private VehicleModel vehicleModelWithName(final String name) {
-        final VehicleModel vehicleModel = new VehicleModel();
-        vehicleModel.setName(name);
-        return vehicleModel;
+    private VehicleNode vehicleModelWithName(final String name) {
+        final VehicleNode vehicleNode = new VehicleNode();
+        vehicleNode.setName(name);
+        return vehicleNode;
     }
 }

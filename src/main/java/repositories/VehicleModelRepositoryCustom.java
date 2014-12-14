@@ -1,9 +1,9 @@
 package repositories;
 
 
-import domain.VehicleModel;
+import domain.VehicleNode;
 
 public interface VehicleModelRepositoryCustom {
 
-    public Iterable<VehicleModel> findModelsByQuery(final String query);
+    public Iterable<VehicleNode> findModelsByQuery(final String query);
 }

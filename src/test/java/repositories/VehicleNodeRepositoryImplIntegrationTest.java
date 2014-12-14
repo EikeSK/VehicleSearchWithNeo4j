@@ -1,6 +1,6 @@
 package repositories;
 
-import domain.VehicleModel;
+import domain.VehicleNode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestContext.class})
-public class VehicleModelRepositoryImplIntegrationTest {
+public class VehicleNodeRepositoryImplIntegrationTest {
 
     @Autowired
     private VehicleModelRepository _vehicleModelRepository;
@@ -23,15 +23,15 @@ public class VehicleModelRepositoryImplIntegrationTest {
     @Test
     @Transactional
     public void test() throws Exception {
-        final VehicleModel vehicleModel = new VehicleModel();
-        vehicleModel.setName("Test entity");
+        final VehicleNode vehicleNode = new VehicleNode();
+        vehicleNode.setName("Test entity");
 
-        _vehicleModelRepository.save(vehicleModel);
+        _vehicleModelRepository.save(vehicleNode);
 
         final String query = "MATCH (n) RETURN n";
 
-        final Iterable<VehicleModel> modelsByQuery = _vehicleModelRepository.findModelsByQuery(query);
-        final VehicleModel result = modelsByQuery.iterator().next();
+        final Iterable<VehicleNode> modelsByQuery = _vehicleModelRepository.findModelsByQuery(query);
+        final VehicleNode result = modelsByQuery.iterator().next();
 
         assertThat(result, notNullValue());
         assertThat(result.getName(), equalTo("Test entity"));

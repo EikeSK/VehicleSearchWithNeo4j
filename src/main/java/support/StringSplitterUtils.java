@@ -1,17 +1,17 @@
 package support;
 
 import com.google.common.base.Splitter;
-import domain.VehicleModel;
+import domain.VehicleNode;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class StringSplitterUtils {
 
-    public static Set<String> tokenize(final VehicleModel vehicleModel) {
+    public static Set<String> tokenize(final VehicleNode vehicleNode) {
         String toTokenize = null;
-        if (vehicleModel != null) {
-            toTokenize = vehicleModel.getName();
+        if (vehicleNode != null) {
+            toTokenize = vehicleNode.getName();
         }
         return tokenize(toTokenize);
     }
