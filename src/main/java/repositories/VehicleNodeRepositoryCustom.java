@@ -2,8 +2,9 @@ package repositories;
 
 
 import domain.VehicleNode;
+import support.VehicleNodeSearchQuery;
 
 public interface VehicleNodeRepositoryCustom {
 
-    public Iterable<VehicleNode> findModelsByQuery(final String query);
+    public Iterable<VehicleNode> findNodesByQuery(final VehicleNodeSearchQuery searchQuery);
 }
