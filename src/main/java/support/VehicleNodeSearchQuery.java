@@ -17,8 +17,13 @@ public class VehicleNodeSearchQuery {
         return this;
     }
 
-    public VehicleNodeSearchQuery withTerm(final String term) {
+    public VehicleNodeSearchQuery addTerm(final String term) {
         _terms.add(term);
+        return this;
+    }
+
+    public VehicleNodeSearchQuery withTerms(final Set<String> terms) {
+        _terms.addAll(terms);
         return this;
     }
 
