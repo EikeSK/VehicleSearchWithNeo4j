@@ -3,9 +3,12 @@ package repositories;
 import domain.VehicleNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.neo4j.support.Neo4jTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import support.VehicleNodeSearchQuery;
 import support.VehicleSearchQueryGenerator;
 
+@Service
 public class VehicleNodeRepositoryImpl implements VehicleNodeRepositoryCustom {
 
     @Autowired
