@@ -32,7 +32,7 @@ public class VehicleSearchQueryGeneratorUnitTest {
     @Test
     public void testCypherQueryOnlyWithTerms() throws Exception {
         final VehicleNodeSearchQuery query = VehicleNodeSearchQuery.query().addTerm("Testentity");
-        final String expetedQuery = "MATCH (testentity:Term{name:'Testentity'})-[:MATCHES_FOR]->(modell) RETURN modell";
+        final String expetedQuery = "MATCH (_testentity:Term{name:'Testentity'})-[:MATCHES_FOR]->(modell) RETURN modell";
 
         final String cypherQuery = _vehicleSearchQueryGenerator.generateCypherQueryFrom(query);
 
@@ -43,7 +43,7 @@ public class VehicleSearchQueryGeneratorUnitTest {
     public void testCypherQueryWithStartAndOneOtherTerms() throws Exception {
         final VehicleNodeSearchQuery query = VehicleNodeSearchQuery.query().withStartTerm("Startterm").addTerm("Test1");
         final String expectedQuery = "START a=node:terms(name='Startterm') MATCH (a)-[:MATCHES_FOR]->(modell), " +
-                "(test1:Term{name:'Test1'})-[:MATCHES_FOR]->(modell) " +
+                "(_test1:Term{name:'Test1'})-[:MATCHES_FOR]->(modell) " +
                 "RETURN modell";
 
         final String cypherQuery = _vehicleSearchQueryGenerator.generateCypherQueryFrom(query);
@@ -55,7 +55,7 @@ public class VehicleSearchQueryGeneratorUnitTest {
     public void testCypherQueryWithStartAndMultipleOtherTerms() throws Exception {
         final VehicleNodeSearchQuery query = VehicleNodeSearchQuery.query().withStartTerm("Startterm").addTerm("Test1").addTerm("Test2");
         final String expectedQuery = "START a=node:terms(name='Startterm') MATCH (a)-[:MATCHES_FOR]->(modell), " +
-                "(test1:Term{name:'Test1'})-[:MATCHES_FOR]->(modell), (test2:Term{name:'Test2'})-[:MATCHES_FOR]->(modell) " +
+                "(_test1:Term{name:'Test1'})-[:MATCHES_FOR]->(modell), (_test2:Term{name:'Test2'})-[:MATCHES_FOR]->(modell) " +
                 "RETURN modell";
 
         final String cypherQuery = _vehicleSearchQueryGenerator.generateCypherQueryFrom(query);

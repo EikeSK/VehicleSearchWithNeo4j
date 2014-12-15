@@ -23,12 +23,12 @@ public class VehicleSearchQueryGenerator {
         }
         if (terms.size() == 1 && startTerm == null) {
             for (String term : terms) {
-                sb.append("(").append(toLowerCase(term)).append(":Term{name:'").append(term).append("'})-[:MATCHES_FOR]->(modell)");
+                sb.append("(_").append(toLowerCase(term)).append(":Term{name:'").append(term).append("'})-[:MATCHES_FOR]->(modell)");
             }
         } else {
             for (String term : terms) {
                 sb.append(", ");
-                sb.append("(").append(toLowerCase(term)).append(":Term{name:'").append(term).append("'})-[:MATCHES_FOR]->(modell)");
+                sb.append("(_").append(toLowerCase(term)).append(":Term{name:'").append(term).append("'})-[:MATCHES_FOR]->(modell)");
             }
         }
 
