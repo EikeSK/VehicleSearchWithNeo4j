@@ -11,6 +11,7 @@ import org.springframework.data.neo4j.support.Neo4jTemplate;
 import repositories.TermRepository;
 import repositories.VehicleNodeRepository;
 import service.VehicleDataPersistenceService;
+import support.VehicleSearchQueryGenerator;
 
 @Configuration
 @EnableNeo4jRepositories(basePackages = "repositories")
@@ -33,6 +34,11 @@ public class ProductiveContext extends Neo4jConfiguration {
     @Bean
     public VehicleDataPersistenceService vehicleDataPersistenceService() {
         return new VehicleDataPersistenceService(_vehicleNodeRepository, termRepository);
+    }
+
+    @Bean
+    public VehicleSearchQueryGenerator vehicleSearchQueryGenerator() {
+        return new VehicleSearchQueryGenerator();
     }
 
     @Autowired
