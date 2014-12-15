@@ -50,7 +50,7 @@ public class VehicleDataPersistenceServiceUnitTest {
             public boolean matches(Object o) {
                 @SuppressWarnings("unchecked") final Collection<Term> result = (Collection<Term>) o;
                 final Term resultTerm = result.iterator().next();
-                return resultTerm.getName().equals("Testmodel") && resultTerm.getRelatedModels().contains(vehicleNode);
+                return resultTerm.getName().equals("testmodel") && resultTerm.getRelatedModels().contains(vehicleNode);
             }
         }));
     }
@@ -77,7 +77,7 @@ public class VehicleDataPersistenceServiceUnitTest {
         term.setName("Test");
         term.addRelationTo(vehicleModelWithName("Test"));
 
-        when(_termRepository.findByName("Test")).thenReturn(term);
+        when(_termRepository.findByName("test")).thenReturn(term);
 
         _vehicleDataPersistenceService.tokenizeAndSave(vehicleNode);
 

@@ -6,6 +6,8 @@ import domain.VehicleNode;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.google.common.base.Ascii.toLowerCase;
+
 public class StringSplitterUtils {
 
     public static Set<String> tokenize(final VehicleNode vehicleNode) {
@@ -22,7 +24,7 @@ public class StringSplitterUtils {
             final Splitter splitter = Splitter.on(" ").omitEmptyStrings().trimResults();
             final Iterable<String> tokenIterable = splitter.split(string);
             for (String token : tokenIterable) {
-                tokens.add(token);  // TODO: toLowerCase für einheitliche Terms in der Datenbank?
+                tokens.add(toLowerCase(token));
             }
         }
         return tokens;
