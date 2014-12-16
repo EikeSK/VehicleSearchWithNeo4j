@@ -33,7 +33,7 @@ public class VehicleNodeRepositoryImplIntegrationTest {
         final String nodeName = "BMW 3er E8 Cabrio";
         _vehicleDataPersistenceService.tokenizeAndSave(vehicleModelWithName(nodeName));
 
-        final Iterable<VehicleNode> nodesByQuery = _vehicleNodeRepository.findNodesByQuery(VehicleNodeSearchQuery.query().withStartTerm("BMW").addTerm("E8"));
+        final Iterable<VehicleNode> nodesByQuery = _vehicleNodeRepository.findNodesByQuery(VehicleNodeSearchQuery.query().withStartTerm("bmw").addTerm("e8"));
 
         assertNotNull(nodesByQuery);
         assertEquals(nodesByQuery.iterator().next().getName(), nodeName);
