@@ -1,7 +1,6 @@
 package search;
 
 import domain.VehicleNode;
-import org.springframework.transaction.annotation.Transactional;
 import repositories.VehicleNodeService;
 import support.StringSplitterUtils;
 import support.VehicleNodeSearchQuery;
@@ -20,7 +19,6 @@ public class SearchEngine {
         _vehicleNodeService = vehicleNodeService;
     }
 
-    @Transactional
     public Collection<VehicleNode> search(final String searchString) {
         final Set<String> tokensFromSearchString = StringSplitterUtils.tokenize(searchString);
         final VehicleNodeSearchQuery vehicleNodeSearchQuery = _vehicleSearchQueryGenerator.generateSearchQueryFrom(tokensFromSearchString);

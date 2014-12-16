@@ -10,6 +10,8 @@ import org.springframework.data.neo4j.rest.SpringRestGraphDatabase;
 import org.springframework.data.neo4j.support.Neo4jTemplate;
 import repositories.TermRepository;
 import repositories.VehicleNodeRepository;
+import repositories.VehicleNodeService;
+import search.SearchEngine;
 import service.VehicleDataPersistenceService;
 import support.VehicleSearchQueryGenerator;
 
@@ -39,6 +41,16 @@ public class ProductiveContext extends Neo4jConfiguration {
     @Bean
     public VehicleSearchQueryGenerator vehicleSearchQueryGenerator() {
         return new VehicleSearchQueryGenerator();
+    }
+
+    @Bean
+    public VehicleNodeService vehicleNodeService() {
+        return new VehicleNodeService();
+    }
+
+    @Bean
+    public SearchEngine searchEngine() {
+        return new SearchEngine(vehicleSearchQueryGenerator(), vehicleNodeService());
     }
 
     @Autowired
