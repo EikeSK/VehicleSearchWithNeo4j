@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
+import static com.google.common.base.Ascii.toLowerCase;
+
 public class VehicleDataPersistenceService {
 
     private final VehicleNodeRepository _vehicleNodeRepository;
@@ -40,7 +42,7 @@ public class VehicleDataPersistenceService {
             if (term == null) {
                 term = new Term();
             }
-            term.setName(token);
+            term.setName(toLowerCase(token));
             term.addRelationTo(vehicleNode);
             terms.add(term);
         }
