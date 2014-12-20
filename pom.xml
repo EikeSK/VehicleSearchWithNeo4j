@@ -97,6 +97,11 @@
             <version>18.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.fitnesse</groupId>
+            <artifactId>fitnesse</artifactId>
+            <version>20140901</version>
+        </dependency>
 
     </dependencies>
 
