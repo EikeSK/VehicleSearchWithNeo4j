@@ -1,8 +1,8 @@
 package support;
 
-import java.util.ArrayList;
+import org.apache.commons.lang.StringUtils;
+
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static com.google.common.base.Ascii.toLowerCase;
@@ -23,12 +23,12 @@ public class VehicleSearchQueryGenerator {
         }
         if (terms.size() == 1 && startTerm == null) {
             for (String term : terms) {
-                sb.append("(_").append(toLowerCase(term)).append(":Term{name:'").append(term).append("'})-[:MATCHES_FOR]->(modell)");
+                sb.append("(_").append(createVariableFor(term)).append(":Term{name:'").append(term).append("'})-[:MATCHES_FOR]->(modell)");
             }
         } else {
             for (String term : terms) {
                 sb.append(", ");
-                sb.append("(_").append(toLowerCase(term)).append(":Term{name:'").append(term).append("'})-[:MATCHES_FOR]->(modell)");
+                sb.append("(_").append(createVariableFor(term)).append(":Term{name:'").append(term).append("'})-[:MATCHES_FOR]->(modell)");
             }
         }
 
@@ -49,5 +49,9 @@ public class VehicleSearchQueryGenerator {
         }
 
         return VehicleNodeSearchQuery.query().withStartTerm(startTerm).withTerms(otherTerms);
+    }
+
+    private static String createVariableFor(String term) {
+        return StringUtils.replace(toLowerCase(term), ".", "dot");
     }
 }

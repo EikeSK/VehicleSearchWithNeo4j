@@ -121,6 +121,16 @@ public class SearchEngineIntegrationTest {
         assertThat(searchResult, hasSize(0));
     }
 
+    @Test
+    public void testShouldFindNodeWithDotInSearchTerm() throws Exception {
+        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B8 Kombi"), new HashSet<>(Arrays.asList("2.4")));
+
+        final Collection<VehicleNode> searchResult = _searchEngine.search("A4 2.4");
+
+        assertThat(searchResult, hasSize(1));
+        assertThat(searchResult.iterator().next().getName(), equalTo("Audi A4 B8 Kombi"));
+    }
+
     private static VehicleNode vehicleNodeWithName(final String name) {
         final VehicleNode vehicleNode = new VehicleNode();
         vehicleNode.setName(name);

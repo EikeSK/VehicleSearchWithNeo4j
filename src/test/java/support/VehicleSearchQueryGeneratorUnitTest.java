@@ -64,6 +64,17 @@ public class VehicleSearchQueryGeneratorUnitTest {
     }
 
     @Test
+    public void testCreateSearchQueryWithDotInAdditionalTerm() throws Exception {
+        final VehicleNodeSearchQuery query = VehicleNodeSearchQuery.query().withStartTerm("Startterm").addTerm("2.4");
+        final String expectedQuery = "START a=node:terms(name='Startterm') MATCH (a)-[:MATCHES_FOR]->(modell), " +
+                "(_2dot4:Term{name:'2.4'})-[:MATCHES_FOR]->(modell) RETURN modell";
+
+        final String cypherQuery = _vehicleSearchQueryGenerator.generateCypherQueryFrom(query);
+
+        assertEquals(expectedQuery, cypherQuery);
+    }
+
+    @Test
     public void testCreateSearchQueryWithOneTermShouldContainStartTerm() throws Exception {
         final String startTerm = "StartTerm";
         final VehicleNodeSearchQuery searchQuery = _vehicleSearchQueryGenerator.generateSearchQueryFrom(new HashSet<>(Arrays.asList(startTerm)));
