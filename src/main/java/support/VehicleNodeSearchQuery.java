@@ -5,16 +5,10 @@ import java.util.Set;
 
 public class VehicleNodeSearchQuery {
 
-    private String _startTerm;
     private Set<String> _terms = new HashSet<>();
 
     public static VehicleNodeSearchQuery query() {
         return new VehicleNodeSearchQuery();
-    }
-
-    public VehicleNodeSearchQuery withStartTerm(final String startTerm) {
-        _startTerm = startTerm;
-        return this;
     }
 
     public VehicleNodeSearchQuery addTerm(final String term) {
@@ -25,10 +19,6 @@ public class VehicleNodeSearchQuery {
     public VehicleNodeSearchQuery withTerms(final Set<String> terms) {
         _terms.addAll(terms);
         return this;
-    }
-
-    public String getStartTerm() {
-        return _startTerm;
     }
 
     public Set<String> getTerms() {

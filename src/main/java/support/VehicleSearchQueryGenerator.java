@@ -2,56 +2,43 @@ package support;
 
 import org.apache.commons.lang.StringUtils;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
-
-import static com.google.common.base.Ascii.toLowerCase;
+import java.util.stream.Collectors;
 
 public class VehicleSearchQueryGenerator {
 
     public String generateCypherQueryFrom(final VehicleNodeSearchQuery searchQuery) {
         final StringBuilder sb = new StringBuilder();
-        final String startTerm = searchQuery.getStartTerm();
-        final Set<String> terms = searchQuery.getTerms();
-        if (startTerm != null) {
-            sb.append("START a=node:terms(name='").append(startTerm).append("') ");
-            sb.append("MATCH ");
-            sb.append("(a)-[:MATCHES_FOR]->(modell)");
-        }
-        if (terms.size() > 0 && startTerm == null) {
-            sb.append("MATCH ");
-        }
-        if (terms.size() == 1 && startTerm == null) {
-            for (String term : terms) {
-                sb.append("(_").append(createVariableFor(term)).append(":Term{name:'").append(term).append("'})-[:MATCHES_FOR]->(modell)");
-            }
-        } else {
-            for (String term : terms) {
-                sb.append(", ");
-                sb.append("(_").append(createVariableFor(term)).append(":Term{name:'").append(term).append("'})-[:MATCHES_FOR]->(modell)");
-            }
-        }
+        final List<String> terms = new ArrayList<>(searchQuery.getTerms());
 
+        sb.append("START");
+        for (int i = 0; i < terms.size(); i++) {
+            sb.append(" _").append(createVariableFor(terms.get(i))).append("=node:terms(\"name:*").append(terms.get(i)).append("*\")");
+            if (i < terms.size() - 1) {
+                sb.append(",");
+            }
+        }
+        sb.append(" MATCH");
+        for (int i = 0; i < terms.size(); i++) {
+            sb.append(" (_").append(createVariableFor(terms.get(i))).append(")-[:MATCHES_FOR]->(modell)");
+            if (i < terms.size() - 1) {
+                sb.append(",");
+            }
+        }
         sb.append(" RETURN modell");
 
         return sb.toString();
     }
 
     public VehicleNodeSearchQuery generateSearchQueryFrom(final Set<String> tokens) {
-        String startTerm = null;
-        final Set<String> otherTerms = new HashSet<>();
-        for (String token : tokens) {
-            if (startTerm == null) {
-                startTerm = token;
-            } else {
-                otherTerms.add(token);
-            }
-        }
+        final Set<String> terms = tokens.stream().collect(Collectors.toSet());
 
-        return VehicleNodeSearchQuery.query().withStartTerm(startTerm).withTerms(otherTerms);
+        return VehicleNodeSearchQuery.query().withTerms(terms);
     }
 
     private static String createVariableFor(String term) {
-        return StringUtils.replace(toLowerCase(term), ".", "dot");
+        return StringUtils.replace(term, ".", "dot");
     }
 }

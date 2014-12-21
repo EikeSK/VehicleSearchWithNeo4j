@@ -131,6 +131,27 @@ public class SearchEngineIntegrationTest {
         assertThat(searchResult.iterator().next().getName(), equalTo("Audi A4 B8 Kombi"));
     }
 
+    @Test
+    public void testShouldFindNodeByIncompleteToken() throws Exception {
+        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B8 Kombi"));
+
+        final Collection<VehicleNode> searchResult = _searchEngine.search("Aud");
+
+        assertThat(searchResult, hasSize(1));
+        assertThat(searchResult.iterator().next().getName(), equalTo("Audi A4 B8 Kombi"));
+    }
+
+    @Test
+    public void testShouldFindNodeByMultipleIncompleteTokens() throws Exception {
+        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B8 Kombi"));
+
+        final Collection<VehicleNode> searchResult = _searchEngine.search("Aud Ko");
+
+        assertThat(searchResult, hasSize(1));
+        assertThat(searchResult.iterator().next().getName(), equalTo("Audi A4 B8 Kombi"));
+
+    }
+
     private static VehicleNode vehicleNodeWithName(final String name) {
         final VehicleNode vehicleNode = new VehicleNode();
         vehicleNode.setName(name);
