@@ -2,10 +2,8 @@ package search;
 
 import com.google.common.base.Stopwatch;
 import config.ProductiveContext;
-import config.TestContext;
 import domain.VehicleNode;
 import org.apache.commons.lang.RandomStringUtils;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,8 +18,6 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.lessThan;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -78,8 +74,8 @@ public class SearchEnginePerformanceTest {
             _randomNodeNames.add(RandomStringUtils.random(12, true, true));
             _randomTermNames.add(RandomStringUtils.random(6, true, true));
         }
-        for (String nodeName :_randomNodeNames)
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName(nodeName), createSetWithRandomTerms());
+        for (String nodeName : _randomNodeNames)
+            _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName(nodeName), createSetWithRandomTerms());
     }
 
     private Set<String> createSetWithRandomTerms() {
@@ -88,13 +84,6 @@ public class SearchEnginePerformanceTest {
             strings.add(_randomTermNames.get(_random.nextInt(1000)));
         }
         return new HashSet<>(strings);
-    }
-
-
-    @After
-    public void tearDown() throws Exception {
-        _vehicleNodeRepository.deleteAll();
-        _termRepository.deleteAll();
     }
 
     private static VehicleNode vehicleNodeWithName(final String name) {
