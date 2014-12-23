@@ -13,9 +13,11 @@ import java.util.List;
 @Transactional
 public class VehicleNodeService {
 
-    @Autowired
-    private VehicleNodeRepository _vehicleNodeRepository;
+    private final VehicleNodeRepository _vehicleNodeRepository;
 
+    public VehicleNodeService(final VehicleNodeRepository vehicleNodeRepository) {
+        _vehicleNodeRepository = vehicleNodeRepository;
+    }
 
     public List<VehicleNode> findNodesByQuery(final VehicleNodeSearchQuery searchQuery) {
         final List<VehicleNode> resultList = new ArrayList<>();

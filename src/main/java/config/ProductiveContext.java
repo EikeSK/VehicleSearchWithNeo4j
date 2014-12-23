@@ -45,7 +45,7 @@ public class ProductiveContext extends Neo4jConfiguration {
 
     @Bean
     public VehicleNodeService vehicleNodeService() {
-        return new VehicleNodeService();
+        return new VehicleNodeService(_vehicleNodeRepository);
     }
 
     @Bean
