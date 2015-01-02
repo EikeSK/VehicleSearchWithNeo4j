@@ -13,7 +13,6 @@ import repositories.VehicleNodeRepository;
 import repositories.VehicleNodeService;
 import search.SearchEngine;
 import service.VehicleDataPersistenceService;
-import support.VehicleSearchQueryGenerator;
 
 @Configuration
 @EnableNeo4jRepositories(basePackages = "repositories")
@@ -39,18 +38,13 @@ public class ProductiveContext extends Neo4jConfiguration {
     }
 
     @Bean
-    public VehicleSearchQueryGenerator vehicleSearchQueryGenerator() {
-        return new VehicleSearchQueryGenerator();
-    }
-
-    @Bean
     public VehicleNodeService vehicleNodeService() {
         return new VehicleNodeService(_vehicleNodeRepository);
     }
 
     @Bean
     public SearchEngine searchEngine() {
-        return new SearchEngine(vehicleSearchQueryGenerator(), vehicleNodeService());
+        return new SearchEngine(vehicleNodeService());
     }
 
     @Autowired

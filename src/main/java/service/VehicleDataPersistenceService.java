@@ -2,6 +2,7 @@ package service;
 
 import domain.Term;
 import domain.VehicleNode;
+import org.springframework.stereotype.Component;
 import repositories.TermRepository;
 import repositories.VehicleNodeRepository;
 import support.StringSplitterUtils;
@@ -12,6 +13,7 @@ import java.util.Set;
 
 import static com.google.common.base.Ascii.toLowerCase;
 
+@Component
 public class VehicleDataPersistenceService {
 
     private final VehicleNodeRepository _vehicleNodeRepository;

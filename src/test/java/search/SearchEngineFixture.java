@@ -1,6 +1,7 @@
 package search;
 
 import config.ProductiveContext;
+import config.TestContext;
 import fit.ColumnFixture;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -11,7 +12,7 @@ public class SearchEngineFixture extends ColumnFixture {
     private String searchQuery;
 
     public SearchEngineFixture() {
-        ApplicationContext ctx = new AnnotationConfigApplicationContext(ProductiveContext.class);
+        ApplicationContext ctx = new AnnotationConfigApplicationContext(TestContext.class);
         for (String test : ctx.getBeanDefinitionNames()) {
             System.out.println(test);       //TODO: not working because FitNesse seems to be unable to start spring context
         }

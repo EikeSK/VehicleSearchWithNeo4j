@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class VehicleSearchQueryGenerator {
 
-    public String generateCypherQueryFrom(final VehicleNodeSearchQuery searchQuery) {
+    public static String generateCypherQueryFrom(final VehicleNodeSearchQuery searchQuery) {
         final StringBuilder sb = new StringBuilder();
         final List<String> terms = new ArrayList<>(searchQuery.getTerms());
 
@@ -32,7 +32,7 @@ public class VehicleSearchQueryGenerator {
         return sb.toString();
     }
 
-    public VehicleNodeSearchQuery generateSearchQueryFrom(final Set<String> tokens) {
+    public static VehicleNodeSearchQuery generateSearchQueryFrom(final Set<String> tokens) {
         final Set<String> terms = tokens.stream().collect(Collectors.toSet());
 
         return VehicleNodeSearchQuery.query().withTerms(terms);

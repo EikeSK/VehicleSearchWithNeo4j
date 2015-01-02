@@ -16,19 +16,12 @@ import static org.junit.Assert.*;
 
 public class VehicleSearchQueryGeneratorUnitTest {
 
-    private VehicleSearchQueryGenerator _vehicleSearchQueryGenerator;
-
-    @Before
-    public void setUp() throws Exception {
-        _vehicleSearchQueryGenerator = new VehicleSearchQueryGenerator();
-    }
-
     @Test
     public void testCreateCypherQueryWithOneTerm() throws Exception {
         final VehicleNodeSearchQuery query = VehicleNodeSearchQuery.query().addTerm("firstTerm");
         final String expectedQuery = "START _firstTerm=node:terms(\"name:*firstTerm*\") MATCH (_firstTerm)-[:MATCHES_FOR]->(modell) RETURN modell";
 
-        final String cypherQuery = _vehicleSearchQueryGenerator.generateCypherQueryFrom(query);
+        final String cypherQuery = VehicleSearchQueryGenerator.generateCypherQueryFrom(query);
 
         assertEquals(expectedQuery, cypherQuery);
     }
@@ -40,7 +33,7 @@ public class VehicleSearchQueryGeneratorUnitTest {
                 "_thirdTerm=node:terms(\"name:*thirdTerm*\") MATCH (_firstTerm)-[:MATCHES_FOR]->(modell), " +
                 "(_secondTerm)-[:MATCHES_FOR]->(modell), (_thirdTerm)-[:MATCHES_FOR]->(modell) RETURN modell";
 
-        final String cypherQuery = _vehicleSearchQueryGenerator.generateCypherQueryFrom(query);
+        final String cypherQuery = VehicleSearchQueryGenerator.generateCypherQueryFrom(query);
 
         assertEquals(expectedQuery, cypherQuery);
     }
@@ -50,21 +43,21 @@ public class VehicleSearchQueryGeneratorUnitTest {
         final VehicleNodeSearchQuery query = VehicleNodeSearchQuery.query().addTerm("2.4");
         final String expectedQuery = "START _2dot4=node:terms(\"name:*2.4*\") MATCH (_2dot4)-[:MATCHES_FOR]->(modell) RETURN modell";
 
-        final String cypherQuery = _vehicleSearchQueryGenerator.generateCypherQueryFrom(query);
+        final String cypherQuery = VehicleSearchQueryGenerator.generateCypherQueryFrom(query);
 
         assertEquals(expectedQuery, cypherQuery);
     }
 
     @Test
     public void testShouldReturnCypherQueryIfSetIsEmpty() throws Exception {
-        final VehicleNodeSearchQuery vehicleNodeSearchQuery = _vehicleSearchQueryGenerator.generateSearchQueryFrom(emptySet());
+        final VehicleNodeSearchQuery vehicleNodeSearchQuery = VehicleSearchQueryGenerator.generateSearchQueryFrom(emptySet());
 
         assertNotNull(vehicleNodeSearchQuery);
     }
 
     @Test
     public void testShouldReturnSearchQueryByOneToken() throws Exception {
-        final VehicleNodeSearchQuery resultQuery = _vehicleSearchQueryGenerator.generateSearchQueryFrom(new HashSet<>(Arrays.asList("firstTerm")));
+        final VehicleNodeSearchQuery resultQuery = VehicleSearchQueryGenerator.generateSearchQueryFrom(new HashSet<>(Arrays.asList("firstTerm")));
 
         assertThat(resultQuery.getTerms(), hasSize(1));
         assertThat(resultQuery.getTerms().iterator().next(), equalTo("firstTerm"));
@@ -72,7 +65,7 @@ public class VehicleSearchQueryGeneratorUnitTest {
 
     @Test
     public void testShouldReturnSearchQueryByMultipleTokens() throws Exception {
-        final VehicleNodeSearchQuery resultQuery = _vehicleSearchQueryGenerator.generateSearchQueryFrom(new HashSet<>(Arrays.asList("firstTerm", "secondTerm")));
+        final VehicleNodeSearchQuery resultQuery = VehicleSearchQueryGenerator.generateSearchQueryFrom(new HashSet<>(Arrays.asList("firstTerm", "secondTerm")));
 
         final List<String> termsFromResultQuery = new ArrayList<>(resultQuery.getTerms());
 

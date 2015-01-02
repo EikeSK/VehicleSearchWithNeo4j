@@ -15,7 +15,6 @@ import repositories.VehicleNodeRepository;
 import repositories.VehicleNodeService;
 import search.SearchEngine;
 import service.VehicleDataPersistenceService;
-import support.VehicleSearchQueryGenerator;
 
 @Configuration
 @EnableTransactionManagement(mode = AdviceMode.PROXY)
@@ -41,10 +40,6 @@ public class TestContext extends Neo4jConfiguration {
         return new VehicleDataPersistenceService(_vehicleNodeRepository, termRepository);
     }
 
-    @Bean
-    public VehicleSearchQueryGenerator vehicleSearchQueryGenerator() {
-        return new VehicleSearchQueryGenerator();
-    }
 
     @Bean
     public VehicleNodeService vehicleNodeService() {
@@ -53,7 +48,7 @@ public class TestContext extends Neo4jConfiguration {
 
     @Bean
     public SearchEngine searchEngine() {
-        return new SearchEngine(vehicleSearchQueryGenerator(), vehicleNodeService());
+        return new SearchEngine(vehicleNodeService());
     }
 
     @Autowired
