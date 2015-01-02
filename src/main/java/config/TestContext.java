@@ -13,8 +13,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import repositories.TermRepository;
 import repositories.VehicleNodeRepository;
 import repositories.VehicleNodeService;
+import repositories.VehicleNodeServiceImpl;
 import search.SearchEngine;
-import service.VehicleDataPersistenceService;
+import search.SearchEngineImpl;
+import service.VehicleDataPersistenceServiceImpl;
 
 @Configuration
 @EnableTransactionManagement(mode = AdviceMode.PROXY)
@@ -36,19 +38,19 @@ public class TestContext extends Neo4jConfiguration {
     }
 
     @Bean
-    public VehicleDataPersistenceService vehicleDataPersistenceService() {
-        return new VehicleDataPersistenceService(_vehicleNodeRepository, termRepository);
+    public VehicleDataPersistenceServiceImpl vehicleDataPersistenceService() {
+        return new VehicleDataPersistenceServiceImpl(_vehicleNodeRepository, termRepository);
     }
 
 
     @Bean
     public VehicleNodeService vehicleNodeService() {
-        return new VehicleNodeService(_vehicleNodeRepository);
+        return new VehicleNodeServiceImpl(_vehicleNodeRepository);
     }
 
     @Bean
     public SearchEngine searchEngine() {
-        return new SearchEngine(vehicleNodeService());
+        return new SearchEngineImpl(vehicleNodeService());
     }
 
     @Autowired

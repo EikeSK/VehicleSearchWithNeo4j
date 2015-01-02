@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import service.VehicleDataPersistenceService;
+import service.VehicleDataPersistenceServiceImpl;
 import support.VehicleNodeSearchQuery;
 
 import static org.junit.Assert.assertEquals;
@@ -22,7 +22,7 @@ public class VehicleNodeRepositoryImplIntegrationTest {
     private VehicleNodeRepository _vehicleNodeRepository;
 
     @Autowired
-    private VehicleDataPersistenceService _vehicleDataPersistenceService;
+    private VehicleDataPersistenceServiceImpl _vehicleDataPersistenceService;
 
     @Test
     @Transactional

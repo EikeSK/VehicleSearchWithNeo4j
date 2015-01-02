@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import search.SearchEngine;
+import search.SearchEngineImpl;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

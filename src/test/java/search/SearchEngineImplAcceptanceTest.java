@@ -10,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import repositories.TermRepository;
 import repositories.VehicleNodeRepository;
-import service.VehicleDataPersistenceService;
+import service.VehicleDataPersistenceServiceImpl;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,13 +22,13 @@ import static org.hamcrest.Matchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestContext.class})
-public class SearchEngineAcceptanceTest {
+public class SearchEngineImplAcceptanceTest {
 
     @Autowired
     private SearchEngine _searchEngine;
 
     @Autowired
-    private VehicleDataPersistenceService _vehicleDataPersistenceService;
+    private VehicleDataPersistenceServiceImpl _vehicleDataPersistenceService;
 
     @Autowired
     private VehicleNodeRepository _vehicleNodeRepository;

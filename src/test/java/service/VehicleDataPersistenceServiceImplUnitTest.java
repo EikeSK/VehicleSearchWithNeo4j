@@ -16,9 +16,9 @@ import java.util.Set;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.*;
 
-public class VehicleDataPersistenceServiceUnitTest {
+public class VehicleDataPersistenceServiceImplUnitTest {
 
-    private VehicleDataPersistenceService _vehicleDataPersistenceService;
+    private VehicleDataPersistenceServiceImpl _vehicleDataPersistenceService;
     private VehicleNodeRepository _vehicleNodeRepository;
     private TermRepository _termRepository;
 
@@ -26,7 +26,7 @@ public class VehicleDataPersistenceServiceUnitTest {
     public void setUp() throws Exception {
         _termRepository = mock(TermRepository.class);
         _vehicleNodeRepository = mock(VehicleNodeRepository.class);
-        _vehicleDataPersistenceService = new VehicleDataPersistenceService(_vehicleNodeRepository, _termRepository);
+        _vehicleDataPersistenceService = new VehicleDataPersistenceServiceImpl(_vehicleNodeRepository, _termRepository);
     }
 
     @Test

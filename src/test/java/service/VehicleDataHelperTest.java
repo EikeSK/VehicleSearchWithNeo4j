@@ -16,7 +16,7 @@ import java.util.HashSet;
 public class VehicleDataHelperTest {
 
     @Autowired
-    private VehicleDataPersistenceService _vehicleDataPersistenceService;
+    private VehicleDataPersistenceServiceImpl _vehicleDataPersistenceService;
 
     @Test
     public void fillDatabaseWithVehicleData() throws Exception {

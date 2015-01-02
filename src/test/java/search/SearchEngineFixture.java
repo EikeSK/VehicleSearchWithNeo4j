@@ -1,6 +1,5 @@
 package search;
 
-import config.ProductiveContext;
 import config.TestContext;
 import fit.ColumnFixture;
 import org.springframework.context.ApplicationContext;

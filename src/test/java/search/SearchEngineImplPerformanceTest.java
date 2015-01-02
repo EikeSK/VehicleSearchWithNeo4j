@@ -12,7 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import repositories.TermRepository;
 import repositories.VehicleNodeRepository;
-import service.VehicleDataPersistenceService;
+import service.VehicleDataPersistenceServiceImpl;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -22,13 +22,13 @@ import static org.hamcrest.Matchers.lessThan;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ProductiveContext.class})
-public class SearchEnginePerformanceTest {
+public class SearchEngineImplPerformanceTest {
 
     @Autowired
     private SearchEngine _searchEngine;
 
     @Autowired
-    private VehicleDataPersistenceService _vehicleDataPersistenceService;
+    private VehicleDataPersistenceServiceImpl _vehicleDataPersistenceService;
 
     @Autowired
     private VehicleNodeRepository _vehicleNodeRepository;
