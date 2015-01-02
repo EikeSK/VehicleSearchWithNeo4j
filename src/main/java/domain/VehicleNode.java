@@ -1,13 +1,9 @@
 package domain;
 
-import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 
 @NodeEntity
-public class VehicleNode {
-
-    @GraphId
-    private Long _id;
+public class VehicleNode extends AbstractNeo4jEntity {
 
     private String name;
 
