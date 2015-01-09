@@ -35,6 +35,17 @@ public class Term extends AbstractNeo4jEntity {
         relatedModels.add(model);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        Term term = (Term) o;
+        return name.equals(term.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
+    }
+
     public Set<VehicleNode> getRelatedModels() {
         return relatedModels;
     }

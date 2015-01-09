@@ -74,8 +74,11 @@ public class SearchEngineImplPerformanceTest {
             _randomNodeNames.add(RandomStringUtils.random(12, true, true));
             _randomTermNames.add(RandomStringUtils.random(6, true, true));
         }
-        for (String nodeName : _randomNodeNames)
-            _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName(nodeName), createSetWithRandomTerms());
+        final Map<VehicleNode, Set<String>> batch = new HashMap<>();
+        for (String nodeName : _randomNodeNames) {
+            batch.put(vehicleNodeWithName(nodeName), createSetWithRandomTerms());
+        }
+        _vehicleDataPersistenceService.tokenizeAndSaveBatch(batch);
     }
 
     private Set<String> createSetWithRandomTerms() {

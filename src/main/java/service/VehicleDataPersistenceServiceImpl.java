@@ -7,9 +7,7 @@ import repositories.TermRepository;
 import repositories.VehicleNodeRepository;
 import support.StringSplitterUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Set;
+import java.util.*;
 
 import static com.google.common.base.Ascii.toLowerCase;
 
@@ -37,6 +35,37 @@ public class VehicleDataPersistenceServiceImpl implements VehicleDataPersistence
         }
         _vehicleNodeRepository.save(vehicleNode);
         _termRepository.save(termsFromTokens);
+    }
+
+    public void tokenizeAndSaveBatch(final Map<VehicleNode, Set<String>> batchData) {
+        final List<Term> allTerms = new ArrayList<>();
+        for (final VehicleNode node : batchData.keySet()) {
+            Collection<Term> termsForNode = getTermsFrom(node);
+            termsForNode.addAll(getTermsForWithoutLookup(node, batchData.get(node)));
+            for (final Term term : termsForNode) {
+                if (allTerms.contains(term)) {
+                    int index = allTerms.indexOf(term);
+                    final Term foundTerm = allTerms.get(index);
+                    foundTerm.addRelationTo(node);
+                    allTerms.set(index, foundTerm);
+                } else {
+                    allTerms.add(term);
+                }
+            }
+        }
+        _vehicleNodeRepository.save(batchData.keySet());
+        _termRepository.save(allTerms);
+    }
+
+    private Collection<Term> getTermsForWithoutLookup(final VehicleNode vehicleNode, final Set<String> tokens) {
+        final Collection<Term> terms = new ArrayList<>();
+        for (String token : tokens) {
+            final Term term = new Term();
+            term.setName(toLowerCase(token));
+            term.addRelationTo(vehicleNode);
+            terms.add(term);
+        }
+        return terms;
     }
 
     private Collection<Term> getTermsFor(final VehicleNode vehicleNode, final Set<String> tokens) {
