@@ -38,6 +38,12 @@ public class VehicleDataPersistenceServiceImpl implements VehicleDataPersistence
     }
 
     public void tokenizeAndSaveBatch(final Map<VehicleNode, Set<String>> batchData) {
+        final List<Term> allTerms = relateTerms(batchData);
+        _vehicleNodeRepository.save(batchData.keySet());
+        _termRepository.save(allTerms);
+    }
+
+    private List<Term> relateTerms(Map<VehicleNode, Set<String>> batchData) {
         final List<Term> allTerms = new ArrayList<>();
         for (final VehicleNode node : batchData.keySet()) {
             Collection<Term> termsForNode = getTermsFrom(node);
@@ -53,19 +59,7 @@ public class VehicleDataPersistenceServiceImpl implements VehicleDataPersistence
                 }
             }
         }
-        _vehicleNodeRepository.save(batchData.keySet());
-        _termRepository.save(allTerms);
-    }
-
-    private Collection<Term> getTermsForWithoutLookup(final VehicleNode vehicleNode, final Set<String> tokens) {
-        final Collection<Term> terms = new ArrayList<>();
-        for (String token : tokens) {
-            final Term term = new Term();
-            term.setName(toLowerCase(token));
-            term.addRelationTo(vehicleNode);
-            terms.add(term);
-        }
-        return terms;
+        return allTerms;
     }
 
     private Collection<Term> getTermsFor(final VehicleNode vehicleNode, final Set<String> tokens) {
