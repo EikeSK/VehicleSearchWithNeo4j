@@ -22,9 +22,9 @@ public class VehicleDataHelperTest {
         Map<VehicleNode, Set<String>> batch = new HashMap<>();
         batch.put(vehicleModelWithName("Audi A4 B8 Kombi"), new HashSet<>(Arrays.asList("Avant")));
         batch.put(vehicleModelWithName("Audi A6 B6 Kombi"), new HashSet<>(Arrays.asList("Avant")));
-        batch.put(vehicleModelWithName("BMW 1er E87 Coupe"), new HashSet<>());
+        batch.put(vehicleModelWithName("BMW 1er E87 Coupe"), Collections.<String>emptySet());
         batch.put(vehicleModelWithName("BMW 1er F21 Coupe"), new HashSet<>(Arrays.asList("neuster", "neuer", "2012")));
-        batch.put(vehicleModelWithName("VW Bora 1J Limousine"), new HashSet<>());
+        batch.put(vehicleModelWithName("VW Bora 1J Limousine"), Collections.<String>emptySet());
         batch.put(vehicleModelWithName("Audi A3 8P Cabrio"), new HashSet<>(Arrays.asList("2003", "2013")));
         batch.put(vehicleModelWithName("VW Golf 7 Kombi"), new HashSet<>(Arrays.asList("seit", "2012", "neuster", "neuer")));
         batch.put(vehicleModelWithName("VW Golf 6 Kombi"), new HashSet<>(Arrays.asList("2008", "2012", "diesel", "benzin")));

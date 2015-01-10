@@ -41,7 +41,7 @@ public class VehicleDataPersistenceServiceImpl implements VehicleDataPersistence
         final List<Term> allTerms = new ArrayList<>();
         for (final VehicleNode node : batchData.keySet()) {
             Collection<Term> termsForNode = getTermsFrom(node);
-            termsForNode.addAll(getTermsForWithoutLookup(node, batchData.get(node)));
+            termsForNode.addAll(getTermsFor(node, batchData.get(node)));
             for (final Term term : termsForNode) {
                 if (allTerms.contains(term)) {
                     int index = allTerms.indexOf(term);
