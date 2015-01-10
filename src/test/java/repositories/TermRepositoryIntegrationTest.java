@@ -1,6 +1,8 @@
 package repositories;
 
+import config.TestContext;
 import domain.Term;
+import domain.VehicleNode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -10,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import config.TestContext;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -45,6 +45,24 @@ public class TermRepositoryIntegrationTest {
     }
 
     @Test
+    public void testUpdate() throws Exception {
+        final Term term = new Term();
+        term.setName("Test");
+        _termRepository.save(term);
+
+        final VehicleNode nodeForRelaionship = new VehicleNode();
+        nodeForRelaionship.setName("TestNode");
+
+        term.addRelationTo(nodeForRelaionship);
+
+        _termRepository.save(term);
+
+        final Term resultTerm = _termRepository.findByName("Test");
+        assertThat(resultTerm.getRelatedModels(), hasSize(1));
+        assertThat(resultTerm.getRelatedModels().iterator().next().getName(), equalTo("TestNode"));
+    }
+
+    @Test
     public void testUniquenessOfTermName() {
         final Term term = new Term();
         term.setName("Audi");
@@ -54,7 +72,7 @@ public class TermRepositoryIntegrationTest {
         _termRepository.save(term);
         _termRepository.save(otherTerm);
 
-        List<Term> resultTerm = new ArrayList<>();
+        List<Term> resultTerm;
         try (Transaction tx = _graphDatabaseService.beginTx()) {
             resultTerm = IteratorUtil.asList(_termRepository.findAll());
             tx.success();
