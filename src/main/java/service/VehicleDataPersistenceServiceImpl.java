@@ -38,12 +38,12 @@ public class VehicleDataPersistenceServiceImpl implements VehicleDataPersistence
     }
 
     public void tokenizeAndSaveBatch(final Map<VehicleNode, Set<String>> batchData) {
-        final List<Term> allTerms = relateTerms(batchData);
+        final List<Term> allTerms = relateAllTermsToNodes(batchData);
         _vehicleNodeRepository.save(batchData.keySet());
         _termRepository.save(allTerms);
     }
 
-    private List<Term> relateTerms(Map<VehicleNode, Set<String>> batchData) {
+    private List<Term> relateAllTermsToNodes(Map<VehicleNode, Set<String>> batchData) {
         final List<Term> allTerms = new ArrayList<>();
         for (final VehicleNode node : batchData.keySet()) {
             Collection<Term> termsForNode = getTermsFrom(node);
