@@ -8,10 +8,7 @@ import org.mockito.ArgumentMatcher;
 import repositories.TermRepository;
 import repositories.VehicleNodeRepository;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.*;
@@ -99,18 +96,80 @@ public class VehicleDataPersistenceServiceImplUnitTest {
 
         _vehicleDataPersistenceService.tokenizeAndSave(vehicleNode, additionalMetaData);
 
+        verify(_termRepository).save(termsWithSize(3));
+    }
+
+    @Test
+    public void batchShouldSaveNodesAndTerms() throws Exception {
+        final Map<VehicleNode, Set<String>> batchData = new HashMap<>();
+        batchData.put(vehicleModelWithName("TestNode1"), new HashSet<>(Arrays.asList("test1", "test2")));
+        batchData.put(vehicleModelWithName("TestNode2"), new HashSet<>(Arrays.asList("test3", "test4")));
+
+        _vehicleDataPersistenceService.tokenizeAndSaveBatch(batchData);
+
+        verify(_vehicleNodeRepository).save(vehicleNodesWithSize(2));
+
+        verify(_termRepository).save(termsWithSize(6));
+    }
+
+    @Test
+    public void batchShouldCheckIfTermAlreadyExist() throws Exception {
+        final Map<VehicleNode, Set<String>> batchData = new HashMap<>();
+        batchData.put(vehicleModelWithName("TestNode1"), new HashSet<>(Arrays.asList("test1", "test2")));
+
+        _vehicleDataPersistenceService.tokenizeAndSaveBatch(batchData);
+
+        verify(_termRepository, times(3)).findByName(anyString());
+    }
+
+    @Test
+    public void shouldUpdateRelationInBatchIfTermAlreadyExists() throws Exception {
+        final VehicleNode vehicleNode = vehicleModelWithName("Test");
+        final Map<VehicleNode, Set<String>> batchData = new HashMap<>();
+        batchData.put(vehicleNode, Collections.<String>emptySet());
+        final Term term = new Term();
+        term.setName("Test");
+        term.addRelationTo(vehicleModelWithName("Test"));
+
+        when(_termRepository.findByName("test")).thenReturn(term);
+
+        _vehicleDataPersistenceService.tokenizeAndSaveBatch(batchData);
+
         verify(_termRepository).save(argThat(new ArgumentMatcher<Collection<Term>>() {
             @Override
             public boolean matches(Object o) {
                 @SuppressWarnings("unchecked") final Collection<Term> result = (Collection<Term>) o;
-                return result.size() == 3;
+                final Term resultTerm = result.iterator().next();
+                final Set<VehicleNode> relatedModels = resultTerm.getRelatedModels();
+                return relatedModels.size() == 2;
             }
         }));
     }
+
 
     private VehicleNode vehicleModelWithName(final String name) {
         final VehicleNode vehicleNode = new VehicleNode();
         vehicleNode.setName(name);
         return vehicleNode;
+    }
+
+    private Collection<VehicleNode> vehicleNodesWithSize(final int size) {
+        return argThat(new ArgumentMatcher<Collection<VehicleNode>>() {
+            @Override
+            public boolean matches(Object o) {
+                @SuppressWarnings("unchecked") final Collection<VehicleNode> result = (Collection<VehicleNode>) o;
+                return result.size() == size;
+            }
+        });
+    }
+
+    private Collection<Term> termsWithSize(final int size) {
+        return argThat(new ArgumentMatcher<Collection<Term>>() {
+            @Override
+            public boolean matches(Object o) {
+                @SuppressWarnings("unchecked") final Collection<Term> result = (Collection<Term>) o;
+                return result.size() == size;
+            }
+        });
     }
 }
