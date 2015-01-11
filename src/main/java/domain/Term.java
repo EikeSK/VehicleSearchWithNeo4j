@@ -16,6 +16,8 @@ public class Term extends AbstractNeo4jEntity {
     @Indexed(indexName = "terms", indexType = IndexType.FULLTEXT, unique = true)
     private String name;
 
+    private String unit;
+
     @RelatedTo(type = "MATCHES_FOR", direction = Direction.OUTGOING)
     @Fetch
     private Set<VehicleNode> relatedModels;
@@ -26,6 +28,14 @@ public class Term extends AbstractNeo4jEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public void addRelationTo(final VehicleNode model) {

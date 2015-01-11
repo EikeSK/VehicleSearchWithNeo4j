@@ -1,5 +1,6 @@
 package service;
 
+import domain.NodeMetaData;
 import domain.VehicleNode;
 
 import java.util.Map;
@@ -9,7 +10,7 @@ public interface VehicleDataPersistenceService {
 
     public void tokenizeAndSave(VehicleNode vehicleNode);
 
-    public void tokenizeAndSave(VehicleNode vehicleNode, Set<String> additionalMetaData);
+    public void tokenizeAndSave(VehicleNode vehicleNode, Set<NodeMetaData> additionalMetaData);
 
-    public void tokenizeAndSaveBatch(final Map<VehicleNode, Set<String>> batchData);
+    public void tokenizeAndSaveBatch(final Map<VehicleNode, Set<NodeMetaData>> batchData);
 }

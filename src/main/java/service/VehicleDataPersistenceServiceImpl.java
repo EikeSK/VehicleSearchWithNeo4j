@@ -1,5 +1,6 @@
 package service;
 
+import domain.NodeMetaData;
 import domain.Term;
 import domain.VehicleNode;
 import org.springframework.stereotype.Component;
@@ -28,7 +29,7 @@ public class VehicleDataPersistenceServiceImpl implements VehicleDataPersistence
     }
 
     @Override
-    public void tokenizeAndSave(final VehicleNode vehicleNode, final Set<String> additionalMetaData) {
+    public void tokenizeAndSave(final VehicleNode vehicleNode, final Set<NodeMetaData> additionalMetaData) {
         final Collection<Term> termsFromTokens = getTermsFrom(vehicleNode);
         if (additionalMetaData != null) {
             termsFromTokens.addAll(getTermsFor(vehicleNode, additionalMetaData));
@@ -37,13 +38,13 @@ public class VehicleDataPersistenceServiceImpl implements VehicleDataPersistence
         _termRepository.save(termsFromTokens);
     }
 
-    public void tokenizeAndSaveBatch(final Map<VehicleNode, Set<String>> batchData) {
+    public void tokenizeAndSaveBatch(final Map<VehicleNode, Set<NodeMetaData>> batchData) {
         final List<Term> allTerms = relateAllTermsToNodes(batchData);
         _vehicleNodeRepository.save(batchData.keySet());
         _termRepository.save(allTerms);
     }
 
-    private List<Term> relateAllTermsToNodes(Map<VehicleNode, Set<String>> batchData) {
+    private List<Term> relateAllTermsToNodes(Map<VehicleNode, Set<NodeMetaData>> batchData) {
         final List<Term> allTerms = new ArrayList<>();
         for (final VehicleNode node : batchData.keySet()) {
             Collection<Term> termsForNode = getTermsFrom(node);
@@ -62,14 +63,17 @@ public class VehicleDataPersistenceServiceImpl implements VehicleDataPersistence
         return allTerms;
     }
 
-    private Collection<Term> getTermsFor(final VehicleNode vehicleNode, final Set<String> tokens) {
+    private Collection<Term> getTermsFor(final VehicleNode vehicleNode, final Set<NodeMetaData> tokens) {
         final Collection<Term> terms = new ArrayList<>();
-        for (String token : tokens) {
-            Term term = _termRepository.findByName(token);
+        for (NodeMetaData token : tokens) {
+            Term term = _termRepository.findByName(token.getName());
             if (term == null) {
                 term = new Term();
             }
-            term.setName(toLowerCase(token));
+            term.setName(toLowerCase(token.getName()));
+            if (token.getUnit() != null) {
+                term.setUnit(toLowerCase(token.getUnit()));
+            }
             term.addRelationTo(vehicleNode);
             terms.add(term);
         }
@@ -78,7 +82,13 @@ public class VehicleDataPersistenceServiceImpl implements VehicleDataPersistence
 
     private Collection<Term> getTermsFrom(final VehicleNode vehicleNode) {
         final Set<String> tokenizedModelName = StringSplitterUtils.tokenize(vehicleNode);
-        return getTermsFor(vehicleNode, tokenizedModelName);
+        final Set<NodeMetaData> metaDataForNode = new HashSet<>();
+        for (String token : tokenizedModelName) {
+            final NodeMetaData metaData = new NodeMetaData();
+            metaData.setName(token);
+            metaDataForNode.add(metaData);
+        }
+        return getTermsFor(vehicleNode, metaDataForNode);
     }
 
 }
