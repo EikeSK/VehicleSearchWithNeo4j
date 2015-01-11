@@ -1,6 +1,5 @@
 package support;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -72,5 +71,12 @@ public class VehicleSearchQueryGeneratorUnitTest {
         assertThat(resultQuery.getTerms(), hasSize(2));
         assertThat(termsFromResultQuery, containsInAnyOrder("firstTerm", "secondTerm"));
 
+    }
+
+    @Test
+    public void testShouldReturnCypherQueryForAutocompletion() throws Exception {
+        final String cypherQuery = VehicleSearchQueryGenerator.generateCypherQueryForAutocompletion("Autocompletion");
+        final String expectedQuery = "START n=node:terms(\"name:*Autocompletion*\") MATCH (n:Term) RETURN n";
+        assertEquals(expectedQuery, cypherQuery);
     }
 }

@@ -32,6 +32,16 @@ public class VehicleSearchQueryGenerator {
         return sb.toString();
     }
 
+    public static String generateCypherQueryForAutocompletion(final String incompleteTermName) {
+        final StringBuilder sb = new StringBuilder();
+
+        sb.append("START n=node:terms(\"name:*")
+                .append(incompleteTermName)
+                .append("*\") MATCH (n:Term) RETURN n");
+
+        return sb.toString();
+    }
+
     public static VehicleNodeSearchQuery generateSearchQueryFrom(final Set<String> tokens) {
         final Set<String> terms = tokens.stream().collect(Collectors.toSet());
 

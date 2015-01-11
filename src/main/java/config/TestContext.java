@@ -10,10 +10,7 @@ import org.springframework.data.neo4j.config.EnableNeo4jRepositories;
 import org.springframework.data.neo4j.config.Neo4jConfiguration;
 import org.springframework.data.neo4j.support.Neo4jTemplate;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import repositories.TermRepository;
-import repositories.VehicleNodeRepository;
-import repositories.VehicleNodeService;
-import repositories.VehicleNodeServiceImpl;
+import repositories.*;
 import search.SearchEngine;
 import search.SearchEngineImpl;
 import service.VehicleDataPersistenceServiceImpl;
@@ -27,6 +24,12 @@ public class TestContext extends Neo4jConfiguration {
         setBasePackage("domain", "repositories");
     }
 
+    @Autowired
+    public VehicleNodeRepository _vehicleNodeRepository;
+
+    @Autowired
+    public TermRepository _termRepository;
+
     @Bean
     public GraphDatabaseService graphDatabaseService() {
         return new TestGraphDatabaseFactory().newImpermanentDatabase();
@@ -39,9 +42,8 @@ public class TestContext extends Neo4jConfiguration {
 
     @Bean
     public VehicleDataPersistenceServiceImpl vehicleDataPersistenceService() {
-        return new VehicleDataPersistenceServiceImpl(_vehicleNodeRepository, termRepository);
+        return new VehicleDataPersistenceServiceImpl(_vehicleNodeRepository, _termRepository);
     }
-
 
     @Bean
     public VehicleNodeService vehicleNodeService() {
@@ -49,13 +51,14 @@ public class TestContext extends Neo4jConfiguration {
     }
 
     @Bean
-    public SearchEngine searchEngine() {
-        return new SearchEngineImpl(vehicleNodeService());
+    public TermService termService() {
+        return new TermServiceImpl(_termRepository);
     }
 
-    @Autowired
-    public VehicleNodeRepository _vehicleNodeRepository;
+    @Bean
+    public SearchEngine searchEngine() {
+        return new SearchEngineImpl(vehicleNodeService(), termService());
+    }
 
-    @Autowired
-    public TermRepository termRepository;
+
 }

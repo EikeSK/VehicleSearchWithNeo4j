@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
 
@@ -150,6 +151,16 @@ public class SearchEngineImplIntegrationTest {
         assertThat(searchResult, hasSize(1));
         assertThat(searchResult.iterator().next().getName(), equalTo("Audi A4 B8 Kombi"));
 
+    }
+
+    @Test
+    public void testShouldAutocomplete() throws Exception {
+        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Volkswagen Amarok 2H"));
+
+        final Collection<String> autocompleteSuggestions = _searchEngine.autocomplete("Volk");
+
+        assertThat(autocompleteSuggestions, hasSize(1));
+        assertThat(autocompleteSuggestions, contains("volkswagen"));
     }
 
     private static VehicleNode vehicleNodeWithName(final String name) {
