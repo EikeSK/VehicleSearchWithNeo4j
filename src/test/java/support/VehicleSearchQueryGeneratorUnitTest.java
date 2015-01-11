@@ -1,7 +1,10 @@
 package support;
 
+import domain.ComparisonOperation;
+import domain.NodeMetaData;
 import org.junit.Before;
 import org.junit.Test;
+import service.Operator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,4 +76,21 @@ public class VehicleSearchQueryGeneratorUnitTest {
         assertThat(termsFromResultQuery, containsInAnyOrder("firstTerm", "secondTerm"));
 
     }
+
+    @Test
+    public void testShouldReturnCypherQueryWithComparisonOperation() throws Exception {
+        final NodeMetaData nodeMetaData = new NodeMetaData();
+        nodeMetaData.setName("2008");
+        nodeMetaData.setUnit("Baujahr");
+        final VehicleNodeSearchQuery query = VehicleNodeSearchQuery.query().addTerm("firstTerm").addComparisionOperation(new ComparisonOperation(Operator.GREATER, nodeMetaData));
+        final String expectedQuery = "START _firstTerm=node:terms(\"name:*firstTerm*\") " +
+                "MATCH (_firstTerm)-[:MATCHES_FOR]->(modell), (_2008)-[:MATCHES_FOR]->(node)" +
+                "WHERE toFloat(_2008.name) > 2008 AND _2008.unit = \"baujahr\" " +
+                "RETURN DISTINCT(modell)";
+
+        final String cypherQuery = VehicleSearchQueryGenerator.generateCypherQueryFrom(query);
+
+        assertEquals(expectedQuery, cypherQuery);
+    }
+
 }

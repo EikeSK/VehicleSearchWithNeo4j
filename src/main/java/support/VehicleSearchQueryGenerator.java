@@ -33,7 +33,7 @@ public class VehicleSearchQueryGenerator {
     }
 
     public static VehicleNodeSearchQuery generateSearchQueryFrom(final Set<String> tokens) {
-        final Set<String> terms = tokens.stream().collect(Collectors.toSet());
+        final Set<String> terms = tokens.stream().collect(Collectors.toSet()); // TODO: überflüssig?
 
         return VehicleNodeSearchQuery.query().withTerms(terms);
     }
