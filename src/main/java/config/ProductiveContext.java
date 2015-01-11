@@ -1,6 +1,7 @@
 package config;
 
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +9,7 @@ import org.springframework.data.neo4j.config.EnableNeo4jRepositories;
 import org.springframework.data.neo4j.config.Neo4jConfiguration;
 import org.springframework.data.neo4j.rest.SpringRestGraphDatabase;
 import org.springframework.data.neo4j.support.Neo4jTemplate;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import repositories.TermRepository;
 import repositories.VehicleNodeRepository;
 import repositories.VehicleNodeService;
@@ -18,6 +20,7 @@ import service.VehicleDataPersistenceServiceImpl;
 
 @Configuration
 @EnableNeo4jRepositories(basePackages = "repositories")
+@EnableTransactionManagement
 public class ProductiveContext extends Neo4jConfiguration {
 
     public ProductiveContext() {
