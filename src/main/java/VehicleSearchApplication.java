@@ -6,7 +6,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import search.SearchEngine;
-import search.SearchEngineImpl;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -23,7 +22,7 @@ public class VehicleSearchApplication implements CommandLineRunner {
         final Stopwatch stopwatch = Stopwatch.createUnstarted();
         boolean isRunning = true;
         do {
-            System.out.println("\n\n1 - Start Search\n2 - Exit");
+            System.out.println("\n\n1 - Start Search\n2 - Autocomplete\n3 - Exit");
             System.out.print("Choice: ");
             String menu = input.readLine();
             if (menu.equals("1")) {
@@ -43,6 +42,23 @@ public class VehicleSearchApplication implements CommandLineRunner {
                 System.out.println("\nElapsed time: " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + "ms");
                 stopwatch.reset();
             } else if (menu.equals("2")) {
+                System.out.print("Autocomplete input: ");
+                String searchInput = input.readLine();
+                stopwatch.start();
+                final Collection<String> result = searchEngine.autocomplete(searchInput);
+                stopwatch.stop();
+                System.out.print("Results: ");
+                if (result.size() == 0) {
+                    System.out.print("no results");
+                } else {
+                    for (String autocompleteResult : result) {
+                        System.out.print(autocompleteResult + "; ");
+                    }
+                }
+                System.out.println("\nElapsed time: " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + "ms");
+                stopwatch.reset();
+
+            } else if (menu.equals("3")) {
                 isRunning = false;
             }
         } while (isRunning);

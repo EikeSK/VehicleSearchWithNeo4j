@@ -22,12 +22,22 @@ public class VehicleSearchQueryGenerator {
         }
         sb.append(" MATCH");
         for (int i = 0; i < terms.size(); i++) {
-            sb.append(" (_").append(createVariableFor(terms.get(i))).append(")-[:MATCHES_FOR]->(modell)");
+            sb.append(" (_").append(createVariableFor(terms.get(i))).append(")-[:MATCHES_FOR]->(node)");
             if (i < terms.size() - 1) {
                 sb.append(",");
             }
         }
-        sb.append(" RETURN modell");
+        sb.append(" RETURN node");
+
+        return sb.toString();
+    }
+
+    public static String generateCypherQueryForAutocompletion(final String incompleteTermName) {
+        final StringBuilder sb = new StringBuilder();
+
+        sb.append("START n=node:terms(\"name:*")
+                .append(incompleteTermName)
+                .append("*\") MATCH (n:Term) RETURN n");
 
         return sb.toString();
     }
