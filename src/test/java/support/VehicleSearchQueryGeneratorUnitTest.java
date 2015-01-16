@@ -18,7 +18,7 @@ public class VehicleSearchQueryGeneratorUnitTest {
     @Test
     public void testCreateCypherQueryWithOneTerm() throws Exception {
         final VehicleNodeSearchQuery query = VehicleNodeSearchQuery.query().addTerm("firstTerm");
-        final String expectedQuery = "START _firstTerm=node:terms(\"name:*firstTerm*\") MATCH (_firstTerm)-[:MATCHES_FOR]->(modell) RETURN modell";
+        final String expectedQuery = "START _firstTerm=node:terms(\"name:*firstTerm*\") MATCH (_firstTerm)-[:MATCHES_FOR]->(node) RETURN node";
 
         final String cypherQuery = VehicleSearchQueryGenerator.generateCypherQueryFrom(query);
 
@@ -29,8 +29,8 @@ public class VehicleSearchQueryGeneratorUnitTest {
     public void testCreateCypherQueryWithMultipleTerms() throws Exception {
         final VehicleNodeSearchQuery query = VehicleNodeSearchQuery.query().addTerm("firstTerm").addTerm("secondTerm").addTerm("thirdTerm");
         final String expectedQuery = "START _firstTerm=node:terms(\"name:*firstTerm*\"), _secondTerm=node:terms(\"name:*secondTerm*\"), " +
-                "_thirdTerm=node:terms(\"name:*thirdTerm*\") MATCH (_firstTerm)-[:MATCHES_FOR]->(modell), " +
-                "(_secondTerm)-[:MATCHES_FOR]->(modell), (_thirdTerm)-[:MATCHES_FOR]->(modell) RETURN modell";
+                "_thirdTerm=node:terms(\"name:*thirdTerm*\") MATCH (_firstTerm)-[:MATCHES_FOR]->(node), " +
+                "(_secondTerm)-[:MATCHES_FOR]->(node), (_thirdTerm)-[:MATCHES_FOR]->(node) RETURN node";
 
         final String cypherQuery = VehicleSearchQueryGenerator.generateCypherQueryFrom(query);
 
@@ -40,7 +40,7 @@ public class VehicleSearchQueryGeneratorUnitTest {
     @Test
     public void testCreateCypherQueryWithDotInTerm() throws Exception {
         final VehicleNodeSearchQuery query = VehicleNodeSearchQuery.query().addTerm("2.4");
-        final String expectedQuery = "START _2dot4=node:terms(\"name:*2.4*\") MATCH (_2dot4)-[:MATCHES_FOR]->(modell) RETURN modell";
+        final String expectedQuery = "START _2dot4=node:terms(\"name:*2.4*\") MATCH (_2dot4)-[:MATCHES_FOR]->(node) RETURN node";
 
         final String cypherQuery = VehicleSearchQueryGenerator.generateCypherQueryFrom(query);
 

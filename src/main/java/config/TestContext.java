@@ -3,7 +3,6 @@ package config;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.test.TestGraphDatabaseFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.neo4j.config.EnableNeo4jRepositories;
@@ -16,7 +15,7 @@ import search.SearchEngineImpl;
 import service.VehicleDataPersistenceServiceImpl;
 
 @Configuration
-@EnableTransactionManagement(mode = AdviceMode.PROXY)
+@EnableTransactionManagement
 @EnableNeo4jRepositories(basePackages = "repositories")
 public class TestContext extends Neo4jConfiguration {
 

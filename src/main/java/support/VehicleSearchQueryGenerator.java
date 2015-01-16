@@ -22,12 +22,12 @@ public class VehicleSearchQueryGenerator {
         }
         sb.append(" MATCH");
         for (int i = 0; i < terms.size(); i++) {
-            sb.append(" (_").append(createVariableFor(terms.get(i))).append(")-[:MATCHES_FOR]->(modell)");
+            sb.append(" (_").append(createVariableFor(terms.get(i))).append(")-[:MATCHES_FOR]->(node)");
             if (i < terms.size() - 1) {
                 sb.append(",");
             }
         }
-        sb.append(" RETURN modell");
+        sb.append(" RETURN node");
 
         return sb.toString();
     }
