@@ -9,9 +9,11 @@ import java.util.stream.Collectors;
 
 public class VehicleSearchQueryGenerator {
 
+    // TODO: aufteilen in generateSTARTClause, generateMATCHClause, generateWHEREclause, generateRETURNClause
     public static String generateCypherQueryFrom(final VehicleNodeSearchQuery searchQuery) {
         final StringBuilder sb = new StringBuilder();
         final List<String> terms = new ArrayList<>(searchQuery.getTerms());
+        final List<ComparisonOperation> comparisonOperations = new ArrayList<>(searchQuery.getComparisonOperations());
 
         sb.append("START");
         for (int i = 0; i < terms.size(); i++) {
@@ -23,10 +25,29 @@ public class VehicleSearchQueryGenerator {
         sb.append(" MATCH");
         for (int i = 0; i < terms.size(); i++) {
             sb.append(" (_").append(createVariableFor(terms.get(i))).append(")-[:MATCHES_FOR]->(node)");
-            if (i < terms.size() - 1) {
+            if (comparisonOperations.size() > 0 || i < terms.size() - 1) {
                 sb.append(",");
             }
         }
+        for (int i = 0; i < comparisonOperations.size(); i++) {
+            sb.append(" (_range_").append(comparisonOperations.get(i).getUnit()).append(")-[:MATCHES_FOR]->(node)");
+            if (i < comparisonOperations.size() - 1) {
+                sb.append(",");
+            }
+        }
+        if (comparisonOperations.size() > 0) {
+            sb.append(" WHERE");
+            for (int i = 0; i < comparisonOperations.size(); i++) {
+                if (i > 0) {
+                    sb.append(" AND");
+                }
+                sb.append(" _range_").append(comparisonOperations.get(i).getUnit()).append(".value ")
+                        .append(comparisonOperations.get(i).getOperator().getOperation())
+                        .append(" ")
+                        .append(getValueAsString(comparisonOperations.get(i).getValue()));
+            }
+        }
+
         sb.append(" RETURN node");
 
         return sb.toString();
@@ -46,6 +67,17 @@ public class VehicleSearchQueryGenerator {
         final Set<String> terms = tokens.stream().collect(Collectors.toSet()); // TODO: überflüssig?
 
         return VehicleNodeSearchQuery.query().withTerms(terms);
+    }
+
+    // http://stackoverflow.com/questions/12045137/set-number-of-decimal-places-to-0-if-float-is-an-integer-java
+    private static String getValueAsString(double value) {
+        String valueAsString;
+        if (value % 1 == 0) {
+            valueAsString = String.valueOf((int) value);
+        } else {
+            valueAsString = String.valueOf(value);
+        }
+        return valueAsString;
     }
 
     private static String createVariableFor(String term) {

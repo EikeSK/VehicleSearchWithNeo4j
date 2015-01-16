@@ -1,7 +1,5 @@
 package support;
 
-import domain.ComparisonOperation;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,8 +22,13 @@ public class VehicleNodeSearchQuery {
         return this;
     }
 
-    public VehicleNodeSearchQuery addComparisionOperation(final ComparisonOperation comparisonOperation) {
+    public VehicleNodeSearchQuery addComparisonOperations(final ComparisonOperation comparisonOperation) {
         _comparisonOperations.add(comparisonOperation);
+        return this;
+    }
+
+    public VehicleNodeSearchQuery withComparisonOperations(final Set<ComparisonOperation> comparisonOperations) {
+        _comparisonOperations.addAll(comparisonOperations);
         return this;
     }
 

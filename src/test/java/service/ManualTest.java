@@ -1,9 +1,9 @@
 package service;
 
 import com.google.common.base.Splitter;
-import domain.ComparisonOperation;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
+import support.ComparisonOperation;
 import support.Operator;
 
 import java.util.HashSet;
@@ -69,7 +69,7 @@ public class ManualTest {
             if (strings.size() == 3) {
                 final Operator operator = Operator.findByOperation(strings.get(1));
                 if (operator != null) {
-                    operationsOnQueries.add(new ComparisonOperation(operator, strings.get(0), toFloat(strings.get(2))));
+                    operationsOnQueries.add(new ComparisonOperation(strings.get(0), operator, toFloat(strings.get(2))));
                 }
             }
         }

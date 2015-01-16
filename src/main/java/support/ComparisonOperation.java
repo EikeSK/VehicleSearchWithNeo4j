@@ -1,25 +1,23 @@
-package domain;
+package support;
 
-
-import support.Operator;
 
 public class ComparisonOperation {
-    private Operator _operator;
     private String _unit;
+    private Operator _operator;
     private double _value;
 
-    public ComparisonOperation(Operator operator, String unit, double value) {
-        _operator = operator;
+    public ComparisonOperation(final String unit, final Operator operator, final double value) {
         _unit = unit;
+        _operator = operator;
         _value = value;
-    }
-
-    public Operator getOperator() {
-        return _operator;
     }
 
     public String getUnit() {
         return _unit;
+    }
+
+    public Operator getOperator() {
+        return _operator;
     }
 
     public double getValue() {
