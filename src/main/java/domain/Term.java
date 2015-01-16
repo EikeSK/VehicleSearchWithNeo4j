@@ -16,11 +16,9 @@ public class Term extends AbstractNeo4jEntity {
     @Indexed(indexName = "terms", indexType = IndexType.FULLTEXT, unique = true)
     private String name;
 
-    private String unit;
-
     @RelatedTo(type = "MATCHES_FOR", direction = Direction.OUTGOING)
     @Fetch
-    private Set<VehicleNode> relatedModels;
+    private Set<VehicleNode> relatedNodes;
 
     public String getName() {
         return name;
@@ -30,19 +28,11 @@ public class Term extends AbstractNeo4jEntity {
         this.name = name;
     }
 
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
-    }
-
-    public void addRelationTo(final VehicleNode model) {
-        if (relatedModels == null) {
-            relatedModels = new HashSet<>();
+    public void addRelationTo(final VehicleNode node) {
+        if (relatedNodes == null) {
+            relatedNodes = new HashSet<>();
         }
-        relatedModels.add(model);
+        relatedNodes.add(node);
     }
 
     @Override
@@ -56,7 +46,7 @@ public class Term extends AbstractNeo4jEntity {
         return name != null ? name.hashCode() : 0;
     }
 
-    public Set<VehicleNode> getRelatedModels() {
-        return relatedModels;
+    public Set<VehicleNode> getRelatedNodes() {
+        return relatedNodes;
     }
 }

@@ -1,22 +1,28 @@
 package domain;
 
 
-import service.Operator;
+import support.Operator;
 
 public class ComparisonOperation {
     private Operator _operator;
-    private NodeMetaData _nodeMetaData;
+    private String _unit;
+    private double _value;
 
-    public ComparisonOperation(Operator operator, NodeMetaData nodeMetaData) {
+    public ComparisonOperation(Operator operator, String unit, double value) {
         _operator = operator;
-        _nodeMetaData = nodeMetaData;
+        _unit = unit;
+        _value = value;
     }
 
     public Operator getOperator() {
         return _operator;
     }
 
-    public NodeMetaData getNodeMetaData() {
-        return _nodeMetaData;
+    public String getUnit() {
+        return _unit;
+    }
+
+    public double getValue() {
+        return _value;
     }
 }

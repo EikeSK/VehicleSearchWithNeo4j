@@ -28,7 +28,7 @@ public class VehicleNodeRepositoryImplIntegrationTest {
     @Transactional
     public void testFindNodesByQueryShouldReturnVehicleNode() throws Exception {
         final String nodeName = "BMW 3er E8 Cabrio";
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleModelWithName(nodeName));
+        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName(nodeName));
 
         final Iterable<VehicleNode> nodesByQuery = _vehicleNodeRepository.findNodesByQuery(VehicleNodeSearchQuery.query().addTerm("bmw").addTerm("e8"));
 
@@ -36,7 +36,7 @@ public class VehicleNodeRepositoryImplIntegrationTest {
         assertEquals(nodesByQuery.iterator().next().getName(), nodeName);
     }
 
-    private VehicleNode vehicleModelWithName(final String name) {
+    private VehicleNode vehicleNodeWithName(final String name) {
         final VehicleNode vehicleNode = new VehicleNode();
         vehicleNode.setName(name);
         return vehicleNode;

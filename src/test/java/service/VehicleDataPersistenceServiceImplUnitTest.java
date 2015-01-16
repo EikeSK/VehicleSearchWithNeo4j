@@ -1,6 +1,5 @@
 package service;
 
-import domain.NodeMetaData;
 import domain.Term;
 import domain.VehicleNode;
 import org.junit.Before;
@@ -13,7 +12,6 @@ import java.util.*;
 
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.*;
-import static support.TestUtils.metaDataWith;
 
 public class VehicleDataPersistenceServiceImplUnitTest {
 
@@ -29,7 +27,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
     }
 
     @Test
-    public void shouldInvokeSaveOnVehicleModelRepository() throws Exception {
+    public void shouldInvokeSaveOnVehicleNodeRepository() throws Exception {
         final VehicleNode vehicleNode = vehicleNodeWithName("Test Entity");
 
         _vehicleDataPersistenceService.tokenizeAndSave(vehicleNode);
@@ -49,7 +47,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
             public boolean matches(Object o) {
                 @SuppressWarnings("unchecked") final Collection<Term> result = (Collection<Term>) o;
                 final Term resultTerm = result.iterator().next();
-                return resultTerm.getName().equals("testmodel") && resultTerm.getRelatedModels().contains(vehicleNode);
+                return resultTerm.getName().equals("testmodel") && resultTerm.getRelatedNodes().contains(vehicleNode);
             }
         }));
     }
@@ -85,8 +83,8 @@ public class VehicleDataPersistenceServiceImplUnitTest {
             public boolean matches(Object o) {
                 @SuppressWarnings("unchecked") final Collection<Term> result = (Collection<Term>) o;
                 final Term resultTerm = result.iterator().next();
-                final Set<VehicleNode> relatedModels = resultTerm.getRelatedModels();
-                return relatedModels.size() == 2;
+                final Set<VehicleNode> relatedNodes = resultTerm.getRelatedNodes();
+                return relatedNodes.size() == 2;
             }
         }));
     }
@@ -94,7 +92,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
     @Test
     public void shouldSaveAdditionalMetaData() throws Exception {
         final VehicleNode vehicleNode = vehicleNodeWithName("Test Model");
-        final Set<NodeMetaData> additionalMetaData = new HashSet<>(Arrays.asList(metaDataWith("benzin")));
+        final Set<String> additionalMetaData = new HashSet<>(Arrays.asList("benzin"));
 
         _vehicleDataPersistenceService.tokenizeAndSave(vehicleNode, additionalMetaData);
 
@@ -103,9 +101,9 @@ public class VehicleDataPersistenceServiceImplUnitTest {
 
     @Test
     public void batchShouldSaveNodesAndTerms() throws Exception {
-        final Map<VehicleNode, Set<NodeMetaData>> batchData = new HashMap<>();
-        batchData.put(vehicleNodeWithName("TestNode1"), new HashSet<>(Arrays.asList(metaDataWith("test1"), metaDataWith("test2"))));
-        batchData.put(vehicleNodeWithName("TestNode2"), new HashSet<>(Arrays.asList(metaDataWith("test3"), metaDataWith("test4"))));
+        final Map<VehicleNode, Set<String>> batchData = new HashMap<>();
+        batchData.put(vehicleNodeWithName("TestNode1"), new HashSet<>(Arrays.asList("test1", "test2")));
+        batchData.put(vehicleNodeWithName("TestNode2"), new HashSet<>(Arrays.asList("test3", "test4")));
 
         _vehicleDataPersistenceService.tokenizeAndSaveBatch(batchData);
 
@@ -116,8 +114,8 @@ public class VehicleDataPersistenceServiceImplUnitTest {
 
     @Test
     public void batchShouldCheckIfTermAlreadyExist() throws Exception {
-        final Map<VehicleNode, Set<NodeMetaData>> batchData = new HashMap<>();
-        batchData.put(vehicleNodeWithName("TestNode1"), new HashSet<>(Arrays.asList(metaDataWith("test1"), metaDataWith("test2"))));
+        final Map<VehicleNode, Set<String>> batchData = new HashMap<>();
+        batchData.put(vehicleNodeWithName("TestNode1"), new HashSet<>(Arrays.asList("test1", "test2")));
 
         _vehicleDataPersistenceService.tokenizeAndSaveBatch(batchData);
 
@@ -127,8 +125,8 @@ public class VehicleDataPersistenceServiceImplUnitTest {
     @Test
     public void shouldUpdateRelationInBatchIfTermAlreadyExists() throws Exception {
         final VehicleNode vehicleNode = vehicleNodeWithName("Test");
-        final Map<VehicleNode, Set<NodeMetaData>> batchData = new HashMap<>();
-        batchData.put(vehicleNode, Collections.<NodeMetaData>emptySet());
+        final Map<VehicleNode, Set<String>> batchData = new HashMap<>();
+        batchData.put(vehicleNode, Collections.<String>emptySet());
         final Term term = new Term();
         term.setName("Test");
         term.addRelationTo(vehicleNodeWithName("Test"));
@@ -142,8 +140,8 @@ public class VehicleDataPersistenceServiceImplUnitTest {
             public boolean matches(Object o) {
                 @SuppressWarnings("unchecked") final Collection<Term> result = (Collection<Term>) o;
                 final Term resultTerm = result.iterator().next();
-                final Set<VehicleNode> relatedModels = resultTerm.getRelatedModels();
-                return relatedModels.size() == 2;
+                final Set<VehicleNode> relatedNodes = resultTerm.getRelatedNodes();
+                return relatedNodes.size() == 2;
             }
         }));
     }

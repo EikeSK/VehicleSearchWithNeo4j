@@ -20,7 +20,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static support.TestUtils.metaDataWith;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestContext.class})
@@ -106,7 +105,7 @@ public class SearchEngineImplIntegrationTest {
 
     @Test
     public void testShouldFindNodeWithAdditionalTerms() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B8 Kombi"), new HashSet<>(Arrays.asList(metaDataWith("benzin"),metaDataWith("2008"))));
+        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B8 Kombi"), new HashSet<>(Arrays.asList("benzin", "2008")));
 
         final Collection<VehicleNode> searchResult = _searchEngine.search("benzin");
 
@@ -125,7 +124,7 @@ public class SearchEngineImplIntegrationTest {
 
     @Test
     public void testShouldFindNodeWithDotInSearchTerm() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B8 Kombi"), new HashSet<>(Arrays.asList(metaDataWith("2.4"))));
+        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B8 Kombi"), new HashSet<>(Arrays.asList("2.4")));
 
         final Collection<VehicleNode> searchResult = _searchEngine.search("A4 2.4");
 

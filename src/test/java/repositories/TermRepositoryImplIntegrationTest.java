@@ -28,7 +28,7 @@ public class TermRepositoryImplIntegrationTest {
     @Transactional
     public void testFindNodesByQueryShouldReturnVehicleNode() throws Exception {
         final String nodeName = "Volkswagen Amarok";
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleModelWithName(nodeName));
+        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName(nodeName));
 
         final Iterable<Term> termsByQuery = _termRepository.findByIncompleteName("Volk");
 
@@ -36,7 +36,7 @@ public class TermRepositoryImplIntegrationTest {
         assertEquals(termsByQuery.iterator().next().getName(), "volkswagen");
     }
 
-    private VehicleNode vehicleModelWithName(final String name) {
+    private VehicleNode vehicleNodeWithName(final String name) {
         final VehicleNode vehicleNode = new VehicleNode();
         vehicleNode.setName(name);
         return vehicleNode;

@@ -58,8 +58,8 @@ public class TermRepositoryIntegrationTest {
         _termRepository.save(term);
 
         final Term resultTerm = _termRepository.findByName("Test");
-        assertThat(resultTerm.getRelatedModels(), hasSize(1));
-        assertThat(resultTerm.getRelatedModels().iterator().next().getName(), equalTo("TestNode"));
+        assertThat(resultTerm.getRelatedNodes(), hasSize(1));
+        assertThat(resultTerm.getRelatedNodes().iterator().next().getName(), equalTo("TestNode"));
     }
 
     @Test

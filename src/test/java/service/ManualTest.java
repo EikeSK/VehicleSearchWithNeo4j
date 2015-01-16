@@ -1,13 +1,16 @@
 package service;
 
 import com.google.common.base.Splitter;
-import domain.NodeMetaData;
 import domain.ComparisonOperation;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
+import support.Operator;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+import static org.apache.commons.lang.math.NumberUtils.toFloat;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
@@ -63,12 +66,9 @@ public class ManualTest {
         for (String singleOperation : operations) {
             final List<String> strings = Splitter.on(" ").splitToList(singleOperation);
             if (strings.size() == 3) {
-                final Operator operator = Operator.findByOperation(strings.get(0));
+                final Operator operator = Operator.findByOperation(strings.get(1));
                 if (operator != null) {
-                    final NodeMetaData nodeMetaData = new NodeMetaData();
-                    nodeMetaData.setName(strings.get(1));
-                    nodeMetaData.setUnit(strings.get(2));
-                    operationsOnQueries.add(new ComparisonOperation(operator, nodeMetaData));
+                    operationsOnQueries.add(new ComparisonOperation(operator, strings.get(0), toFloat(strings.get(2))));
                 }
             }
         }
@@ -84,7 +84,7 @@ public class ManualTest {
         final Iterable<String> split = Splitter.on(";").trimResults().split(searchString);
         for (String resultToken : split) {
             if (resultToken.charAt(1) == ' ')
-            result.add(resultToken);
+                result.add(resultToken);
         }
         return result;
     }

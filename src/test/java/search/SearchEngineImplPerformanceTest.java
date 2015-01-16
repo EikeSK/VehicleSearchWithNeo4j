@@ -2,7 +2,6 @@ package search;
 
 import com.google.common.base.Stopwatch;
 import config.ProductiveContext;
-import domain.NodeMetaData;
 import domain.VehicleNode;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Before;
@@ -20,7 +19,6 @@ import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.lessThan;
-import static support.TestUtils.metaDataWith;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ProductiveContext.class})
@@ -76,17 +74,17 @@ public class SearchEngineImplPerformanceTest {
             _randomNodeNames.add(RandomStringUtils.random(12, true, true));
             _randomTermNames.add(RandomStringUtils.random(6, true, true));
         }
-        final Map<VehicleNode, Set<NodeMetaData>> batch = new HashMap<>();
+        final Map<VehicleNode, Set<String>> batch = new HashMap<>();
         for (String nodeName : _randomNodeNames) {
             batch.put(vehicleNodeWithName(nodeName), createSetWithRandomTerms());
         }
         _vehicleDataPersistenceService.tokenizeAndSaveBatch(batch);
     }
 
-    private Set<NodeMetaData> createSetWithRandomTerms() {
-        final List<NodeMetaData> strings = new ArrayList<>();
+    private Set<String> createSetWithRandomTerms() {
+        final List<String> strings = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
-            strings.add(metaDataWith(_randomTermNames.get(_random.nextInt(1000))));
+            strings.add(_randomTermNames.get(_random.nextInt(1000)));
         }
         return new HashSet<>(strings);
     }
