@@ -21,24 +21,23 @@ public class ManualTest {
     @Test
     public void testFindOperationInString() throws Exception {
 
-        final String searchString = "BMW 1er; > 2006 Baujahr";
+        final String searchString = "BMW 1er; Baujahr > 2006";
 
         final Set<String> operationResult = findOperation(searchString);
 
-        assertThat(operationResult.iterator().next(), equalTo("> 2006 Baujahr"));
-
+        assertThat(operationResult.iterator().next(), equalTo("Baujahr > 2006"));
     }
 
 
     @Test
-    public void testFindOperationInString2() throws Exception {
+    public void testFindMultipleOperationsInString() throws Exception {
 
-        final String searchString = "BMW 1er; > 2006 Baujahr; < 2012 Baujahr";
+        final String searchString = "BMW 1er; Baujahr > 2006; Baujahr < 2012";
 
         final Set<String> operationResult = findOperation(searchString);
 
         assertThat(operationResult, hasSize(2));
-        assertThat(operationResult, containsInAnyOrder("> 2006 Baujahr", "< 2012 Baujahr"));
+        assertThat(operationResult, containsInAnyOrder("Baujahr > 2006", "Baujahr < 2012"));
 
     }
 
@@ -54,10 +53,12 @@ public class ManualTest {
 
     @Test
     public void testCreateOperation() throws Exception {
-        final String searchString = "BMW 1er; > 2006 Baujahr; < 2012 Baujahr";
+        final String searchString = "BMW 1er; Baujahr > 2006; Baujahr < 2012";
         final Set<String> operationResult = findOperation(searchString);
 
         final Set<ComparisonOperation> operations = getComparisionOperationsFrom(searchString);
+
+        assertThat(operations, hasSize(2));
     }
 
     private Set<ComparisonOperation> getComparisionOperationsFrom(String searchString) {
@@ -81,14 +82,13 @@ public class ManualTest {
 
     private Set<String> findOperation(String searchString) {
         final Set<String> result = new HashSet<>();
-        final Iterable<String> split = Splitter.on(";").trimResults().split(searchString);
+        final String operationString = StringUtils.substringAfter(searchString, ";");
+        final Iterable<String> split = Splitter.on(";").trimResults().split(operationString);
         for (String resultToken : split) {
-            if (resultToken.charAt(1) == ' ')
-                result.add(resultToken);
+            result.add(resultToken);
         }
         return result;
     }
-
 
 }
 
