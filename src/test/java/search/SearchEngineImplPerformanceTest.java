@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import repositories.TermRepository;
 import repositories.VehicleNodeRepository;
 import service.VehicleDataPersistenceServiceImpl;
+import support.VehicleMetaData;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -74,19 +75,21 @@ public class SearchEngineImplPerformanceTest {
             _randomNodeNames.add(RandomStringUtils.random(12, true, true));
             _randomTermNames.add(RandomStringUtils.random(6, true, true));
         }
-        final Map<VehicleNode, Set<String>> batch = new HashMap<>();
+        final Map<VehicleNode, VehicleMetaData> batch = new HashMap<>();
         for (String nodeName : _randomNodeNames) {
-            batch.put(vehicleNodeWithName(nodeName), createSetWithRandomTerms());
+            batch.put(vehicleNodeWithName(nodeName), createMetaDataWithSetWithRandomTerms());
         }
         _vehicleDataPersistenceService.tokenizeAndSaveBatch(batch);
     }
 
-    private Set<String> createSetWithRandomTerms() {
+    private VehicleMetaData createMetaDataWithSetWithRandomTerms() {
         final List<String> strings = new ArrayList<>();
+        final VehicleMetaData vehicleMetaData = new VehicleMetaData();
         for (int i = 0; i < 8; i++) {
             strings.add(_randomTermNames.get(_random.nextInt(1000)));
         }
-        return new HashSet<>(strings);
+        vehicleMetaData.setAdditionalMetaData(new HashSet<>(strings));
+        return vehicleMetaData;
     }
 
     private static VehicleNode vehicleNodeWithName(final String name) {

@@ -11,10 +11,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import repositories.TermRepository;
 import repositories.VehicleNodeRepository;
 import service.VehicleDataPersistenceServiceImpl;
+import support.VehicleMetaData;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -105,7 +107,7 @@ public class SearchEngineImplIntegrationTest {
 
     @Test
     public void testShouldFindNodeWithAdditionalTerms() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B8 Kombi"), new HashSet<>(Arrays.asList("benzin", "2008")));
+        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B8 Kombi"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("benzin", "2008"))));
 
         final Collection<VehicleNode> searchResult = _searchEngine.search("benzin");
 
@@ -124,7 +126,7 @@ public class SearchEngineImplIntegrationTest {
 
     @Test
     public void testShouldFindNodeWithDotInSearchTerm() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B8 Kombi"), new HashSet<>(Arrays.asList("2.4")));
+        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B8 Kombi"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("2.4"))));
 
         final Collection<VehicleNode> searchResult = _searchEngine.search("A4 2.4");
 
@@ -167,5 +169,11 @@ public class SearchEngineImplIntegrationTest {
         final VehicleNode vehicleNode = new VehicleNode();
         vehicleNode.setName(name);
         return vehicleNode;
+    }
+
+    private VehicleMetaData vehicleMetaDataWithAdditionalTerms(final Set<String> additionalTerms) {
+        final VehicleMetaData vehicleMetaData = new VehicleMetaData();
+        vehicleMetaData.setAdditionalMetaData(additionalTerms);
+        return vehicleMetaData;
     }
 }

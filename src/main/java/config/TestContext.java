@@ -29,6 +29,9 @@ public class TestContext extends Neo4jConfiguration {
     @Autowired
     public TermRepository _termRepository;
 
+    @Autowired
+    public BaujahrNodeRepository _baujahrNodeRepository;
+
     @Bean
     public GraphDatabaseService graphDatabaseService() {
         return new TestGraphDatabaseFactory().newImpermanentDatabase();
@@ -41,7 +44,7 @@ public class TestContext extends Neo4jConfiguration {
 
     @Bean
     public VehicleDataPersistenceServiceImpl vehicleDataPersistenceService() {
-        return new VehicleDataPersistenceServiceImpl(_vehicleNodeRepository, _termRepository);
+        return new VehicleDataPersistenceServiceImpl(_vehicleNodeRepository, _termRepository, _baujahrNodeRepository);
     }
 
     @Bean

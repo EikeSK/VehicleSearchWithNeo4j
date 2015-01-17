@@ -1,15 +1,15 @@
 package service;
 
 import domain.VehicleNode;
+import support.VehicleMetaData;
 
 import java.util.Map;
-import java.util.Set;
 
 public interface VehicleDataPersistenceService {
 
     public void tokenizeAndSave(VehicleNode vehicleNode);
 
-    public void tokenizeAndSave(VehicleNode vehicleNode, Set<String> additionalMetaData);
+    public void tokenizeAndSave(VehicleNode vehicleNode, VehicleMetaData additionalMetaData);
 
-    public void tokenizeAndSaveBatch(final Map<VehicleNode, Set<String>> batchData);
+    public void tokenizeAndSaveBatch(final Map<VehicleNode, VehicleMetaData> batchData);
 }
