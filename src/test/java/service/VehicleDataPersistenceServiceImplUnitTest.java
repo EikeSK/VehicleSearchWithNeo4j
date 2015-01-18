@@ -108,7 +108,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
     public void shouldSaveBaujahr() throws Exception {
         final VehicleNode vehicleNode = vehicleNodeWithName("Test");
         final VehicleMetaData vehicleMetaData = new VehicleMetaData();
-        vehicleMetaData.setBaujahr(2006);
+        vehicleMetaData.setBaujahrFrom(2006);
 
         _vehicleDataPersistenceService.tokenizeAndSave(vehicleNode, vehicleMetaData);
 
@@ -119,6 +119,18 @@ public class VehicleDataPersistenceServiceImplUnitTest {
                 return baujahrNode.getValue() == 2006.0;
             }
         }));
+    }
+
+    @Test
+    public void shouldSaveBaujahrRange() throws Exception {
+        final VehicleNode vehicleNode = vehicleNodeWithName("Test");
+        final VehicleMetaData vehicleMetaData = new VehicleMetaData();
+        vehicleMetaData.setBaujahrFrom(2006);
+        vehicleMetaData.setBaujahrTo(2010);
+
+        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNode, vehicleMetaData);
+
+        verify(_baujahrNodeRepository, times(5)).save(any(BaujahrNode.class));
     }
 
     @Test
@@ -134,7 +146,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
     public void shouldUpdateRelationInBaujahrIfAlreadyExistsForOtherNode() throws Exception {
         final VehicleNode vehicleNode = vehicleNodeWithName("Test");
         final VehicleMetaData vehicleMetaData = new VehicleMetaData();
-        vehicleMetaData.setBaujahr(2006);
+        vehicleMetaData.setBaujahrFrom(2006);
 
         final BaujahrNode existingBaujahrNode = new BaujahrNode();
         existingBaujahrNode.addRelationTo(vehicleNodeWithName("Test2"));
@@ -207,6 +219,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
         verify(_baujahrNodeRepository).findByValue(2006);
     }
 
+
     @Test
     public void batchShouldCheckIfTermAlreadyExist() throws Exception {
         final Map<VehicleNode, VehicleMetaData> batchData = new HashMap<>();
@@ -255,7 +268,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
     private VehicleMetaData vehicleMetaDataWithTermsAndBaujahr(final Set<String> additionalTerms, final int baujahr) {
         final VehicleMetaData vehicleMetaData = new VehicleMetaData();
         vehicleMetaData.setAdditionalMetaData(additionalTerms);
-        vehicleMetaData.setBaujahr(baujahr);
+        vehicleMetaData.setBaujahrFrom(baujahr);
         return vehicleMetaData;
     }
 

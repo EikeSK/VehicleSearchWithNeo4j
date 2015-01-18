@@ -6,7 +6,8 @@ import java.util.Set;
 public class VehicleMetaData {
 
     private Set<String> _additionalMetaData = new HashSet<>();
-    private int _baujahr;
+    private int _baujahrFrom;
+    private int _baujahrTo;
 
     public Set<String> getAdditionalMetaData() {
         return _additionalMetaData;
@@ -16,11 +17,19 @@ public class VehicleMetaData {
         _additionalMetaData.addAll(additionalMetaData);
     }
 
-    public int getBaujahr() {
-        return _baujahr;
+    public int getBaujahrFrom() {
+        return _baujahrFrom;
     }
 
-    public void setBaujahr(final int baujahr) {
-        _baujahr = baujahr;
+    public void setBaujahrFrom(final int baujahrFrom) {
+        _baujahrFrom = baujahrFrom;
+    }
+
+    public int getBaujahrTo() {
+        return _baujahrTo;
+    }
+
+    public void setBaujahrTo(int baujahrTo) {
+        _baujahrTo = baujahrTo;
     }
 }

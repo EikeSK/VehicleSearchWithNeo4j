@@ -199,7 +199,7 @@ public class SearchEngineImplIntegrationTest {
     private VehicleMetaData vehicleMetaDataWithTermsAndBaujahr(final Set<String> additionalTerms, final int baujahr) {
         final VehicleMetaData vehicleMetaData = new VehicleMetaData();
         vehicleMetaData.setAdditionalMetaData(additionalTerms);
-        vehicleMetaData.setBaujahr(baujahr);
+        vehicleMetaData.setBaujahrFrom(baujahr);
         return vehicleMetaData;
     }
 }
