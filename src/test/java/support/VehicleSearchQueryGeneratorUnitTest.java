@@ -94,11 +94,26 @@ public class VehicleSearchQueryGeneratorUnitTest {
     }
 
     @Test
+    public void testCypherQueryShouldContainSameComparisonOnceInMatchAndMultipleTimesInWhere() throws Exception {
+        final VehicleNodeSearchQuery query = VehicleNodeSearchQuery.query()
+                .addTerm("Test")
+                .addComparisonOperations(new ComparisonOperation("baujahr", Operator.GREATER, 2006))
+                .addComparisonOperations(new ComparisonOperation("baujahr", Operator.SMALLER, 2010));
+
+        final String cypherQuery = VehicleSearchQueryGenerator.generateCypherQueryFrom(query);
+
+        final String expectedQuery = "START _Test=node:terms(\"name:*Test*\") MATCH (_Test)-[:MATCHES_FOR]->(node), (_range_baujahr)-[:MATCHES_FOR]->(node) " +
+                "WHERE _range_baujahr.value > 2006 AND _range_baujahr.value < 2010 RETURN node";
+
+        assertEquals(expectedQuery, cypherQuery);
+    }
+
+    @Test
     public void testShouldReturnCypherQueryWithMultipleComparisonOperations() throws Exception {
         final VehicleNodeSearchQuery query = VehicleNodeSearchQuery.query()
                 .addTerm("Test")
-                .addComparisonOperations(new ComparisonOperation("ps", Operator.SMALLER, 220.5))
-                .addComparisonOperations(new ComparisonOperation("baujahr", Operator.GREATER, 2006));
+                .addComparisonOperations(new ComparisonOperation("baujahr", Operator.GREATER, 2006))
+                .addComparisonOperations(new ComparisonOperation("ps", Operator.SMALLER, 220.5));
         final String cypherQuery = VehicleSearchQueryGenerator.generateCypherQueryFrom(query);
 
         final String expectedQuery = "START _Test=node:terms(\"name:*Test*\") MATCH (_Test)-[:MATCHES_FOR]->(node), " +
@@ -108,21 +123,4 @@ public class VehicleSearchQueryGeneratorUnitTest {
 
         assertEquals(expectedQuery, cypherQuery);
     }
-
-    /*    @Test
-    public void testShouldReturnCypherQueryWithComparisonOperation() throws Exception {
-        final NodeMetaData nodeMetaData = new NodeMetaData();
-        nodeMetaData.setName("2008");
-        nodeMetaData.setUnit("Baujahr");
-        final VehicleNodeSearchQuery query = VehicleNodeSearchQuery.query().addTerm("firstTerm").addComparisionOperation(new ComparisonOperation(Operator.GREATER, nodeMetaData));
-        final String expectedQuery = "START _firstTerm=node:terms(\"name:*firstTerm*\") " +
-                "MATCH (_firstTerm)-[:MATCHES_FOR]->(modell), (_2008)-[:MATCHES_FOR]->(node)" +
-                "WHERE toFloat(_2008.name) > 2008 AND _2008.unit = \"baujahr\" " +
-                "RETURN DISTINCT(modell)";
-
-        final String cypherQuery = VehicleSearchQueryGenerator.generateCypherQueryFrom(query);
-
-        assertEquals(expectedQuery, cypherQuery);
-    }*/
-
 }
