@@ -8,6 +8,7 @@ import support.ComparisonOperation;
 import support.VehicleNodeSearchQuery;
 import support.VehicleSearchQueryGenerator;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
@@ -15,6 +16,8 @@ import static support.StringSplitterUtils.*;
 
 @Component
 public class SearchEngineImpl implements SearchEngine {
+
+    private static final String REGEX_NOT_ALLOWED_CHARACTERS_FOR_TERMS = ".*[^\\w\\.\\süäöß].*";
 
     private final VehicleNodeService _vehicleNodeService;
     private final TermService _termService;
@@ -26,14 +29,26 @@ public class SearchEngineImpl implements SearchEngine {
 
     @Override
     public Collection<VehicleNode> search(final String searchString) {
-        final Set<ComparisonOperation> comparisionOperations = getComparisionOperationsFrom(searchString);
-        final Set<String> tokensFromSearchString = tokenize(removeOperation(searchString));
-        final VehicleNodeSearchQuery vehicleNodeSearchQuery = VehicleSearchQueryGenerator.generateSearchQueryFrom(tokensFromSearchString, comparisionOperations);
-        return _vehicleNodeService.findNodesByQuery(vehicleNodeSearchQuery);
+        Collection<VehicleNode> result = new ArrayList<>();
+        final String cleanedSearchString = searchString.replaceAll("[^\\w\\<\\>\\;.]", " ");
+        final Set<ComparisonOperation> comparisionOperations = getComparisionOperationsFrom(cleanedSearchString);
+        final String searchStringWithoutOperations = removeOperation(cleanedSearchString);
+        final Set<String> tokensFromSearchString = tokenize(searchStringWithoutOperations);
+
+        if (tokensFromSearchString.size() > 0 && !containsIllegalCharacters(searchStringWithoutOperations)) {
+            final VehicleNodeSearchQuery vehicleNodeSearchQuery = VehicleSearchQueryGenerator.generateSearchQueryFrom(tokensFromSearchString, comparisionOperations);
+            result = _vehicleNodeService.findNodesByQuery(vehicleNodeSearchQuery);
+        }
+
+        return result;
     }
 
     @Override
     public Collection<String> autocomplete(String searchTerm) {
         return _termService.findTermNamesByIncompleteName(searchTerm);
+    }
+
+    private boolean containsIllegalCharacters(String searchStringWithoutOperations) {
+        return searchStringWithoutOperations.matches(REGEX_NOT_ALLOWED_CHARACTERS_FOR_TERMS);
     }
 }

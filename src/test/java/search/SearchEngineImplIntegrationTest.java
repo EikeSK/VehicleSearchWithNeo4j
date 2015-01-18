@@ -186,6 +186,27 @@ public class SearchEngineImplIntegrationTest {
 
     }
 
+    @Test
+    public void testShouldNotReturnAnExceptionWhenSearchContainsIllegalCharacters() throws Exception {
+        final Collection<VehicleNode> search = _searchEngine.search("!\"§$%&/()=?*#'+~-^°");
+
+        assertThat(search, hasSize(0));
+    }
+
+    @Test
+    public void testShouldNotReturnAnExceptionWhenSearchStringIsEmpty() throws Exception {
+        final Collection<VehicleNode> search = _searchEngine.search("");
+
+        assertThat(search, hasSize(0));
+    }
+
+    @Test
+    public void testShouldNotReturnAnExceptionWhenSearchStringOnlyContainsComparison() throws Exception {
+        final Collection<VehicleNode> search = _searchEngine.search("> 2000");
+
+        assertThat(search, hasSize(0));
+    }
+
     private static VehicleNode vehicleNodeWithName(final String name) {
         final VehicleNode vehicleNode = new VehicleNode();
         vehicleNode.setName(name);
