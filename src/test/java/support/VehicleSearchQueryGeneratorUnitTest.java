@@ -49,14 +49,14 @@ public class VehicleSearchQueryGeneratorUnitTest {
 
     @Test
     public void testShouldReturnCypherQueryIfSetIsEmpty() throws Exception {
-        final VehicleNodeSearchQuery vehicleNodeSearchQuery = VehicleSearchQueryGenerator.generateSearchQueryFrom(emptySet());
+        final VehicleNodeSearchQuery vehicleNodeSearchQuery = VehicleSearchQueryGenerator.generateSearchQueryFrom(emptySet(), emptySet());
 
         assertNotNull(vehicleNodeSearchQuery);
     }
 
     @Test
     public void testShouldReturnSearchQueryByOneToken() throws Exception {
-        final VehicleNodeSearchQuery resultQuery = VehicleSearchQueryGenerator.generateSearchQueryFrom(new HashSet<>(Arrays.asList("firstTerm")));
+        final VehicleNodeSearchQuery resultQuery = VehicleSearchQueryGenerator.generateSearchQueryFrom(new HashSet<>(Arrays.asList("firstTerm")), emptySet());
 
         assertThat(resultQuery.getTerms(), hasSize(1));
         assertThat(resultQuery.getTerms().iterator().next(), equalTo("firstTerm"));
@@ -64,7 +64,7 @@ public class VehicleSearchQueryGeneratorUnitTest {
 
     @Test
     public void testShouldReturnSearchQueryByMultipleTokens() throws Exception {
-        final VehicleNodeSearchQuery resultQuery = VehicleSearchQueryGenerator.generateSearchQueryFrom(new HashSet<>(Arrays.asList("firstTerm", "secondTerm")));
+        final VehicleNodeSearchQuery resultQuery = VehicleSearchQueryGenerator.generateSearchQueryFrom(new HashSet<>(Arrays.asList("firstTerm", "secondTerm")), emptySet());
 
         final List<String> termsFromResultQuery = new ArrayList<>(resultQuery.getTerms());
 

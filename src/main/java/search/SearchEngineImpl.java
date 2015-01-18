@@ -4,12 +4,14 @@ import domain.VehicleNode;
 import org.springframework.stereotype.Component;
 import repositories.TermService;
 import repositories.VehicleNodeService;
-import support.StringSplitterUtils;
+import support.ComparisonOperation;
 import support.VehicleNodeSearchQuery;
 import support.VehicleSearchQueryGenerator;
 
 import java.util.Collection;
 import java.util.Set;
+
+import static support.StringSplitterUtils.*;
 
 @Component
 public class SearchEngineImpl implements SearchEngine {
@@ -24,8 +26,9 @@ public class SearchEngineImpl implements SearchEngine {
 
     @Override
     public Collection<VehicleNode> search(final String searchString) {
-        final Set<String> tokensFromSearchString = StringSplitterUtils.tokenize(searchString);
-        final VehicleNodeSearchQuery vehicleNodeSearchQuery = VehicleSearchQueryGenerator.generateSearchQueryFrom(tokensFromSearchString);
+        final Set<ComparisonOperation> comparisionOperations = getComparisionOperationsFrom(searchString);
+        final Set<String> tokensFromSearchString = tokenize(removeOperation(searchString));
+        final VehicleNodeSearchQuery vehicleNodeSearchQuery = VehicleSearchQueryGenerator.generateSearchQueryFrom(tokensFromSearchString, comparisionOperations);
         return _vehicleNodeService.findNodesByQuery(vehicleNodeSearchQuery);
     }
 

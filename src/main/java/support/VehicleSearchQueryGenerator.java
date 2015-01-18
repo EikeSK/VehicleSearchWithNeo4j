@@ -5,7 +5,6 @@ import org.apache.commons.lang.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class VehicleSearchQueryGenerator {
 
@@ -63,10 +62,10 @@ public class VehicleSearchQueryGenerator {
         return sb.toString();
     }
 
-    public static VehicleNodeSearchQuery generateSearchQueryFrom(final Set<String> tokens) {
-        final Set<String> terms = tokens.stream().collect(Collectors.toSet()); // TODO: überflüssig?
-
-        return VehicleNodeSearchQuery.query().withTerms(terms);
+    public static VehicleNodeSearchQuery generateSearchQueryFrom(final Set<String> tokens, final Set<ComparisonOperation> comparisonOperations) {
+        return VehicleNodeSearchQuery.query()
+                .withTerms(tokens)
+                .withComparisonOperations(comparisonOperations);
     }
 
     // http://stackoverflow.com/questions/12045137/set-number-of-decimal-places-to-0-if-float-is-an-integer-java
