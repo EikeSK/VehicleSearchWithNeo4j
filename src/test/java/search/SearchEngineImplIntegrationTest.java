@@ -13,10 +13,7 @@ import repositories.VehicleNodeRepository;
 import service.VehicleDataPersistenceServiceImpl;
 import support.VehicleMetaData;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -165,6 +162,30 @@ public class SearchEngineImplIntegrationTest {
         assertThat(autocompleteSuggestions, contains("volkswagen"));
     }
 
+    @Test
+    public void testShouldFindByBaujahrRange() throws Exception {
+        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4"), vehicleMetaDataWithTermsAndBaujahr(Collections.<String>emptySet(), 2006));
+        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A6"), vehicleMetaDataWithTermsAndBaujahr(Collections.<String>emptySet(), 2004));
+
+        final Collection<VehicleNode> searchResult = _searchEngine.search("Audi; Baujahr > 2004");
+
+        assertThat(searchResult, hasSize(1));
+        assertThat(searchResult.iterator().next().getName(), equalTo("Audi A4"));
+
+    }
+
+    @Test
+    public void testShouldFindByMultipleBaujahrRange() throws Exception {
+        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4"), vehicleMetaDataWithTermsAndBaujahr(Collections.<String>emptySet(), 2006));
+        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A6"), vehicleMetaDataWithTermsAndBaujahr(Collections.<String>emptySet(), 2004));
+
+        final Collection<VehicleNode> searchResult = _searchEngine.search("Audi; Baujahr > 2003; Baujahr < 2006");
+
+        assertThat(searchResult, hasSize(1));
+        assertThat(searchResult.iterator().next().getName(), equalTo("Audi A6"));
+
+    }
+
     private static VehicleNode vehicleNodeWithName(final String name) {
         final VehicleNode vehicleNode = new VehicleNode();
         vehicleNode.setName(name);
@@ -172,8 +193,13 @@ public class SearchEngineImplIntegrationTest {
     }
 
     private VehicleMetaData vehicleMetaDataWithAdditionalTerms(final Set<String> additionalTerms) {
+        return vehicleMetaDataWithTermsAndBaujahr(additionalTerms, 0);
+    }
+
+    private VehicleMetaData vehicleMetaDataWithTermsAndBaujahr(final Set<String> additionalTerms, final int baujahr) {
         final VehicleMetaData vehicleMetaData = new VehicleMetaData();
         vehicleMetaData.setAdditionalMetaData(additionalTerms);
+        vehicleMetaData.setBaujahr(baujahr);
         return vehicleMetaData;
     }
 }
