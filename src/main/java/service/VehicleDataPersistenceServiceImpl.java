@@ -1,6 +1,6 @@
 package service;
 
-import domain.BaujahrNode;
+import domain.Baujahr;
 import domain.Term;
 import domain.VehicleNode;
 import org.springframework.stereotype.Component;
@@ -50,33 +50,33 @@ public class VehicleDataPersistenceServiceImpl implements VehicleDataPersistence
 
     public void tokenizeAndSaveBatch(final Map<VehicleNode, VehicleMetaData> batchData) {
         final List<Term> allTerms = relateAllTermsToNodes(batchData);
-        final List<BaujahrNode> allBaujahrNodes = relateAllBaujahrNodesToNodes(batchData);
+        final List<Baujahr> allBaujahrs = relateAllBaujahrNodesToNodes(batchData);
         _vehicleNodeRepository.save(batchData.keySet());
         _termRepository.save(allTerms);
-        _baujahrNodeRepository.save(allBaujahrNodes);
+        _baujahrNodeRepository.save(allBaujahrs);
     }
 
-    private List<BaujahrNode> relateAllBaujahrNodesToNodes(Map<VehicleNode, VehicleMetaData> batchData) {
-        final List<BaujahrNode> allBaujahrNodes = new ArrayList<>();
+    private List<Baujahr> relateAllBaujahrNodesToNodes(Map<VehicleNode, VehicleMetaData> batchData) {
+        final List<Baujahr> allBaujahrs = new ArrayList<>();
         for (final VehicleNode node : batchData.keySet()) {
             final VehicleMetaData vehicleMetaData = batchData.get(node);
 
             if (vehicleMetaData.getBaujahrFrom() > 0) {
                 final List<Integer> baujahrRange = createBaujahrRangeFrom(vehicleMetaData);
                 for (Integer baujahr : baujahrRange) {
-                    final BaujahrNode baujahrNode = getBaujahrFrom(node, baujahr);
-                    if (allBaujahrNodes.contains(baujahrNode)) {
-                        int index = allBaujahrNodes.indexOf(baujahrNode);
-                        final BaujahrNode foundBaujahrNode = allBaujahrNodes.get(index);
-                        foundBaujahrNode.addRelationTo(node);
-                        allBaujahrNodes.set(index, foundBaujahrNode);
+                    final Baujahr baujahrNode = getBaujahrFrom(node, baujahr);
+                    if (allBaujahrs.contains(baujahrNode)) {
+                        int index = allBaujahrs.indexOf(baujahrNode);
+                        final Baujahr foundBaujahr = allBaujahrs.get(index);
+                        foundBaujahr.addRelationTo(node);
+                        allBaujahrs.set(index, foundBaujahr);
                     } else {
-                        allBaujahrNodes.add(baujahrNode);
+                        allBaujahrs.add(baujahrNode);
                     }
                 }
             }
         }
-        return allBaujahrNodes;
+        return allBaujahrs;
     }
 
     private List<Integer> createBaujahrRangeFrom(VehicleMetaData vehicleMetaData) {
@@ -112,10 +112,10 @@ public class VehicleDataPersistenceServiceImpl implements VehicleDataPersistence
         return allTerms;
     }
 
-    private BaujahrNode getBaujahrFrom(final VehicleNode vehicleNode, int baujahr) {
-        BaujahrNode baujahrNode = _baujahrNodeRepository.findByValue(baujahr);
+    private Baujahr getBaujahrFrom(final VehicleNode vehicleNode, int baujahr) {
+        Baujahr baujahrNode = _baujahrNodeRepository.findByValue(baujahr);
         if (baujahrNode == null) {
-            baujahrNode = new BaujahrNode();
+            baujahrNode = new Baujahr();
             baujahrNode.setValue(baujahr);
         }
         baujahrNode.addRelationTo(vehicleNode);

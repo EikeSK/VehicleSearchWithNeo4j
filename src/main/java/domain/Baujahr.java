@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @NodeEntity
-public class BaujahrNode extends AbstractNeo4jEntity {
+public class Baujahr extends AbstractNeo4jEntity {
 
     private double value;
 
@@ -37,7 +37,7 @@ public class BaujahrNode extends AbstractNeo4jEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        BaujahrNode that = (BaujahrNode) o;
+        Baujahr that = (Baujahr) o;
 
         return Double.compare(that.value, value) == 0;
     }

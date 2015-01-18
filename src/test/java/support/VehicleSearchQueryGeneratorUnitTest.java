@@ -87,7 +87,7 @@ public class VehicleSearchQueryGeneratorUnitTest {
                 .addComparisonOperations(new ComparisonOperation("baujahr", Operator.GREATER, 2006));
         final String cypherQuery = VehicleSearchQueryGenerator.generateCypherQueryFrom(query);
 
-        final String expectedQuery = "START _Test=node:terms(\"name:*Test*\") MATCH (_Test)-[:MATCHES_FOR]->(node), (_range_baujahr)-[:MATCHES_FOR]->(node) " +
+        final String expectedQuery = "START _Test=node:terms(\"name:*Test*\") MATCH (_Test)-[:MATCHES_FOR]->(node), (_range_baujahr:Baujahr)-[:MATCHES_FOR]->(node) " +
                 "WHERE _range_baujahr.value > 2006 RETURN DISTINCT(node)";
 
         assertEquals(expectedQuery, cypherQuery);
@@ -102,7 +102,7 @@ public class VehicleSearchQueryGeneratorUnitTest {
 
         final String cypherQuery = VehicleSearchQueryGenerator.generateCypherQueryFrom(query);
 
-        final String expectedQuery = "START _Test=node:terms(\"name:*Test*\") MATCH (_Test)-[:MATCHES_FOR]->(node), (_range_baujahr)-[:MATCHES_FOR]->(node) " +
+        final String expectedQuery = "START _Test=node:terms(\"name:*Test*\") MATCH (_Test)-[:MATCHES_FOR]->(node), (_range_baujahr:Baujahr)-[:MATCHES_FOR]->(node) " +
                 "WHERE _range_baujahr.value > 2006 AND _range_baujahr.value < 2010 RETURN DISTINCT(node)";
 
         assertEquals(expectedQuery, cypherQuery);
@@ -117,7 +117,7 @@ public class VehicleSearchQueryGeneratorUnitTest {
         final String cypherQuery = VehicleSearchQueryGenerator.generateCypherQueryFrom(query);
 
         final String expectedQuery = "START _Test=node:terms(\"name:*Test*\") MATCH (_Test)-[:MATCHES_FOR]->(node), " +
-                "(_range_baujahr)-[:MATCHES_FOR]->(node), (_range_ps)-[:MATCHES_FOR]->(node) " +
+                "(_range_baujahr:Baujahr)-[:MATCHES_FOR]->(node), (_range_ps:Ps)-[:MATCHES_FOR]->(node) " +
                 "WHERE _range_baujahr.value > 2006 AND _range_ps.value < 220.5 " +
                 "RETURN DISTINCT(node)";
 

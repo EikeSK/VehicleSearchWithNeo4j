@@ -1,9 +1,9 @@
 package repositories;
 
-import domain.BaujahrNode;
+import domain.Baujahr;
 import org.springframework.data.repository.CrudRepository;
 
-public interface BaujahrNodeRepository extends CrudRepository<BaujahrNode, String> {
+public interface BaujahrNodeRepository extends CrudRepository<Baujahr, String> {
 
-    public BaujahrNode findByValue(double value);
+    public Baujahr findByValue(double value);
 }

@@ -1,6 +1,6 @@
 package service;
 
-import domain.BaujahrNode;
+import domain.Baujahr;
 import domain.Term;
 import domain.VehicleNode;
 import org.junit.Before;
@@ -112,11 +112,11 @@ public class VehicleDataPersistenceServiceImplUnitTest {
 
         _vehicleDataPersistenceService.tokenizeAndSave(vehicleNode, vehicleMetaData);
 
-        verify(_baujahrNodeRepository).save(argThat(new ArgumentMatcher<BaujahrNode>() {
+        verify(_baujahrNodeRepository).save(argThat(new ArgumentMatcher<Baujahr>() {
             @Override
             public boolean matches(Object o) {
-                final BaujahrNode baujahrNode = (BaujahrNode) o;
-                return baujahrNode.getValue() == 2006.0;
+                final Baujahr baujahr = (Baujahr) o;
+                return baujahr.getValue() == 2006.0;
             }
         }));
     }
@@ -130,7 +130,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
 
         _vehicleDataPersistenceService.tokenizeAndSave(vehicleNode, vehicleMetaData);
 
-        verify(_baujahrNodeRepository, times(5)).save(any(BaujahrNode.class));
+        verify(_baujahrNodeRepository, times(5)).save(any(Baujahr.class));
     }
 
     @Test
@@ -148,18 +148,18 @@ public class VehicleDataPersistenceServiceImplUnitTest {
         final VehicleMetaData vehicleMetaData = new VehicleMetaData();
         vehicleMetaData.setBaujahrFrom(2006);
 
-        final BaujahrNode existingBaujahrNode = new BaujahrNode();
-        existingBaujahrNode.addRelationTo(vehicleNodeWithName("Test2"));
+        final Baujahr existingBaujahr = new Baujahr();
+        existingBaujahr.addRelationTo(vehicleNodeWithName("Test2"));
 
-        when(_baujahrNodeRepository.findByValue(2006)).thenReturn(existingBaujahrNode);
+        when(_baujahrNodeRepository.findByValue(2006)).thenReturn(existingBaujahr);
 
         _vehicleDataPersistenceService.tokenizeAndSave(vehicleNode, vehicleMetaData);
 
-        verify(_baujahrNodeRepository).save(argThat(new ArgumentMatcher<BaujahrNode>() {
+        verify(_baujahrNodeRepository).save(argThat(new ArgumentMatcher<Baujahr>() {
             @Override
             public boolean matches(Object o) {
-                final BaujahrNode baujahrNode = (BaujahrNode) o;
-                return baujahrNode.getRelatedNodes().size() == 2;
+                final Baujahr baujahr = (Baujahr) o;
+                return baujahr.getRelatedNodes().size() == 2;
             }
         }));
 
@@ -199,10 +199,10 @@ public class VehicleDataPersistenceServiceImplUnitTest {
 
         _vehicleDataPersistenceService.tokenizeAndSaveBatch(batchData);
 
-        verify(_baujahrNodeRepository).save(argThat(new ArgumentMatcher<Iterable<BaujahrNode>>() {
+        verify(_baujahrNodeRepository).save(argThat(new ArgumentMatcher<Iterable<Baujahr>>() {
             @Override
             public boolean matches(Object o) {
-                @SuppressWarnings("unchecked") final Iterable<BaujahrNode> baujahrNodes = (Iterable<BaujahrNode>) o;
+                @SuppressWarnings("unchecked") final Iterable<Baujahr> baujahrNodes = (Iterable<Baujahr>) o;
                 return baujahrNodes.iterator().hasNext() && baujahrNodes.iterator().next().getRelatedNodes().size() == 2;
             }
         }));
@@ -293,11 +293,11 @@ public class VehicleDataPersistenceServiceImplUnitTest {
         });
     }
 
-    private Collection<BaujahrNode> baujahrNodesWithSize(int size) {
-        return argThat(new ArgumentMatcher<Collection<BaujahrNode>>() {
+    private Collection<Baujahr> baujahrNodesWithSize(int size) {
+        return argThat(new ArgumentMatcher<Collection<Baujahr>>() {
             @Override
             public boolean matches(Object o) {
-                @SuppressWarnings("unchecked") final Collection<BaujahrNode> result = (Collection<BaujahrNode>) o;
+                @SuppressWarnings("unchecked") final Collection<Baujahr> result = (Collection<Baujahr>) o;
                 return result.size() == size;
             }
         });

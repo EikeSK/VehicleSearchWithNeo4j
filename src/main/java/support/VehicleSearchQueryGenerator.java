@@ -66,7 +66,11 @@ public class VehicleSearchQueryGenerator {
             }
         }
         for (int i = 0; i < uniqueComparisonUnits.size(); i++) {
-            sb.append(" (_range_").append(comparisonOperations.get(i).getUnit()).append(")-[:MATCHES_FOR]->(node)");
+            sb.append(" (_range_")
+                    .append(comparisonOperations.get(i).getUnit())
+                    .append(":")
+                    .append(StringUtils.capitalize(comparisonOperations.get(i).getUnit()))
+                    .append(")-[:MATCHES_FOR]->(node)");
             if (i < uniqueComparisonUnits.size() - 1) {
                 sb.append(",");
             }
