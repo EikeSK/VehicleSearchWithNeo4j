@@ -187,6 +187,15 @@ public class SearchEngineImplIntegrationTest {
     }
 
     @Test
+    public void testShouldNotFindSomethingIfRangeDoesNotExists() throws Exception {
+        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4"), vehicleMetaDataWithTermsAndBaujahr(Collections.<String>emptySet(), 2006));
+
+        final Collection<VehicleNode> searchResult = _searchEngine.search("Audi; test > 2003");
+
+        assertThat(searchResult, hasSize(0));
+    }
+
+    @Test
     public void testShouldNotReturnAnExceptionWhenSearchContainsIllegalCharacters() throws Exception {
         final Collection<VehicleNode> search = _searchEngine.search("!\"§$%&/()=?*#'+~-^°");
 
@@ -196,6 +205,13 @@ public class SearchEngineImplIntegrationTest {
     @Test
     public void testShouldNotReturnAnExceptionWhenSearchStringIsEmpty() throws Exception {
         final Collection<VehicleNode> search = _searchEngine.search("");
+
+        assertThat(search, hasSize(0));
+    }
+
+    @Test
+    public void testShouldNotReturnAnExceptionWhenSearchStringOnlyContains() throws Exception {
+        final Collection<VehicleNode> search = _searchEngine.search(" ");
 
         assertThat(search, hasSize(0));
     }
