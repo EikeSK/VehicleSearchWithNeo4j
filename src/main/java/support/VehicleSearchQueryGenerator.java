@@ -15,7 +15,7 @@ public class VehicleSearchQueryGenerator {
         return createStartBlock(terms) +
                 createMatchBlock(terms, comparisonOperations) +
                 createWhereBlock(comparisonOperations) +
-                createReturnBlock();
+                createReturnBlock(comparisonOperations);
     }
 
 
@@ -30,8 +30,12 @@ public class VehicleSearchQueryGenerator {
     }
 
 
-    private static String createReturnBlock() {
-        return " RETURN node";
+    private static String createReturnBlock(List<ComparisonOperation> comparisonOperations) {
+        if (comparisonOperations.size() > 0) {
+            return " RETURN DISTINCT(node)";
+        } else {
+            return " RETURN node";
+        }
     }
 
     private static String createWhereBlock(List<ComparisonOperation> comparisonOperations) {
