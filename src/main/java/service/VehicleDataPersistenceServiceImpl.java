@@ -47,8 +47,36 @@ public class VehicleDataPersistenceServiceImpl implements VehicleDataPersistence
 
     public void tokenizeAndSaveBatch(final Map<VehicleNode, VehicleMetaData> batchData) {
         final List<Term> allTerms = relateAllTermsToNodes(batchData);
+        final List<BaujahrNode> allBaujahrNodes = realteAllBaujahrNodesToNodes(batchData);
         _vehicleNodeRepository.save(batchData.keySet());
         _termRepository.save(allTerms);
+        _baujahrNodeRepository.save(allBaujahrNodes);
+    }
+
+    private List<BaujahrNode> realteAllBaujahrNodesToNodes(Map<VehicleNode, VehicleMetaData> batchData) {
+        final List<BaujahrNode> allBaujahrNodes = new ArrayList<>();
+        for (final VehicleNode node : batchData.keySet()) {
+            final VehicleMetaData vehicleMetaData = batchData.get(node);
+            if (vehicleMetaData.getBaujahr() > 0) {
+                final BaujahrNode baujahrNode = getBaujahrFrom(node, vehicleMetaData);
+                if (allBaujahrNodes.contains(baujahrNode)) {
+                    int index = allBaujahrNodes.indexOf(baujahrNode);
+                    final BaujahrNode foundBaujahrNode = allBaujahrNodes.get(index);
+                    foundBaujahrNode.addRelationTo(node);
+                    allBaujahrNodes.set(index, foundBaujahrNode);
+                } else {
+                    allBaujahrNodes.add(baujahrNode);
+                }
+            }
+        }
+        return allBaujahrNodes;
+    }
+
+    private BaujahrNode createBaujahrFor(final VehicleNode node, final VehicleMetaData vehicleMetaData) {
+        final BaujahrNode baujahrNode = new BaujahrNode();
+        baujahrNode.setValue(vehicleMetaData.getBaujahr());
+        baujahrNode.addRelationTo(node);
+        return baujahrNode;
     }
 
     private List<Term> relateAllTermsToNodes(Map<VehicleNode, VehicleMetaData> batchData) {

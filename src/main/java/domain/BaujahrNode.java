@@ -17,8 +17,6 @@ public class BaujahrNode extends AbstractNeo4jEntity {
     @Fetch
     private Set<VehicleNode> relatedNodes;
 
-    // TODO: getter für Value von Interface implentieren, als sogenannte "ValueNodes"
-
     public double getValue() {
         return value;
     }
@@ -32,6 +30,16 @@ public class BaujahrNode extends AbstractNeo4jEntity {
             relatedNodes = new HashSet<>();
         }
         relatedNodes.add(node);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BaujahrNode that = (BaujahrNode) o;
+
+        return Double.compare(that.value, value) == 0;
     }
 
     public Set<VehicleNode> getRelatedNodes() {

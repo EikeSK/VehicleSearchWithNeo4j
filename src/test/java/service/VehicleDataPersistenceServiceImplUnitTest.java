@@ -187,7 +187,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
 
         _vehicleDataPersistenceService.tokenizeAndSaveBatch(batchData);
 
-        verify(_baujahrNodeRepository).save(argThat(new ArgumentMatcher<BaujahrNode>() {
+        verify(_baujahrNodeRepository).save(argThat(new ArgumentMatcher<Iterable<BaujahrNode>>() {
             @Override
             public boolean matches(Object o) {
                 @SuppressWarnings("unchecked") final Iterable<BaujahrNode> baujahrNodes = (Iterable<BaujahrNode>) o;
