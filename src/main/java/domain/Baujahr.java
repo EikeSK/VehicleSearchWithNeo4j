@@ -9,11 +9,21 @@ import java.util.HashSet;
 import java.util.Set;
 
 @NodeEntity
-public class Baujahr extends AbstractComparableNode {
+public class Baujahr extends AbstractNeo4jEntity {
+
+    private double value;
 
     @RelatedTo(type = "MATCHES_FOR", direction = Direction.OUTGOING)
     @Fetch
     private Set<VehicleNode> relatedNodes;
+
+    public double getValue() {
+        return value;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
+    }
 
     public void addRelationTo(final VehicleNode node) {
         if (relatedNodes == null) {
