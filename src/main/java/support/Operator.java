@@ -3,8 +3,9 @@ package support;
 public enum Operator {
     GREATER(">"),
     SMALLER("<"),
-    GREATER_EQUALS(">="),   // TODO: beibehalten oder nur > und < ?
-    SMALLER_EQUALS("<=");
+    GREATER_EQUALS(">="),
+    SMALLER_EQUALS("<="),
+    EQUALS("=");
 
     private String _operation;
 
