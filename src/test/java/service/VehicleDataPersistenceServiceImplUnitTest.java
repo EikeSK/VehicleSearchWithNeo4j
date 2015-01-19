@@ -35,7 +35,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
     public void shouldInvokeSaveOnVehicleNodeRepository() throws Exception {
         final VehicleNode vehicleNode = vehicleNodeWithName("Test Entity");
 
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNode);
+        _vehicleDataPersistenceService.save(vehicleNode);
 
         verify(_vehicleNodeRepository).save(vehicleNode);
         verifyNoMoreInteractions(_vehicleNodeRepository);
@@ -45,7 +45,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
     public void shouldInvokeSaveOnTermRepositoryForTermInName() throws Exception {
         final VehicleNode vehicleNode = vehicleNodeWithName("Testmodel");
 
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNode);
+        _vehicleDataPersistenceService.save(vehicleNode);
 
         verify(_termRepository).save(argThat(new ArgumentMatcher<Collection<Term>>() {
             @Override
@@ -61,7 +61,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
     public void shouldInvokeSaveOnTermRepositoryForTermsInNameWithMultipleEntries() {
         final VehicleNode vehicleNode = vehicleNodeWithName("Test Entity");
 
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNode);
+        _vehicleDataPersistenceService.save(vehicleNode);
 
         verify(_termRepository).save(argThat(new ArgumentMatcher<Collection<Term>>() {
             @Override
@@ -81,7 +81,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
 
         when(_termRepository.findByName("test")).thenReturn(term);
 
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNode);
+        _vehicleDataPersistenceService.save(vehicleNode);
 
         verify(_termRepository).save(argThat(new ArgumentMatcher<Collection<Term>>() {
             @Override
@@ -99,7 +99,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
         final VehicleNode vehicleNode = vehicleNodeWithName("Test Model");
         final VehicleMetaData additionalMetaData = vehicleMetaDataWithTerms(new HashSet<>(Arrays.asList("benzin")));
 
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNode, additionalMetaData);
+        _vehicleDataPersistenceService.save(vehicleNode, additionalMetaData);
 
         verify(_termRepository).save(termsWithSize(3));
     }
@@ -110,7 +110,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
         final VehicleMetaData vehicleMetaData = new VehicleMetaData();
         vehicleMetaData.setBaujahrFrom(2006);
 
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNode, vehicleMetaData);
+        _vehicleDataPersistenceService.save(vehicleNode, vehicleMetaData);
 
         verify(_baujahrNodeRepository).save(argThat(new ArgumentMatcher<Baujahr>() {
             @Override
@@ -128,7 +128,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
         vehicleMetaData.setBaujahrFrom(2006);
         vehicleMetaData.setBaujahrTo(2010);
 
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNode, vehicleMetaData);
+        _vehicleDataPersistenceService.save(vehicleNode, vehicleMetaData);
 
         verify(_baujahrNodeRepository, times(5)).save(any(Baujahr.class));
     }
@@ -137,7 +137,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
     public void shouldNotSaveBaujahrIfMetaDataDoesNotContainBaujahr() throws Exception {
         final VehicleNode vehicleNode = vehicleNodeWithName("Test");
         final VehicleMetaData vehicleMetaData = new VehicleMetaData();
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNode, vehicleMetaData);
+        _vehicleDataPersistenceService.save(vehicleNode, vehicleMetaData);
 
         verifyZeroInteractions(_baujahrNodeRepository);
     }
@@ -153,7 +153,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
 
         when(_baujahrNodeRepository.findByValue(2006)).thenReturn(existingBaujahr);
 
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNode, vehicleMetaData);
+        _vehicleDataPersistenceService.save(vehicleNode, vehicleMetaData);
 
         verify(_baujahrNodeRepository).save(argThat(new ArgumentMatcher<Baujahr>() {
             @Override
@@ -171,7 +171,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
         batchData.put(vehicleNodeWithName("TestNode1"), vehicleMetaDataWithTerms(new HashSet<>(Arrays.asList("test1", "test2"))));
         batchData.put(vehicleNodeWithName("TestNode2"), vehicleMetaDataWithTerms(new HashSet<>(Arrays.asList("test3", "test4"))));
 
-        _vehicleDataPersistenceService.tokenizeAndSaveBatch(batchData);
+        _vehicleDataPersistenceService.saveBatch(batchData);
 
         verify(_vehicleNodeRepository).save(vehicleNodesWithSize(2));
 
@@ -184,7 +184,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
         batchData.put(vehicleNodeWithName("TestNode1"), vehicleMetaDataWithTermsAndBaujahr(new HashSet<>(Arrays.asList("test1", "test2")), 2006));
         batchData.put(vehicleNodeWithName("TestNode2"), vehicleMetaDataWithTermsAndBaujahr(new HashSet<>(Arrays.asList("test3", "test4")), 2007));
 
-        _vehicleDataPersistenceService.tokenizeAndSaveBatch(batchData);
+        _vehicleDataPersistenceService.saveBatch(batchData);
 
         verify(_vehicleNodeRepository).save(vehicleNodesWithSize(2));
         verify(_termRepository).save(termsWithSize(6));
@@ -197,7 +197,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
         batchData.put(vehicleNodeWithName("TestNode1"), vehicleMetaDataWithTermsAndBaujahr(new HashSet<>(Arrays.asList("test1")), 2006));
         batchData.put(vehicleNodeWithName("TestNode2"), vehicleMetaDataWithTermsAndBaujahr(new HashSet<>(Arrays.asList("test3")), 2006));
 
-        _vehicleDataPersistenceService.tokenizeAndSaveBatch(batchData);
+        _vehicleDataPersistenceService.saveBatch(batchData);
 
         verify(_baujahrNodeRepository).save(argThat(new ArgumentMatcher<Iterable<Baujahr>>() {
             @Override
@@ -214,7 +214,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
         final Map<VehicleNode, VehicleMetaData> batchData = new HashMap<>();
         batchData.put(vehicleNodeWithName("TestNode1"), vehicleMetaDataWithTermsAndBaujahr(Collections.<String>emptySet(), 2006));
 
-        _vehicleDataPersistenceService.tokenizeAndSaveBatch(batchData);
+        _vehicleDataPersistenceService.saveBatch(batchData);
 
         verify(_baujahrNodeRepository).findByValue(2006);
     }
@@ -225,7 +225,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
         final Map<VehicleNode, VehicleMetaData> batchData = new HashMap<>();
         batchData.put(vehicleNodeWithName("TestNode1"), vehicleMetaDataWithTerms(new HashSet<>(Arrays.asList("test1", "test2"))));
 
-        _vehicleDataPersistenceService.tokenizeAndSaveBatch(batchData);
+        _vehicleDataPersistenceService.saveBatch(batchData);
 
         verify(_termRepository, times(3)).findByName(anyString());
     }
@@ -242,7 +242,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
 
         when(_termRepository.findByName("test")).thenReturn(term);
 
-        _vehicleDataPersistenceService.tokenizeAndSaveBatch(batchData);
+        _vehicleDataPersistenceService.saveBatch(batchData);
 
         verify(_termRepository).save(argThat(new ArgumentMatcher<Collection<Term>>() {
             @Override

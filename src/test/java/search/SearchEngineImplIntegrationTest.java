@@ -44,7 +44,7 @@ public class SearchEngineImplIntegrationTest {
 
     @Test
     public void testFindNodeByBrandName() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B8 Kombi"));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B8 Kombi"));
 
         final Collection<VehicleNode> searchResult = _searchEngine.search("Audi");
 
@@ -54,7 +54,7 @@ public class SearchEngineImplIntegrationTest {
 
     @Test
     public void testFindNodeWithTwoSearchTerms() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("VW Golf 7 Kombi"));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("VW Golf 7 Kombi"));
 
         final Collection<VehicleNode> searchResult = _searchEngine.search("VW Kombi");
 
@@ -64,7 +64,7 @@ public class SearchEngineImplIntegrationTest {
 
     @Test
     public void testFindNodeWithExactSearchTerm() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("VW Golf 7 Kombi"));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("VW Golf 7 Kombi"));
 
         final Collection<VehicleNode> searchResult = _searchEngine.search("VW Golf 7 Kombi");
 
@@ -74,7 +74,7 @@ public class SearchEngineImplIntegrationTest {
 
     @Test
     public void testFindNodeWithInvertedSearchTerm() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("VW Golf 7 Kombi"));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("VW Golf 7 Kombi"));
 
         final Collection<VehicleNode> searchResult = _searchEngine.search("7 Golf Kombi VW");
 
@@ -84,8 +84,8 @@ public class SearchEngineImplIntegrationTest {
 
     @Test
     public void testShouldFindMultipleNodesForSearchTerm() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("VW Golf 7 Kombi"));
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B8 Kombi"));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("VW Golf 7 Kombi"));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B8 Kombi"));
 
         final Collection<VehicleNode> searchResult = _searchEngine.search("Kombi");
 
@@ -94,7 +94,7 @@ public class SearchEngineImplIntegrationTest {
 
     @Test
     public void testShouldFindNodeCaseInsensitive() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B8 Kombi"));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B8 Kombi"));
 
         final Collection<VehicleNode> searchResult = _searchEngine.search("b8");
 
@@ -104,7 +104,7 @@ public class SearchEngineImplIntegrationTest {
 
     @Test
     public void testShouldFindNodeWithAdditionalTerms() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B8 Kombi"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("benzin", "2008"))));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B8 Kombi"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("benzin", "2008"))));
 
         final Collection<VehicleNode> searchResult = _searchEngine.search("benzin");
 
@@ -114,7 +114,7 @@ public class SearchEngineImplIntegrationTest {
 
     @Test
     public void testShouldFindNothingIfSearchTermContainsUnknownToken() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B8 Kombi"));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B8 Kombi"));
 
         final Collection<VehicleNode> searchResult = _searchEngine.search("BMW");
 
@@ -123,7 +123,7 @@ public class SearchEngineImplIntegrationTest {
 
     @Test
     public void testShouldFindNodeWithDotInSearchTerm() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B8 Kombi"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("2.4"))));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B8 Kombi"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("2.4"))));
 
         final Collection<VehicleNode> searchResult = _searchEngine.search("A4 2.4");
 
@@ -133,7 +133,7 @@ public class SearchEngineImplIntegrationTest {
 
     @Test
     public void testShouldFindNodeByIncompleteToken() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B8 Kombi"));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B8 Kombi"));
 
         final Collection<VehicleNode> searchResult = _searchEngine.search("Aud");
 
@@ -143,7 +143,7 @@ public class SearchEngineImplIntegrationTest {
 
     @Test
     public void testShouldFindNodeByMultipleIncompleteTokens() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B8 Kombi"));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B8 Kombi"));
 
         final Collection<VehicleNode> searchResult = _searchEngine.search("Aud Ko");
 
@@ -154,7 +154,7 @@ public class SearchEngineImplIntegrationTest {
 
     @Test
     public void testShouldAutocomplete() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Volkswagen Amarok 2H"));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Volkswagen Amarok 2H"));
 
         final Collection<String> autocompleteSuggestions = _searchEngine.autocomplete("Volk");
 
@@ -164,8 +164,8 @@ public class SearchEngineImplIntegrationTest {
 
     @Test
     public void testShouldFindByBaujahrRange() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4"), vehicleMetaDataWithTermsAndBaujahr(Collections.<String>emptySet(), 2006));
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A6"), vehicleMetaDataWithTermsAndBaujahr(Collections.<String>emptySet(), 2004));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4"), vehicleMetaDataWithTermsAndBaujahr(Collections.<String>emptySet(), 2006));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A6"), vehicleMetaDataWithTermsAndBaujahr(Collections.<String>emptySet(), 2004));
 
         final Collection<VehicleNode> searchResult = _searchEngine.search("Audi; Baujahr > 2004");
 
@@ -176,8 +176,8 @@ public class SearchEngineImplIntegrationTest {
 
     @Test
     public void testShouldFindByMultipleBaujahrRange() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4"), vehicleMetaDataWithTermsAndBaujahr(Collections.<String>emptySet(), 2006));
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A6"), vehicleMetaDataWithTermsAndBaujahr(Collections.<String>emptySet(), 2004));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4"), vehicleMetaDataWithTermsAndBaujahr(Collections.<String>emptySet(), 2006));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A6"), vehicleMetaDataWithTermsAndBaujahr(Collections.<String>emptySet(), 2004));
 
         final Collection<VehicleNode> searchResult = _searchEngine.search("Audi; Baujahr > 2003; Baujahr < 2006");
 
@@ -188,7 +188,7 @@ public class SearchEngineImplIntegrationTest {
 
     @Test
     public void testShouldNotFindSomethingIfRangeDoesNotExists() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4"), vehicleMetaDataWithTermsAndBaujahr(Collections.<String>emptySet(), 2006));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4"), vehicleMetaDataWithTermsAndBaujahr(Collections.<String>emptySet(), 2006));
 
         final Collection<VehicleNode> searchResult = _searchEngine.search("Audi; test > 2003");
 
@@ -197,7 +197,7 @@ public class SearchEngineImplIntegrationTest {
 
     @Test
     public void testShouldNotFindSomethingIfRangeIsInvalid() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4"), vehicleMetaDataWithTermsAndBaujahr(Collections.<String>emptySet(), 2006));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4"), vehicleMetaDataWithTermsAndBaujahr(Collections.<String>emptySet(), 2006));
 
         final Collection<VehicleNode> searchResult = _searchEngine.search("Audi; Baujahr >2003");
 
@@ -206,7 +206,7 @@ public class SearchEngineImplIntegrationTest {
 
     @Test
     public void testShouldNotFindSomethingIfMinOneRangeIsInvalid() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4"), vehicleMetaDataWithTermsAndBaujahr(Collections.<String>emptySet(), 2006));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4"), vehicleMetaDataWithTermsAndBaujahr(Collections.<String>emptySet(), 2006));
 
         final Collection<VehicleNode> searchResult = _searchEngine.search("Audi; Baujahr > 2003; Baujahr <45");
 

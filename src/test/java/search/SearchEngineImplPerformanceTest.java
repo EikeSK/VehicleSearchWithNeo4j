@@ -79,7 +79,7 @@ public class SearchEngineImplPerformanceTest {
         for (String nodeName : _randomNodeNames) {
             batch.put(vehicleNodeWithName(nodeName), createMetaDataWithSetWithRandomTerms());
         }
-        _vehicleDataPersistenceService.tokenizeAndSaveBatch(batch);
+        _vehicleDataPersistenceService.saveBatch(batch);
     }
 
     private VehicleMetaData createMetaDataWithSetWithRandomTerms() {

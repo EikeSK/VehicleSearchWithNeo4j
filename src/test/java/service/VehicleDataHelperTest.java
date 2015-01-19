@@ -31,7 +31,7 @@ public class VehicleDataHelperTest {
         batch.put(vehicleNodeWithName("VW Golf 6 Kombi"), vehicleMetaDataWithTermsAndBaujahr(new HashSet<>(Arrays.asList("2008", "2012", "diesel", "benzin")), 2008, 2012));
         batch.put(vehicleNodeWithName("Skoda Octavia Scout Kombi"), vehicleMetaDataWithTermsAndBaujahr(new HashSet<>(Arrays.asList("2007", "2012", "diesel", "benzin")), 2007, 2012));
         batch.put(vehicleNodeWithName("Skoda Octavia E5 Limousine"), vehicleMetaDataWithTermsAndBaujahr(new HashSet<>(Arrays.asList("seit", "2013", "neuster", "neuer")), 2013, 2014));
-        _vehicleDataPersistenceService.tokenizeAndSaveBatch(batch);
+        _vehicleDataPersistenceService.saveBatch(batch);
     }
 
     private VehicleNode vehicleNodeWithName(final String name) {

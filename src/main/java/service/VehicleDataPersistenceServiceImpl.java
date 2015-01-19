@@ -28,12 +28,12 @@ public class VehicleDataPersistenceServiceImpl implements VehicleDataPersistence
     }
 
     @Override
-    public void tokenizeAndSave(final VehicleNode vehicleNode) {
-        tokenizeAndSave(vehicleNode, null);
+    public void save(final VehicleNode vehicleNode) {
+        save(vehicleNode, null);
     }
 
     @Override
-    public void tokenizeAndSave(final VehicleNode vehicleNode, final VehicleMetaData additionalMetaData) {
+    public void save(final VehicleNode vehicleNode, final VehicleMetaData additionalMetaData) {
         final Collection<Term> termsFromTokens = getTermsFrom(vehicleNode);
         if (additionalMetaData != null) {
             termsFromTokens.addAll(getTermsFor(vehicleNode, additionalMetaData.getAdditionalMetaData()));
@@ -48,7 +48,7 @@ public class VehicleDataPersistenceServiceImpl implements VehicleDataPersistence
         }
     }
 
-    public void tokenizeAndSaveBatch(final Map<VehicleNode, VehicleMetaData> batchData) {
+    public void saveBatch(final Map<VehicleNode, VehicleMetaData> batchData) {
         final List<Term> allTerms = relateAllTermsToNodes(batchData);
         final List<Baujahr> allBaujahrs = relateAllBaujahrNodesToNodes(batchData);
         _vehicleNodeRepository.save(batchData.keySet());

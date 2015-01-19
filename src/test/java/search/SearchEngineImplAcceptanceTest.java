@@ -48,9 +48,9 @@ public class SearchEngineImplAcceptanceTest {
 
     @Test
     public void testFindNodeByBrand() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B7 Kombi"));
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("BMW 1er E81 Schrägheck"));
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("BMW 3er E30 Coupe"));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B7 Kombi"));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("BMW 1er E81 Schrägheck"));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("BMW 3er E30 Coupe"));
 
         final Collection<String> searchResultForAudi = getVehicleNodeNamesFor(_searchEngine.search("Audi"));
         final Collection<String> searchResultForBMW = getVehicleNodeNamesFor(_searchEngine.search("BMW"));
@@ -64,9 +64,9 @@ public class SearchEngineImplAcceptanceTest {
 
     @Test
     public void testFindNodeBySeries() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("BMW 1er E81 Schrägheck"));
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B7 Kombi"));
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B8 Coupe"));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("BMW 1er E81 Schrägheck"));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B7 Kombi"));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B8 Coupe"));
 
         final Collection<String> searchResultFor1er = getVehicleNodeNamesFor(_searchEngine.search("1er"));
         final Collection<String> searchResultForA4 = getVehicleNodeNamesFor(_searchEngine.search("A4"));
@@ -80,9 +80,9 @@ public class SearchEngineImplAcceptanceTest {
 
     @Test
     public void testFindByGeneration() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("BMW 1er E81 Schrägheck"));
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B8 Kombi"));
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B8 Coupe"));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("BMW 1er E81 Schrägheck"));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B8 Kombi"));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B8 Coupe"));
 
         final Collection<String> searchResultForE81 = getVehicleNodeNamesFor(_searchEngine.search("E81"));
         final Collection<String> searchResultForB8 = getVehicleNodeNamesFor(_searchEngine.search("B8"));
@@ -96,9 +96,9 @@ public class SearchEngineImplAcceptanceTest {
 
     @Test
     public void testFindByModel() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("BMW 1er E81 Kombi"));
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B7 Kombi"));
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B8 Coupe"));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("BMW 1er E81 Kombi"));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B7 Kombi"));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B8 Coupe"));
 
         final Collection<String> searchResultForKombi = getVehicleNodeNamesFor(_searchEngine.search("Kombi"));
         final Collection<String> searchResultForCoupe = getVehicleNodeNamesFor(_searchEngine.search("Coupe"));
@@ -112,8 +112,8 @@ public class SearchEngineImplAcceptanceTest {
 
     @Test
     public void testFindByVariant() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B8 Kombi"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("Quattro"))));
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B7 Coupe"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("ultra"))));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B8 Kombi"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("Quattro"))));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B7 Coupe"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("ultra"))));
 
         final Collection<String> searchResultForQuattro = getVehicleNodeNamesFor(_searchEngine.search("Quattro"));
 
@@ -127,8 +127,8 @@ public class SearchEngineImplAcceptanceTest {
 
     @Test
     public void testFindByConstructionYear() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("BMW 1er E81 Schrägheck"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("2007", "2011"))));
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B6 Kombi"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("2000", "2004"))));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("BMW 1er E81 Schrägheck"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("2007", "2011"))));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B6 Kombi"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("2000", "2004"))));
 
         final Collection<String> searchResultFor2007 = getVehicleNodeNamesFor(_searchEngine.search("2007"));
         final Collection<String> searchResultFor2011 = getVehicleNodeNamesFor(_searchEngine.search("2011"));
@@ -146,8 +146,8 @@ public class SearchEngineImplAcceptanceTest {
 
     @Test
     public void testFindByFuelInjectionType() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("BMW 1er E81 Schrägheck"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("TDI", "FSI"))));
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B6 Kombi"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("TDI"))));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("BMW 1er E81 Schrägheck"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("TDI", "FSI"))));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B6 Kombi"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("TDI"))));
 
         final Collection<String> resultForTDI = getVehicleNodeNamesFor(_searchEngine.search("TDI"));
         final Collection<String> resultForFSI = getVehicleNodeNamesFor(_searchEngine.search("FSI"));
@@ -161,8 +161,8 @@ public class SearchEngineImplAcceptanceTest {
 
     @Test
     public void testFindByGearboxType() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("BMW 1er E81 Schrägheck"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("automatik", "manuell"))));
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B6 Kombi"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("automatik"))));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("BMW 1er E81 Schrägheck"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("automatik", "manuell"))));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B6 Kombi"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("automatik"))));
 
         final Collection<String> resultForAutomatik = getVehicleNodeNamesFor(_searchEngine.search("automatik"));
         final Collection<String> resultForManuell = getVehicleNodeNamesFor(_searchEngine.search("manuell"));
@@ -179,10 +179,10 @@ public class SearchEngineImplAcceptanceTest {
 
     @Test
     public void testFindBySemantic() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("BMW 1er E81 Schrägheck"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("2007", "2011"))));
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("BMW 1er E88 Cabrio"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("2008", "2013", "neuster", "neuer"))));
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B6 Kombi"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("2000", "2004"))));
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B8 Kombi"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("2007", "neuster", "neuer"))));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("BMW 1er E81 Schrägheck"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("2007", "2011"))));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("BMW 1er E88 Cabrio"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("2008", "2013", "neuster", "neuer"))));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B6 Kombi"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("2000", "2004"))));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B8 Kombi"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("2007", "neuster", "neuer"))));
 
         final Collection<String> resultForNeusterBMW = getVehicleNodeNamesFor(_searchEngine.search("neuster BMW"));
         final Collection<String> resultForNeuerBMW = getVehicleNodeNamesFor(_searchEngine.search("neuer BMW"));
@@ -207,15 +207,15 @@ public class SearchEngineImplAcceptanceTest {
 
     @Test
     public void testCombinedSearch() throws Exception {
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("BMW 1er E81 Schrägheck"),
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("BMW 1er E81 Schrägheck"),
                 vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("2007", "2011", "automatik", "manuell", "2.0", "3.0", ("diesel")))));
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("BMW 1er E88 Cabrio"),
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("BMW 1er E88 Cabrio"),
                 vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("2008", "2013", "automatik", "2.6", "benzin"))));
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B6 Kombi"),
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B6 Kombi"),
                 vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("2000", "2004", "manuell", "TDI", "2.4", "diesel", "Avant"))));
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Audi A4 B8 Kombi"),
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B8 Kombi"),
                 vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("2007", "manuell", "TDI", "FSI", "2.6", "2.4", "benzin", "diesel", "neuer", "neuster", "Avant"))));
-        _vehicleDataPersistenceService.tokenizeAndSave(vehicleNodeWithName("Skoda Octavia E5 Kombi"),
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Skoda Octavia E5 Kombi"),
                 vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("2013", "manuell", "FSI", "2.0", "benzin", "neuer", "neuster"))));
 
         Collection<String> searchResult = getVehicleNodeNamesFor(_searchEngine.search("BMW 1er"));
