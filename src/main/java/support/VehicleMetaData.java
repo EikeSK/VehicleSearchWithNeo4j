@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class VehicleMetaData {
 
-    private Set<String> _additionalMetaData = new HashSet<>();
+    private final Set<String> _additionalMetaData = new HashSet<>();
     private int _baujahrFrom;
     private int _baujahrTo;
 

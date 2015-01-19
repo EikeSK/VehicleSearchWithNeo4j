@@ -7,7 +7,7 @@ public enum Operator {
     SMALLER_EQUALS("<="),
     EQUALS("=");
 
-    private String _operation;
+    private final String _operation;
 
     Operator(String operation) {
         _operation = operation;

@@ -13,7 +13,6 @@ import support.VehicleMetaData;
 
 import java.util.*;
 
-import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.*;
 
 public class VehicleDataPersistenceServiceImplUnitTest {

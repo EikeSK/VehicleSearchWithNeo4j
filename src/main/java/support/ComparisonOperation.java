@@ -2,9 +2,9 @@ package support;
 
 
 public class ComparisonOperation {
-    private String _unit;
-    private Operator _operator;
-    private double _value;
+    private final String _unit;
+    private final Operator _operator;
+    private final double _value;
 
     public ComparisonOperation(final String unit, final Operator operator, final double value) {
         _unit = unit;

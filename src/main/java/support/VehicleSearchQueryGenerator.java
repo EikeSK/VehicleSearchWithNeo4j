@@ -80,9 +80,10 @@ public class VehicleSearchQueryGenerator {
 
     private static List<String> getUniqueComparisonUnitsFrom(List<ComparisonOperation> comparisonOperations) {
         final List<String> uniqueUnits = new ArrayList<>();
-        comparisonOperations.stream().filter(operation -> !uniqueUnits.contains(operation.getUnit())).forEach(operation -> {
-            uniqueUnits.add(operation.getUnit());
-        });
+        comparisonOperations
+                .stream()
+                .filter(operation -> !uniqueUnits.contains(operation.getUnit()))
+                .forEach(operation -> uniqueUnits.add(operation.getUnit()));
         return uniqueUnits;
     }
 

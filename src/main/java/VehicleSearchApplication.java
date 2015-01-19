@@ -25,41 +25,47 @@ public class VehicleSearchApplication implements CommandLineRunner {
             System.out.println("\n\n1 - Start Search\n2 - Autocomplete\n3 - Exit");
             System.out.print("Choice: ");
             String menu = input.readLine();
-            if (menu.equals("1")) {
-                System.out.print("Search input: ");
-                String searchInput = input.readLine();
-                stopwatch.start();
-                final Collection<VehicleNode> result = searchEngine.search(searchInput);
-                stopwatch.stop();
-                System.out.print("Results: ");
-                if (result.size() == 0) {
-                    System.out.print("no results");
-                } else {
-                    for (VehicleNode resultNode : result) {
-                        System.out.print(resultNode.getName() + "; ");
+            switch (menu) {
+                case "1": {
+                    System.out.print("Search input: ");
+                    String searchInput = input.readLine();
+                    stopwatch.start();
+                    final Collection<VehicleNode> result = searchEngine.search(searchInput);
+                    stopwatch.stop();
+                    System.out.print("Results: ");
+                    if (result.size() == 0) {
+                        System.out.print("no results");
+                    } else {
+                        for (VehicleNode resultNode : result) {
+                            System.out.print(resultNode.getName() + "; ");
+                        }
                     }
+                    System.out.println("\nElapsed time: " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + "ms");
+                    stopwatch.reset();
+                    break;
                 }
-                System.out.println("\nElapsed time: " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + "ms");
-                stopwatch.reset();
-            } else if (menu.equals("2")) {
-                System.out.print("Autocomplete input: ");
-                String searchInput = input.readLine();
-                stopwatch.start();
-                final Collection<String> result = searchEngine.autocomplete(searchInput);
-                stopwatch.stop();
-                System.out.print("Results: ");
-                if (result.size() == 0) {
-                    System.out.print("no results");
-                } else {
-                    for (String autocompleteResult : result) {
-                        System.out.print(autocompleteResult + "; ");
+                case "2": {
+                    System.out.print("Autocomplete input: ");
+                    String searchInput = input.readLine();
+                    stopwatch.start();
+                    final Collection<String> result = searchEngine.autocomplete(searchInput);
+                    stopwatch.stop();
+                    System.out.print("Results: ");
+                    if (result.size() == 0) {
+                        System.out.print("no results");
+                    } else {
+                        for (String autocompleteResult : result) {
+                            System.out.print(autocompleteResult + "; ");
+                        }
                     }
-                }
-                System.out.println("\nElapsed time: " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + "ms");
-                stopwatch.reset();
+                    System.out.println("\nElapsed time: " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + "ms");
+                    stopwatch.reset();
 
-            } else if (menu.equals("3")) {
-                isRunning = false;
+                    break;
+                }
+                case "3":
+                    isRunning = false;
+                    break;
             }
         } while (isRunning);
     }

@@ -5,8 +5,8 @@ import java.util.Set;
 
 public class VehicleNodeSearchQuery {
 
-    private Set<String> _terms = new HashSet<>();
-    private Set<ComparisonOperation> _comparisonOperations = new HashSet<>();
+    private final Set<String> _terms = new HashSet<>();
+    private final Set<ComparisonOperation> _comparisonOperations = new HashSet<>();
 
     public static VehicleNodeSearchQuery query() {
         return new VehicleNodeSearchQuery();

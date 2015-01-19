@@ -35,6 +35,7 @@ public class Term extends AbstractNeo4jEntity {
         relatedNodes.add(node);
     }
 
+    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
     public boolean equals(Object o) {
         Term term = (Term) o;
