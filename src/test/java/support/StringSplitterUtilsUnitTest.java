@@ -51,7 +51,7 @@ public class StringSplitterUtilsUnitTest {
         final String searchString = "BMW 1er; Baujahr > 2006; Baujahr < 2012";
         final Set<String> operationResult = findOperation(searchString);
 
-        final Set<ComparisonOperation> operations = getComparisionOperationsFrom(searchString);
+        final Set<ComparisonOperation> operations = getComparisionOperationsFrom(operationResult);
 
         assertThat(operations, hasSize(2));
     }

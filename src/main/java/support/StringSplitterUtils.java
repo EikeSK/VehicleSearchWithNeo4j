@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import static com.google.common.base.Ascii.toLowerCase;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 import static org.apache.commons.lang.math.NumberUtils.toFloat;
 
 public class StringSplitterUtils {
@@ -33,8 +34,7 @@ public class StringSplitterUtils {
         return tokens;
     }
 
-    public static Set<ComparisonOperation> getComparisionOperationsFrom(String searchString) {
-        final Set<String> operations = findOperation(searchString);
+    public static Set<ComparisonOperation> getComparisionOperationsFrom(final Set<String> operations) {
         final Set<ComparisonOperation> operationsOnQueries = new HashSet<>();
         for (String singleOperation : operations) {
             final List<String> strings = Splitter.on(" ").splitToList(singleOperation);
@@ -57,6 +57,7 @@ public class StringSplitterUtils {
         final String operationString = StringUtils.substringAfter(searchString, ";");
         final Iterable<String> split = Splitter.on(";").trimResults().split(operationString);
         for (String resultToken : split) {
+            if (isNotBlank(resultToken))
             result.add(resultToken);
         }
         return result;

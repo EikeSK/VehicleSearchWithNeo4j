@@ -30,12 +30,13 @@ public class SearchEngineImpl implements SearchEngine {
     @Override
     public Collection<VehicleNode> search(final String searchString) {
         Collection<VehicleNode> result = new ArrayList<>();
-        final String cleanedSearchString = searchString.replaceAll("[^\\w\\<\\>\\;.]", " ");
-        final Set<ComparisonOperation> comparisionOperations = getComparisionOperationsFrom(cleanedSearchString);
+        final String cleanedSearchString = searchString.replaceAll("[^\\w\\<\\>\\=\\;.]", " ");
+        final Set<String> operationsAsString = findOperation(cleanedSearchString);
+        final Set<ComparisonOperation> comparisionOperations = getComparisionOperationsFrom(operationsAsString);
         final String searchStringWithoutOperations = removeOperation(cleanedSearchString);
         final Set<String> tokensFromSearchString = tokenize(searchStringWithoutOperations);
 
-        if (tokensFromSearchString.size() > 0 && !containsIllegalCharacters(searchStringWithoutOperations)) {
+        if (tokensFromSearchString.size() > 0 && !containsIllegalCharacters(searchStringWithoutOperations) && operationsAsString.size() == comparisionOperations.size()) {
             final VehicleNodeSearchQuery vehicleNodeSearchQuery = VehicleSearchQueryGenerator.generateSearchQueryFrom(tokensFromSearchString, comparisionOperations);
             result = _vehicleNodeService.findNodesByQuery(vehicleNodeSearchQuery);
         }
