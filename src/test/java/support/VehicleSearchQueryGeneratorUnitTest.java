@@ -76,7 +76,7 @@ public class VehicleSearchQueryGeneratorUnitTest {
     @Test
     public void testShouldReturnCypherQueryForAutocompletion() throws Exception {
         final String cypherQuery = VehicleSearchQueryGenerator.generateCypherQueryForAutocompletion("Autocompletion");
-        final String expectedQuery = "START n=node:terms(\"name:*Autocompletion*\") MATCH (n:Term) RETURN n";
+        final String expectedQuery = "START n=node:terms(\"name:Autocompletion*\") MATCH (n:Term) RETURN n";
         assertEquals(expectedQuery, cypherQuery);
     }
 

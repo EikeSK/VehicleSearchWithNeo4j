@@ -20,7 +20,7 @@ public class VehicleSearchQueryGenerator {
 
 
     public static String generateCypherQueryForAutocompletion(final String incompleteTermName) {
-        return "START n=node:terms(\"name:*" + incompleteTermName + "*\") MATCH (n:Term) RETURN n";
+        return "START n=node:terms(\"name:" + incompleteTermName + "*\") MATCH (n:Term) RETURN n";
     }
 
     public static VehicleNodeSearchQuery generateSearchQueryFrom(final Set<String> tokens, final Set<ComparisonOperation> comparisonOperations) {
