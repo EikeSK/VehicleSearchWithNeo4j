@@ -11,6 +11,9 @@ import support.VehicleMetaData;
 
 import java.util.*;
 
+import static support.TestUtils.vehicleMetaDataWithTerms;
+import static support.TestUtils.vehicleMetaDataWithTermsAndBaujahr;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ProductiveContext.class})
 public class VehicleDataHelperTest {
@@ -38,17 +41,5 @@ public class VehicleDataHelperTest {
         final VehicleNode vehicleNode = new VehicleNode();
         vehicleNode.setName(name);
         return vehicleNode;
-    }
-
-    private VehicleMetaData vehicleMetaDataWithTerms(final Set<String> additionalTerms) {
-        return vehicleMetaDataWithTermsAndBaujahr(additionalTerms, 0, 0);
-    }
-
-    private VehicleMetaData vehicleMetaDataWithTermsAndBaujahr(final Set<String> additionalTerms, int fromBaujahr, int toBaujahr) {
-        final VehicleMetaData vehicleMetaData = new VehicleMetaData();
-        vehicleMetaData.setAdditionalMetaData(additionalTerms);
-        vehicleMetaData.setBaujahrFrom(fromBaujahr);
-        vehicleMetaData.setBaujahrTo(toBaujahr);
-        return vehicleMetaData;
     }
 }

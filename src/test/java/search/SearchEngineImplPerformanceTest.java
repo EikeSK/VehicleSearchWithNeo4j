@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.lessThan;
+import static support.TestUtils.vehicleNodeWithName;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ProductiveContext.class})
@@ -90,11 +91,5 @@ public class SearchEngineImplPerformanceTest {
         }
         vehicleMetaData.setAdditionalMetaData(new HashSet<>(strings));
         return vehicleMetaData;
-    }
-
-    private static VehicleNode vehicleNodeWithName(final String name) {
-        final VehicleNode vehicleNode = new VehicleNode();
-        vehicleNode.setName(name);
-        return vehicleNode;
     }
 }

@@ -11,14 +11,17 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import repositories.TermRepository;
 import repositories.VehicleNodeRepository;
 import service.VehicleDataPersistenceServiceImpl;
-import support.VehicleMetaData;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static support.TestUtils.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestContext.class})
@@ -104,7 +107,7 @@ public class SearchEngineImplIntegrationTest {
 
     @Test
     public void testShouldFindNodeWithAdditionalTerms() throws Exception {
-        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B8 Kombi"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("benzin", "2008"))));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B8 Kombi"), vehicleMetaDataWithTerms(new HashSet<>(Arrays.asList("benzin", "2008"))));
 
         final Collection<VehicleNode> searchResult = _searchEngine.search("benzin");
 
@@ -123,7 +126,7 @@ public class SearchEngineImplIntegrationTest {
 
     @Test
     public void testShouldFindNodeWithDotInSearchTerm() throws Exception {
-        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B8 Kombi"), vehicleMetaDataWithAdditionalTerms(new HashSet<>(Arrays.asList("2.4"))));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B8 Kombi"), vehicleMetaDataWithTerms(new HashSet<>(Arrays.asList("2.4"))));
 
         final Collection<VehicleNode> searchResult = _searchEngine.search("A4 2.4");
 
@@ -239,22 +242,5 @@ public class SearchEngineImplIntegrationTest {
         final Collection<VehicleNode> search = _searchEngine.search("> 2000");
 
         assertThat(search, hasSize(0));
-    }
-
-    private static VehicleNode vehicleNodeWithName(final String name) {
-        final VehicleNode vehicleNode = new VehicleNode();
-        vehicleNode.setName(name);
-        return vehicleNode;
-    }
-
-    private VehicleMetaData vehicleMetaDataWithAdditionalTerms(final Set<String> additionalTerms) {
-        return vehicleMetaDataWithTermsAndBaujahr(additionalTerms, 0);
-    }
-
-    private VehicleMetaData vehicleMetaDataWithTermsAndBaujahr(final Set<String> additionalTerms, final int baujahr) {
-        final VehicleMetaData vehicleMetaData = new VehicleMetaData();
-        vehicleMetaData.setAdditionalMetaData(additionalTerms);
-        vehicleMetaData.setBaujahrFrom(baujahr);
-        return vehicleMetaData;
     }
 }

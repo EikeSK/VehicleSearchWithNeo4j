@@ -14,6 +14,7 @@ import support.VehicleMetaData;
 import java.util.*;
 
 import static org.mockito.Mockito.*;
+import static support.TestUtils.*;
 
 public class VehicleDataPersistenceServiceImplUnitTest {
 
@@ -252,23 +253,6 @@ public class VehicleDataPersistenceServiceImplUnitTest {
                 return relatedNodes.size() == 2;
             }
         }));
-    }
-
-    private VehicleNode vehicleNodeWithName(final String name) {
-        final VehicleNode vehicleNode = new VehicleNode();
-        vehicleNode.setName(name);
-        return vehicleNode;
-    }
-
-    private VehicleMetaData vehicleMetaDataWithTerms(final Set<String> additionalTerms) {
-        return vehicleMetaDataWithTermsAndBaujahr(additionalTerms, 0);
-    }
-
-    private VehicleMetaData vehicleMetaDataWithTermsAndBaujahr(final Set<String> additionalTerms, final int baujahr) {
-        final VehicleMetaData vehicleMetaData = new VehicleMetaData();
-        vehicleMetaData.setAdditionalMetaData(additionalTerms);
-        vehicleMetaData.setBaujahrFrom(baujahr);
-        return vehicleMetaData;
     }
 
     private Collection<VehicleNode> vehicleNodesWithSize(final int size) {
