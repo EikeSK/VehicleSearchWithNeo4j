@@ -1,8 +1,9 @@
-package repositories;
+package service;
 
 import domain.Term;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import repositories.TermRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;

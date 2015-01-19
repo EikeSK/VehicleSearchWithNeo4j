@@ -2,8 +2,8 @@ package search;
 
 import domain.VehicleNode;
 import org.springframework.stereotype.Component;
-import repositories.TermService;
-import repositories.VehicleNodeService;
+import service.TermService;
+import service.VehicleNodeService;
 import support.ComparisonOperation;
 import support.VehicleNodeSearchQuery;
 import support.VehicleSearchQueryGenerator;

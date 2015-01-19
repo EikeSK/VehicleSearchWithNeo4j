@@ -9,10 +9,12 @@ import org.springframework.data.neo4j.config.EnableNeo4jRepositories;
 import org.springframework.data.neo4j.config.Neo4jConfiguration;
 import org.springframework.data.neo4j.support.Neo4jTemplate;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import repositories.*;
+import repositories.BaujahrNodeRepository;
+import repositories.TermRepository;
+import repositories.VehicleNodeRepository;
 import search.SearchEngine;
 import search.SearchEngineImpl;
-import service.VehicleDataPersistenceServiceImpl;
+import service.*;
 
 @Configuration
 @EnableTransactionManagement

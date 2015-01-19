@@ -57,8 +57,9 @@ public class StringSplitterUtils {
         final String operationString = StringUtils.substringAfter(searchString, ";");
         final Iterable<String> split = Splitter.on(";").trimResults().split(operationString);
         for (String resultToken : split) {
-            if (isNotBlank(resultToken))
-            result.add(resultToken);
+            if (isNotBlank(resultToken)) {
+                result.add(resultToken);
+            }
         }
         return result;
     }
