@@ -97,12 +97,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.fitnesse</groupId>
-            <artifactId>fitnesse</artifactId>
-            <version>20140901</version>
-        </dependency>
-
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
