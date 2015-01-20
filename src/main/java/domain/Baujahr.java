@@ -11,7 +11,7 @@ import java.util.Set;
 @NodeEntity
 public class Baujahr extends AbstractNeo4jEntity {
 
-    private double value;
+    private int value;
 
     @RelatedTo(type = "MATCHES_FOR", direction = Direction.OUTGOING)
     @Fetch
@@ -21,7 +21,7 @@ public class Baujahr extends AbstractNeo4jEntity {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(int value) {
         this.value = value;
     }
 
