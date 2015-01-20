@@ -3,7 +3,7 @@ package search;
 import com.google.common.base.Stopwatch;
 import config.ProductiveContext;
 import domain.VehicleNode;
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
