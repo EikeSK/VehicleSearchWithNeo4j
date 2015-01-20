@@ -2,15 +2,15 @@ package support;
 
 import com.google.common.base.Splitter;
 import domain.VehicleNode;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import static com.google.common.base.Ascii.toLowerCase;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.math.NumberUtils.toFloat;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.math.NumberUtils.toFloat;
 
 public class StringSplitterUtils {
 
