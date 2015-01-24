@@ -1,5 +1,6 @@
 package repositories;
 
+import config.TestContext;
 import domain.VehicleNode;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
-import config.TestContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,22 +58,4 @@ public class VehicleNodeRepositoryIntegrationTest {
         assertThat(vehicleNodes.get(0).getName(), equalTo(modelName));
     }
 
-    @Test
-    @Transactional
-    public void testFindByName() throws Exception {
-        final String modelName = "Audi A4 Kombi";
-        final VehicleNode vehicleNode = new VehicleNode();
-        vehicleNode.setName(modelName);
-
-        try (Transaction tx = _graphDatabaseService.beginTx()) {
-            _vehicleNodeRepository.save(vehicleNode);
-            tx.success();
-        }
-
-        final List<VehicleNode> result = IteratorUtil.asList(_vehicleNodeRepository.findByName(modelName));
-
-        assertThat(result, hasSize(1));
-        assertThat(result.get(0).getName(), equalTo(modelName));
-
-    }
 }
