@@ -6,7 +6,7 @@ import domain.VehicleNode;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
-import repositories.BaujahrNodeRepository;
+import repositories.BaujahrRepository;
 import repositories.TermRepository;
 import repositories.VehicleNodeRepository;
 import support.VehicleMetaData;
@@ -21,14 +21,14 @@ public class VehicleDataPersistenceServiceImplUnitTest {
     private VehicleDataPersistenceServiceImpl _vehicleDataPersistenceService;
     private VehicleNodeRepository _vehicleNodeRepository;
     private TermRepository _termRepository;
-    private BaujahrNodeRepository _baujahrNodeRepository;
+    private BaujahrRepository _baujahrRepository;
 
     @Before
     public void setUp() throws Exception {
         _termRepository = mock(TermRepository.class);
         _vehicleNodeRepository = mock(VehicleNodeRepository.class);
-        _baujahrNodeRepository = mock(BaujahrNodeRepository.class);
-        _vehicleDataPersistenceService = new VehicleDataPersistenceServiceImpl(_vehicleNodeRepository, _termRepository, _baujahrNodeRepository);
+        _baujahrRepository = mock(BaujahrRepository.class);
+        _vehicleDataPersistenceService = new VehicleDataPersistenceServiceImpl(_vehicleNodeRepository, _termRepository, _baujahrRepository);
     }
 
     @Test
@@ -112,7 +112,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
 
         _vehicleDataPersistenceService.save(vehicleNode, vehicleMetaData);
 
-        verify(_baujahrNodeRepository).save(argThat(new ArgumentMatcher<Baujahr>() {
+        verify(_baujahrRepository).save(argThat(new ArgumentMatcher<Baujahr>() {
             @Override
             public boolean matches(Object o) {
                 final Baujahr baujahr = (Baujahr) o;
@@ -130,7 +130,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
 
         _vehicleDataPersistenceService.save(vehicleNode, vehicleMetaData);
 
-        verify(_baujahrNodeRepository, times(5)).save(any(Baujahr.class));
+        verify(_baujahrRepository, times(5)).save(any(Baujahr.class));
     }
 
     @Test
@@ -139,7 +139,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
         final VehicleMetaData vehicleMetaData = new VehicleMetaData();
         _vehicleDataPersistenceService.save(vehicleNode, vehicleMetaData);
 
-        verifyZeroInteractions(_baujahrNodeRepository);
+        verifyZeroInteractions(_baujahrRepository);
     }
 
     @Test
@@ -151,11 +151,11 @@ public class VehicleDataPersistenceServiceImplUnitTest {
         final Baujahr existingBaujahr = new Baujahr();
         existingBaujahr.addRelationTo(vehicleNodeWithName("Test2"));
 
-        when(_baujahrNodeRepository.findByValue(2006)).thenReturn(existingBaujahr);
+        when(_baujahrRepository.findByValue(2006)).thenReturn(existingBaujahr);
 
         _vehicleDataPersistenceService.save(vehicleNode, vehicleMetaData);
 
-        verify(_baujahrNodeRepository).save(argThat(new ArgumentMatcher<Baujahr>() {
+        verify(_baujahrRepository).save(argThat(new ArgumentMatcher<Baujahr>() {
             @Override
             public boolean matches(Object o) {
                 final Baujahr baujahr = (Baujahr) o;
@@ -188,7 +188,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
 
         verify(_vehicleNodeRepository).save(vehicleNodesWithSize(2));
         verify(_termRepository).save(termsWithSize(6));
-        verify(_baujahrNodeRepository).save(baujahrNodesWithSize(2));
+        verify(_baujahrRepository).save(baujahrNodesWithSize(2));
     }
 
     @Test
@@ -199,7 +199,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
 
         _vehicleDataPersistenceService.saveBatch(batchData);
 
-        verify(_baujahrNodeRepository).save(argThat(new ArgumentMatcher<Iterable<Baujahr>>() {
+        verify(_baujahrRepository).save(argThat(new ArgumentMatcher<Iterable<Baujahr>>() {
             @Override
             public boolean matches(Object o) {
                 @SuppressWarnings("unchecked") final Iterable<Baujahr> baujahrNodes = (Iterable<Baujahr>) o;
@@ -216,7 +216,7 @@ public class VehicleDataPersistenceServiceImplUnitTest {
 
         _vehicleDataPersistenceService.saveBatch(batchData);
 
-        verify(_baujahrNodeRepository).findByValue(2006);
+        verify(_baujahrRepository).findByValue(2006);
     }
 
 

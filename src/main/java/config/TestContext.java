@@ -9,7 +9,7 @@ import org.springframework.data.neo4j.config.EnableNeo4jRepositories;
 import org.springframework.data.neo4j.config.Neo4jConfiguration;
 import org.springframework.data.neo4j.support.Neo4jTemplate;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import repositories.BaujahrNodeRepository;
+import repositories.BaujahrRepository;
 import repositories.TermRepository;
 import repositories.VehicleNodeRepository;
 import search.SearchEngine;
@@ -32,7 +32,7 @@ public class TestContext extends Neo4jConfiguration {
     public TermRepository _termRepository;
 
     @Autowired
-    public BaujahrNodeRepository _baujahrNodeRepository;
+    public BaujahrRepository _baujahrRepository;
 
     @Bean
     public GraphDatabaseService graphDatabaseService() {
@@ -46,7 +46,7 @@ public class TestContext extends Neo4jConfiguration {
 
     @Bean
     public VehicleDataPersistenceServiceImpl vehicleDataPersistenceService() {
-        return new VehicleDataPersistenceServiceImpl(_vehicleNodeRepository, _termRepository, _baujahrNodeRepository);
+        return new VehicleDataPersistenceServiceImpl(_vehicleNodeRepository, _termRepository, _baujahrRepository);
     }
 
     @Bean

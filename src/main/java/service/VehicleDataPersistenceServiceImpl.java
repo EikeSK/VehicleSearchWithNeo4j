@@ -4,7 +4,7 @@ import domain.Baujahr;
 import domain.Term;
 import domain.VehicleNode;
 import org.springframework.stereotype.Component;
-import repositories.BaujahrNodeRepository;
+import repositories.BaujahrRepository;
 import repositories.TermRepository;
 import repositories.VehicleNodeRepository;
 import support.StringSplitterUtils;
@@ -19,12 +19,12 @@ public class VehicleDataPersistenceServiceImpl implements VehicleDataPersistence
 
     private final VehicleNodeRepository _vehicleNodeRepository;
     private final TermRepository _termRepository;
-    private final BaujahrNodeRepository _baujahrNodeRepository;
+    private final BaujahrRepository _baujahrRepository;
 
-    public VehicleDataPersistenceServiceImpl(VehicleNodeRepository vehicleNodeRepository, TermRepository termRepository, BaujahrNodeRepository baujahrNodeRepository) {
+    public VehicleDataPersistenceServiceImpl(VehicleNodeRepository vehicleNodeRepository, TermRepository termRepository, BaujahrRepository baujahrRepository) {
         _vehicleNodeRepository = vehicleNodeRepository;
         _termRepository = termRepository;
-        _baujahrNodeRepository = baujahrNodeRepository;
+        _baujahrRepository = baujahrRepository;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class VehicleDataPersistenceServiceImpl implements VehicleDataPersistence
         if (additionalMetaData != null && additionalMetaData.getBaujahrFrom() > 0) {
             final List<Integer> baujahrRange = createBaujahrRangeFrom(additionalMetaData);
             for (Integer baujahr : baujahrRange) {
-                _baujahrNodeRepository.save(getBaujahrFrom(vehicleNode, baujahr));
+                _baujahrRepository.save(getBaujahrFrom(vehicleNode, baujahr));
             }
         }
     }
@@ -53,7 +53,7 @@ public class VehicleDataPersistenceServiceImpl implements VehicleDataPersistence
         final List<Baujahr> allBaujahrs = relateAllBaujahrNodesToNodes(batchData);
         _vehicleNodeRepository.save(batchData.keySet());
         _termRepository.save(allTerms);
-        _baujahrNodeRepository.save(allBaujahrs);
+        _baujahrRepository.save(allBaujahrs);
     }
 
     private List<Baujahr> relateAllBaujahrNodesToNodes(Map<VehicleNode, VehicleMetaData> batchData) {
@@ -113,7 +113,7 @@ public class VehicleDataPersistenceServiceImpl implements VehicleDataPersistence
     }
 
     private Baujahr getBaujahrFrom(final VehicleNode vehicleNode, int baujahr) {
-        Baujahr baujahrNode = _baujahrNodeRepository.findByValue(baujahr);
+        Baujahr baujahrNode = _baujahrRepository.findByValue(baujahr);
         if (baujahrNode == null) {
             baujahrNode = new Baujahr();
             baujahrNode.setValue(baujahr);
