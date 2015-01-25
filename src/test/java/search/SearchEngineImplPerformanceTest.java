@@ -26,11 +26,18 @@ import static support.TestUtils.vehicleNodeWithName;
 @ContextConfiguration(classes = {ProductiveContext.class})
 public class SearchEngineImplPerformanceTest {
 
+    private final int AMOUNT_VEHICLE_NODES_TO_GENERATE = 1000000;
+    private final int AMOUNT_TERMS_TO_GENERATE = 1000;
+    private final int AMOUNT_VEHICLE_NODES_TO_SAVE = 10000;
+    private final int AMOUNT_TERMS_PER_NODE = 10;
+    private final int AMOUNT_OF_REQUESTS_PER_TEST = 1000;
+
     @Autowired
     private SearchEngine _searchEngine;
 
     @Autowired
     private VehicleDataPersistenceServiceImpl _vehicleDataPersistenceService;
+
 
     @Autowired
     private VehicleNodeRepository _vehicleNodeRepository;
@@ -55,9 +62,9 @@ public class SearchEngineImplPerformanceTest {
     public void testAverageLatencyFor1000Requests() throws Exception {
         long averageTime = 0;
         final Stopwatch stopwatch = Stopwatch.createUnstarted();
-        for (String term : _randomTermNames) {
+        for (int i = 0; i < AMOUNT_OF_REQUESTS_PER_TEST; i++) {
             stopwatch.start();
-            _searchEngine.search(term);
+            _searchEngine.search(_randomNodeNames.get(i));
             stopwatch.stop();
             averageTime += stopwatch.elapsed(TimeUnit.MILLISECONDS);
             stopwatch.reset();
@@ -72,13 +79,15 @@ public class SearchEngineImplPerformanceTest {
         _randomNodeNames = new ArrayList<>();
         _randomTermNames = new ArrayList<>();
 
-        for (int i = 0; i < 1000; i++) {
-            _randomNodeNames.add(RandomStringUtils.random(12, true, true));
-            _randomTermNames.add(RandomStringUtils.random(6, true, true));
+        while (_randomNodeNames.size() < AMOUNT_VEHICLE_NODES_TO_GENERATE) {
+            _randomNodeNames.add(RandomStringUtils.random(20, true, true));
+        }
+        while (_randomTermNames.size() < AMOUNT_TERMS_TO_GENERATE) {
+            _randomTermNames.add(RandomStringUtils.random(10, true, true));
         }
         final Map<VehicleNode, VehicleMetaData> batch = new HashMap<>();
-        for (String nodeName : _randomNodeNames) {
-            batch.put(vehicleNodeWithName(nodeName), createMetaDataWithSetWithRandomTerms());
+        for (int i = 0; i < AMOUNT_VEHICLE_NODES_TO_SAVE; i++) {
+            batch.put(vehicleNodeWithName(_randomNodeNames.get(i)), createMetaDataWithSetWithRandomTerms());
         }
         _vehicleDataPersistenceService.saveBatch(batch);
     }
@@ -86,8 +95,8 @@ public class SearchEngineImplPerformanceTest {
     private VehicleMetaData createMetaDataWithSetWithRandomTerms() {
         final List<String> strings = new ArrayList<>();
         final VehicleMetaData vehicleMetaData = new VehicleMetaData();
-        for (int i = 0; i < 8; i++) {
-            strings.add(_randomTermNames.get(_random.nextInt(1000)));
+        for (int i = 0; i < AMOUNT_TERMS_PER_NODE; i++) {
+            strings.add(_randomTermNames.get(_random.nextInt(AMOUNT_TERMS_TO_GENERATE)));
         }
         vehicleMetaData.setAdditionalMetaData(new HashSet<>(strings));
         return vehicleMetaData;
