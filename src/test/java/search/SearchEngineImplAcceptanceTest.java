@@ -14,13 +14,13 @@ import service.VehicleDataPersistenceServiceImpl;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static support.TestUtils.vehicleMetaDataWithTerms;
-import static support.TestUtils.vehicleNodeWithName;
+import static support.TestUtils.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestContext.class})
@@ -145,61 +145,22 @@ public class SearchEngineImplAcceptanceTest {
     }
 
     @Test
-    public void testFindByFuelInjectionType() throws Exception {
-        _vehicleDataPersistenceService.save(vehicleNodeWithName("BMW 1er E81 Schrägheck"), vehicleMetaDataWithTerms(new HashSet<>(Arrays.asList("TDI", "FSI"))));
-        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B6 Kombi"), vehicleMetaDataWithTerms(new HashSet<>(Arrays.asList("TDI"))));
+    public void testFindByConstructionYearRange() throws Exception {
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("BMW 1er E81 Schrägheck"), vehicleMetaDataWithTermsAndBaujahr(Collections.<String>emptySet(), 2007, 2011));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B6 Kombi"), vehicleMetaDataWithTermsAndBaujahr(Collections.<String>emptySet(), 2000, 2004));
 
-        final Collection<String> resultForTDI = getVehicleNodeNamesFor(_searchEngine.search("TDI"));
-        final Collection<String> resultForFSI = getVehicleNodeNamesFor(_searchEngine.search("FSI"));
+        final Collection<String> searchResultForGreater2007 = getVehicleNodeNamesFor(_searchEngine.search("BMW; Baujahr > 2007"));
+        final Collection<String> searchResultSmaller2011 = getVehicleNodeNamesFor(_searchEngine.search("BMW; Baujahr < 2012"));
+        final Collection<String> searchResultForRange = getVehicleNodeNamesFor(_searchEngine.search("Audi; Baujahr > 2001; Baujahr < 2003"));
 
-        assertThat(resultForTDI, hasSize(2));
-        assertThat(resultForTDI, containsInAnyOrder("BMW 1er E81 Schrägheck", "Audi A4 B6 Kombi"));
+        assertThat(searchResultForGreater2007, hasSize(1));
+        assertThat(searchResultForGreater2007, contains("BMW 1er E81 Schrägheck"));
 
-        assertThat(resultForFSI, hasSize(1));
-        assertThat(resultForFSI, contains("BMW 1er E81 Schrägheck"));
-    }
+        assertThat(searchResultSmaller2011, hasSize(1));
+        assertThat(searchResultSmaller2011, contains("BMW 1er E81 Schrägheck"));
 
-    @Test
-    public void testFindByGearboxType() throws Exception {
-        _vehicleDataPersistenceService.save(vehicleNodeWithName("BMW 1er E81 Schrägheck"), vehicleMetaDataWithTerms(new HashSet<>(Arrays.asList("automatik", "manuell"))));
-        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B6 Kombi"), vehicleMetaDataWithTerms(new HashSet<>(Arrays.asList("automatik"))));
-
-        final Collection<String> resultForAutomatik = getVehicleNodeNamesFor(_searchEngine.search("automatik"));
-        final Collection<String> resultForManuell = getVehicleNodeNamesFor(_searchEngine.search("manuell"));
-
-        assertThat(resultForAutomatik, hasSize(2));
-        assertThat(resultForAutomatik, containsInAnyOrder("BMW 1er E81 Schrägheck", "Audi A4 B6 Kombi"));
-
-        assertThat(resultForManuell, hasSize(1));
-        assertThat(resultForManuell, contains("BMW 1er E81 Schrägheck"));
-    }
-
-
-    //Semantische Suche
-
-    @Test
-    public void testFindBySemantic() throws Exception {
-        _vehicleDataPersistenceService.save(vehicleNodeWithName("BMW 1er E81 Schrägheck"), vehicleMetaDataWithTerms(new HashSet<>(Arrays.asList("2007", "2011"))));
-        _vehicleDataPersistenceService.save(vehicleNodeWithName("BMW 1er E88 Cabrio"), vehicleMetaDataWithTerms(new HashSet<>(Arrays.asList("2008", "2013", "neuster", "neuer"))));
-        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B6 Kombi"), vehicleMetaDataWithTerms(new HashSet<>(Arrays.asList("2000", "2004"))));
-        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B8 Kombi"), vehicleMetaDataWithTerms(new HashSet<>(Arrays.asList("2007", "neuster", "neuer"))));
-
-        final Collection<String> resultForNeusterBMW = getVehicleNodeNamesFor(_searchEngine.search("neuster BMW"));
-        final Collection<String> resultForNeuerBMW = getVehicleNodeNamesFor(_searchEngine.search("neuer BMW"));
-        final Collection<String> resultForNeuerBMW1er = getVehicleNodeNamesFor(_searchEngine.search("neuer BMW 1er"));
-        final Collection<String> resultForNeusterAudiA4 = getVehicleNodeNamesFor(_searchEngine.search("neuster Audi A4"));
-
-        assertThat(resultForNeusterBMW, hasSize(1));
-        assertThat(resultForNeusterBMW, contains("BMW 1er E88 Cabrio"));
-
-        assertThat(resultForNeuerBMW, hasSize(1));
-        assertThat(resultForNeuerBMW, contains("BMW 1er E88 Cabrio"));
-
-        assertThat(resultForNeuerBMW1er, hasSize(1));
-        assertThat(resultForNeuerBMW1er, contains("BMW 1er E88 Cabrio"));
-
-        assertThat(resultForNeusterAudiA4, hasSize(1));
-        assertThat(resultForNeusterAudiA4, contains("Audi A4 B8 Kombi"));
+        assertThat(searchResultForRange, hasSize(1));
+        assertThat(searchResultForRange, contains("Audi A4 B6 Kombi"));
     }
 
 
@@ -207,16 +168,11 @@ public class SearchEngineImplAcceptanceTest {
 
     @Test
     public void testCombinedSearch() throws Exception {
-        _vehicleDataPersistenceService.save(vehicleNodeWithName("BMW 1er E81 Schrägheck"),
-                vehicleMetaDataWithTerms(new HashSet<>(Arrays.asList("2007", "2011", "automatik", "manuell", "2.0", "3.0", ("diesel")))));
-        _vehicleDataPersistenceService.save(vehicleNodeWithName("BMW 1er E88 Cabrio"),
-                vehicleMetaDataWithTerms(new HashSet<>(Arrays.asList("2008", "2013", "automatik", "2.6", "benzin"))));
-        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B6 Kombi"),
-                vehicleMetaDataWithTerms(new HashSet<>(Arrays.asList("2000", "2004", "manuell", "TDI", "2.4", "diesel", "Avant"))));
-        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B8 Kombi"),
-                vehicleMetaDataWithTerms(new HashSet<>(Arrays.asList("2007", "manuell", "TDI", "FSI", "2.6", "2.4", "benzin", "diesel", "neuer", "neuster", "Avant"))));
-        _vehicleDataPersistenceService.save(vehicleNodeWithName("Skoda Octavia E5 Kombi"),
-                vehicleMetaDataWithTerms(new HashSet<>(Arrays.asList("2013", "manuell", "FSI", "2.0", "benzin", "neuer", "neuster"))));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("BMW 1er E81 Schrägheck"), vehicleMetaDataWithTermsAndBaujahr(Collections.<String>emptySet(), 2007, 2011));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("BMW 1er E88 Cabrio"), vehicleMetaDataWithTermsAndBaujahr(Collections.<String>emptySet(), 2008, 2013));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B6 Kombi"), vehicleMetaDataWithTermsAndBaujahr(new HashSet<>(Arrays.asList("Avant")), 2000, 2004));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Audi A4 B8 Kombi"), vehicleMetaDataWithTermsAndBaujahr(new HashSet<>(Arrays.asList("Avant")), 2007));
+        _vehicleDataPersistenceService.save(vehicleNodeWithName("Skoda Octavia E5 Kombi"), vehicleMetaDataWithTermsAndBaujahr(Collections.<String>emptySet(), 2013));
 
         Collection<String> searchResult = getVehicleNodeNamesFor(_searchEngine.search("BMW 1er"));
         assertThat(searchResult, hasSize(2));
@@ -226,32 +182,21 @@ public class SearchEngineImplAcceptanceTest {
         assertThat(searchResult, hasSize(1));
         assertThat(searchResult, containsInAnyOrder("BMW 1er E88 Cabrio"));
 
-        searchResult = getVehicleNodeNamesFor(_searchEngine.search("Audi A4 2.4"));
+        searchResult = getVehicleNodeNamesFor(_searchEngine.search("Audi A4 Avant"));
         assertThat(searchResult, hasSize(2));
         assertThat(searchResult, containsInAnyOrder("Audi A4 B6 Kombi", "Audi A4 B8 Kombi"));
 
-        searchResult = getVehicleNodeNamesFor(_searchEngine.search("Audi A4 2.4 FSI"));
-        assertThat(searchResult, hasSize(1));
-        assertThat(searchResult, containsInAnyOrder("Audi A4 B8 Kombi"));
-
-        searchResult = getVehicleNodeNamesFor(_searchEngine.search("Audi A4 Avant diesel"));
+        searchResult = getVehicleNodeNamesFor(_searchEngine.search(" Audi A4; Baujahr > 2001"));
         assertThat(searchResult, hasSize(2));
         assertThat(searchResult, containsInAnyOrder("Audi A4 B6 Kombi", "Audi A4 B8 Kombi"));
 
-        searchResult = getVehicleNodeNamesFor(_searchEngine.search("A4 automatik"));
-        assertThat(searchResult, hasSize(0));
+        searchResult = getVehicleNodeNamesFor(_searchEngine.search("Kombi; Baujahr < 2014"));
+        assertThat(searchResult, hasSize(3));
+        assertThat(searchResult, containsInAnyOrder("Audi A4 B6 Kombi", "Audi A4 B8 Kombi", "Skoda Octavia E5 Kombi"));
 
-        searchResult = getVehicleNodeNamesFor(_searchEngine.search("1er automatik"));
+        searchResult = getVehicleNodeNamesFor(_searchEngine.search("BMW 1er; Baujahr = 2010"));
         assertThat(searchResult, hasSize(2));
         assertThat(searchResult, containsInAnyOrder("BMW 1er E81 Schrägheck", "BMW 1er E88 Cabrio"));
-
-        searchResult = getVehicleNodeNamesFor(_searchEngine.search("kombi benzin"));
-        assertThat(searchResult, hasSize(2));
-        assertThat(searchResult, containsInAnyOrder("Audi A4 B8 Kombi", "Skoda Octavia E5 Kombi"));
-
-        searchResult = getVehicleNodeNamesFor(_searchEngine.search("neuer A4 diesel"));
-        assertThat(searchResult, hasSize(1));
-        assertThat(searchResult, containsInAnyOrder("Audi A4 B8 Kombi"));
     }
 
     private static Collection<String> getVehicleNodeNamesFor(final Collection<VehicleNode> vehicleNodes) {
