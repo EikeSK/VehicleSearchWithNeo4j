@@ -28,7 +28,7 @@ public class SearchEngineImplPerformanceTest {
 
     private final int AMOUNT_VEHICLE_NODES_TO_GENERATE = 1000000;
     private final int AMOUNT_TERMS_TO_GENERATE = 1000;
-    private final int AMOUNT_VEHICLE_NODES_TO_SAVE = 10000;
+    private final int AMOUNT_VEHICLE_NODES_TO_SAVE = 1000;
     private final int AMOUNT_TERMS_PER_NODE = 10;
     private final int AMOUNT_OF_REQUESTS_PER_TEST = 1000;
 
@@ -69,8 +69,8 @@ public class SearchEngineImplPerformanceTest {
             averageTime += stopwatch.elapsed(TimeUnit.MILLISECONDS);
             stopwatch.reset();
         }
-        averageTime = averageTime / _randomTermNames.size();
-        System.out.println("Average Latency for " + _randomTermNames.size() + " requests: " + averageTime + "ms");
+        averageTime = averageTime / AMOUNT_OF_REQUESTS_PER_TEST;
+        System.out.println("Average Latency for " + AMOUNT_OF_REQUESTS_PER_TEST + " requests: " + averageTime + "ms");
 
         assertThat(averageTime, lessThan(100L));
     }
