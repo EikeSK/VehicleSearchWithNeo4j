@@ -16,6 +16,9 @@ import search.SearchEngine;
 import search.SearchEngineImpl;
 import service.*;
 
+/**
+ * Konfigurationsklasse für den produktiven Spring Context
+ */
 @Configuration
 @EnableNeo4jRepositories(basePackages = "repositories")
 @EnableTransactionManagement
