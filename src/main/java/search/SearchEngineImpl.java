@@ -14,6 +14,9 @@ import java.util.Set;
 
 import static support.StringSplitterUtils.*;
 
+/**
+ * Repräsentiert die Implementierung der Schnittstelle für das Ausführen einer Suche.
+ */
 @Component
 public class SearchEngineImpl implements SearchEngine {
 
