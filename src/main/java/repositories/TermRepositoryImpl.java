@@ -6,6 +6,9 @@ import org.springframework.data.neo4j.support.Neo4jTemplate;
 import org.springframework.stereotype.Service;
 import support.VehicleSearchQueryGenerator;
 
+/**
+ * Repräsentiert die Implementierung einer Erweiterung des Spring Data Neo4j Repositories für Suchbegriffe vom Typ Term
+ */
 @Service
 public class TermRepositoryImpl implements TermRepositoryCustom {
 

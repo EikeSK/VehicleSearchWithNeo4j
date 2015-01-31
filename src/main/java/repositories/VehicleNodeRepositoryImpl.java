@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 import support.VehicleNodeSearchQuery;
 import support.VehicleSearchQueryGenerator;
 
+/**
+ * Repräsentiert eine Erweiterung des Repositoies zum Zugriff auf die Datenbank für Objekte vom Typ VehicleNode.
+ */
 @Service
 public class VehicleNodeRepositoryImpl implements VehicleNodeRepositoryCustom {
 
