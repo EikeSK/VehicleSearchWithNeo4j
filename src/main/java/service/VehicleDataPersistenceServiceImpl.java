@@ -48,6 +48,7 @@ public class VehicleDataPersistenceServiceImpl implements VehicleDataPersistence
         }
     }
 
+    @Override
     public void saveBatch(final Map<VehicleNode, VehicleMetaData> batchData) {
         final List<Term> allTerms = relateAllTermsToNodes(batchData);
         final List<Baujahr> allBaujahrs = relateAllBaujahrNodesToNodes(batchData);
@@ -56,6 +57,13 @@ public class VehicleDataPersistenceServiceImpl implements VehicleDataPersistence
         _baujahrRepository.save(allBaujahrs);
     }
 
+    /**
+     * Erzeugt anhand eines Datensatzes von Fahrzeugknoten und optionalen Metainformationen eine Liste von Objekten
+     * vom Typ Baujahr. Diese sind den zugehörigen Fahrzeugknoten zugeordnet. Jedes Baujahr kommt dabei nur als ein Objekt vor.
+     *
+     * @param batchData Der Datensatz von Fahrzeugknoten und Metainformationen, für den die Baujahre erzeugt werden sollen.
+     * @return Eine Liste von Objekte des Typs Baujahr, die den zugehörigen Fahrzeugknoten zugeordnet sind.
+     */
     private List<Baujahr> relateAllBaujahrNodesToNodes(Map<VehicleNode, VehicleMetaData> batchData) {
         final List<Baujahr> allBaujahrs = new ArrayList<>();
         for (final VehicleNode node : batchData.keySet()) {
@@ -79,6 +87,13 @@ public class VehicleDataPersistenceServiceImpl implements VehicleDataPersistence
         return allBaujahrs;
     }
 
+    /**
+     * Liefert anhand der angegebenene Metainformationen eines Fahrzeuges eine Liste von Baujahrwerten, die
+     * anhand des ersten und letzten Baujahres erzeugt wurden. Die Liste umfasst alle in dem Zeitraum liegenenden Jahre.
+     *
+     * @param vehicleMetaData die Metainformationen, anhand derer die Jahre eines Bauzeitraums erzeugt werden sollen.
+     * @return Eine Liste von Integerwerten, die alle Jahre eines angegebenen Bauzeitraums repräsentieren.
+     */
     private List<Integer> createBaujahrRangeFrom(VehicleMetaData vehicleMetaData) {
         final List<Integer> allBaujahre = new ArrayList<>();
         if (vehicleMetaData.getBaujahrFrom() > 0 && vehicleMetaData.getBaujahrTo() > 0) {
@@ -93,6 +108,14 @@ public class VehicleDataPersistenceServiceImpl implements VehicleDataPersistence
         return allBaujahre;
     }
 
+    /**
+     * Liefert eine Liste von Suchbegriffen, die anhand des angegebenen Datensatzes von Fahrzeugknoten mit optionalen
+     * Metainformationen erzeugt wurden. Die Suchbegriffe als Objekte vom Typ Term werden dabei den Fahrzeugen zugeordnet.
+     *
+     * @param batchData Der Datensatz von Fahrzeugen und Metainformationen, anhand dessen die Suchbegriffe erzeugt und
+     *                  zugeordnet werden sollen
+     * @return Eine Liste von zugeordneten Suchbegriffen, die anhand des angegebenen Datensatzes erzeugt wurden.
+     */
     private List<Term> relateAllTermsToNodes(Map<VehicleNode, VehicleMetaData> batchData) {
         final List<Term> allTerms = new ArrayList<>();
         for (final VehicleNode node : batchData.keySet()) {
@@ -112,6 +135,16 @@ public class VehicleDataPersistenceServiceImpl implements VehicleDataPersistence
         return allTerms;
     }
 
+    /**
+     * Liefert ein Objekt vom Typ Baujahr anhand eines Fahrzeugknotens und einer Jahreszahl.
+     * Das Baujahr wird dabei dem Fahrzeugknoten zugeordnet.
+     * Ist ein Baujahr bereits in der Datenbank vorhanden, wird diese ergännzt um die Verbindung zum angegebenen
+     * Fahrzeugknoten zurückgeliefert, statt dass ein neues erzeugt wird.
+     *
+     * @param vehicleNode Das Fahrzeug zu dem das Baujahr erzeugt werden soll.
+     * @param baujahr     Die Jahreszahl des zu erzeugenden Baujahres.
+     * @return Das Baujahr, welches anhand des Fahrzeuges und der Jahreszahl erzeugt wurde.
+     */
     private Baujahr getBaujahrFrom(final VehicleNode vehicleNode, int baujahr) {
         Baujahr baujahrNode = _baujahrRepository.findByValue(baujahr);
         if (baujahrNode == null) {
@@ -122,6 +155,17 @@ public class VehicleDataPersistenceServiceImpl implements VehicleDataPersistence
         return baujahrNode;
     }
 
+    /**
+     * Liefert anhand eines Fahrzeuges und zugehörigen Suchbegriffen in Form von einem Set von Strings Objekte vom Typ Term.
+     * Diese werden mit dem angegebenene Fahrzeugknoten (VehicleNode) verbunden. Desweiteren bestehen die Namen der Suchbegriffe
+     * aus Gründen der Vereinheitlichung nur aus Kleinbuchstaben.
+     * Sind bereits Suchbegriffe mit den angegebenen Namen in der Datenbank vorhanden, werden diese verwendet und um die
+     * Verbindung zum Fahrzeugknoten erweitert.
+     *
+     * @param vehicleNode Das Fahrzeug, zu dem die zu erzeugenden Suchbegriffe verbunden werden sollen
+     * @param tokens      Die zum Fahrzeug zugehörigen Suchbegriffe in Form eines Sets von Strings
+     * @return Eine Liste von Suchbegriffen als Objekte vom Typ Term, die zum angegebenen Fahrzeug zugeordnet wurden.
+     */
     private Collection<Term> getTermsFor(final VehicleNode vehicleNode, final Set<String> tokens) {
         final Collection<Term> terms = new ArrayList<>();
         for (final String token : tokens) {
@@ -136,6 +180,12 @@ public class VehicleDataPersistenceServiceImpl implements VehicleDataPersistence
         return terms;
     }
 
+    /**
+     * Liefert anhand einer VehicleNode die Suchbegriffe aus dem Namen des Fahrzeugs als Objekte vom Typ Term.
+     *
+     * @param vehicleNode Das Fahrzeug, für das Suchbegriffe erzeugt werden sollen.
+     * @return Eine Liste von Suchbegriffen, die anhand des Fahrzeugnamens (Begriffe getrennt durch Leerzeichen) erzeugt wurden.
+     */
     private Collection<Term> getTermsFrom(final VehicleNode vehicleNode) {
         final Set<String> tokenizedModelName = StringSplitterUtils.tokenize(vehicleNode);
         return getTermsFor(vehicleNode, tokenizedModelName);
