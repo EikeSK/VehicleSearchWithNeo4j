@@ -12,6 +12,9 @@ import java.io.InputStreamReader;
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Beispielanwendung zur Demonstration der Funktionalitäten der Suchschnittstelle
+ */
 public class VehicleSearchApplication implements CommandLineRunner {
 
     @Override

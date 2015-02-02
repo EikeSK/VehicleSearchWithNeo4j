@@ -1,5 +1,9 @@
 package support;
 
+/**
+ * Repräsentiert alle möglichen Vergleichsoperationen für eine Suchanfrage.
+ * Die Operatoren lassen sich dabei auch in der Abfragesprache Cypher abbilden.
+ */
 public enum Operator {
     GREATER(">"),
     SMALLER("<"),

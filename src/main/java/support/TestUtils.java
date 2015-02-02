@@ -4,6 +4,9 @@ import domain.VehicleNode;
 
 import java.util.Set;
 
+/**
+ * Eine Sammlung statischer Hilfsmethoden zum Erstellen von Werteobjekten in Testmethoden
+ */
 public class TestUtils {
 
     public static VehicleNode vehicleNodeWithName(final String name) {

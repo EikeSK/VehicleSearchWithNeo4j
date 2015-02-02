@@ -12,8 +12,18 @@ import static com.google.common.base.Ascii.toLowerCase;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.math.NumberUtils.toFloat;
 
+/**
+ * Eine Sammlung von statischen Methoden, die Operationen auf Strings ausführen.
+ */
 public class StringSplitterUtils {
 
+    /**
+     * Erzeugt aus dem Namen eines Fahrzeugknotens ein Set von Begriffen.
+     * Die einzelnen Begriffe werden durch die Trennung mit Leerzeichen identifiert.
+     *
+     * @param vehicleNode Der Fahrzeugknoten, dessen Namen in einzelne Begriffe geteilt werden soll.
+     * @return Die identifitierten Begriffe aus dem Namen des Fahrzeugknotens
+     */
     public static Set<String> tokenize(final VehicleNode vehicleNode) {
         String toTokenize = null;
         if (vehicleNode != null) {
@@ -22,6 +32,14 @@ public class StringSplitterUtils {
         return tokenize(toTokenize);
     }
 
+    /**
+     * Teilt einen String in einzelne Begriffe. Die Begriffe müssen für die Identifizierung im String durch
+     * Leerzeichen voneinander getrennt sein.
+     * Die Ergebnisbegriffe weisen dabei ausschließlich Kleinbuchstaben auf.
+     *
+     * @param string String, der ein oder mehrere Begriffe getrennt durch Leerzeichen enthält.
+     * @return Ein Set von Strings, welches die einzelnen Begriffe beinhaltet.
+     */
     public static Set<String> tokenize(final String string) {
         final Set<String> tokens = new HashSet<>();
         if (string != null) {
@@ -34,6 +52,19 @@ public class StringSplitterUtils {
         return tokens;
     }
 
+    /**
+     * Liefert anhand eines Set von Strings Objekte vom Typ ComparisonOperation. Ein String des Sets beinhaltet dabei
+     * an erster Stelle die Einheit, gefolgt vom Operatior sowie vom zu vergleichenden Wert. Die Angaben werden dabei
+     * durch Leerzeichen voneinander getrennt
+     * <br><br>
+     * Beispiel: <code>baujahr > 2006</code><br>
+     * Syntax: <code>{einheit}{operator}{wert}</code>
+     * <p/>
+     * Entspricht der String nicht der erwarteten Syntax, wird kein repräsentierendes Objekt erstellt.
+     *
+     * @param operations Ein Set mit Strings, welche die nötigen Angaben für eine Vergleichsoperation beinhalten.
+     * @return Ein Set von Objekten vom Typ ComparisonOperations, die anhand valider Strings erzeugt werden konnten.
+     */
     public static Set<ComparisonOperation> getComparisionOperationsFrom(final Set<String> operations) {
         final Set<ComparisonOperation> operationsOnQueries = new HashSet<>();
         for (String singleOperation : operations) {
@@ -48,6 +79,16 @@ public class StringSplitterUtils {
         return operationsOnQueries;
     }
 
+    /**
+     * Entfernt aus einem Suchstring die Angaben von Vergleichsoperationen.
+     * <br>
+     * <b>Beispiel:</b><br>
+     * vorher: <code>Audi A4; baujahr > 2004; baujahr < 2010</code><br>
+     * nachher: <code>Audi A4</code>
+     *
+     * @param searchString Der von Vergleichsoperationen zu bereinigende String
+     * @return ein String, der nur die Suchbegriffe enthält.
+     */
     public static String removeOperation(String searchString) {
         return StringUtils.substringBefore(searchString, ";");
     }
