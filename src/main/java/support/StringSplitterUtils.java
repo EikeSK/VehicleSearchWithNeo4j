@@ -57,9 +57,9 @@ public class StringSplitterUtils {
      * an erster Stelle die Einheit, gefolgt vom Operatior sowie vom zu vergleichenden Wert. Die Angaben werden dabei
      * durch Leerzeichen voneinander getrennt
      * <br><br>
-     * Beispiel: <code>baujahr > 2006</code><br>
+     * Beispiel: <code>baujahr &gt; 2006</code><br>
      * Syntax: <code>{einheit}{operator}{wert}</code>
-     * <p/>
+     * <br><br>
      * Entspricht der String nicht der erwarteten Syntax, wird kein repräsentierendes Objekt erstellt.
      *
      * @param operations Ein Set mit Strings, welche die nötigen Angaben für eine Vergleichsoperation beinhalten.
@@ -83,7 +83,7 @@ public class StringSplitterUtils {
      * Entfernt aus einem Suchstring die Angaben von Vergleichsoperationen.
      * <br>
      * <b>Beispiel:</b><br>
-     * vorher: <code>Audi A4; baujahr > 2004; baujahr < 2010</code><br>
+     * vorher: <code>Audi A4; baujahr &gt; 2004; baujahr %lt; 2010</code><br>
      * nachher: <code>Audi A4</code>
      *
      * @param searchString Der von Vergleichsoperationen zu bereinigende String
