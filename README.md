@@ -1,7 +1,6 @@
 VehicleSearchWithNeo4j : Markenübergreifende Suche von Fahrzeugen mit Neo4j
 =========================================================================================
 Dieses Projekt ist der Prototyp einer markenübergreifenden Suche für Fahrzeuge mit Hilfe einer Graphdatenbank, in diesem Fall Neo4j.
-.
 Gespeicherte Fahrzeuge lassen sich damit anhand von Begriffen und Baujahrzeiträumen finden.
 
 Das Projekt entstand im Rahmen einer Bachelorarbeit an der Hochschule für Technik und Wirtschaft Berlin mit dem Titel
