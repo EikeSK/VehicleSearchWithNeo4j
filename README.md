@@ -1,14 +1,14 @@
 VehicleSearchWithNeo4j : Markenübergreifende Suche von Fahrzeugen mit Neo4j
 =========================================================================================
-Dieses Projekt ist der Prototyp einer markenübergreifenden Suche für Fahrzeuge mit Hilfe einer Graphdatenbank, in diesem Fall Neo4j.
+Dieses Projekt repräsentiert den Prototyp einer markenübergreifenden Suche für Fahrzeuge mit Hilfe einer Graphdatenbank, in diesem Fall Neo4j.
 Gespeicherte Fahrzeuge lassen sich damit anhand von Begriffen und Baujahrzeiträumen finden.
 
-Das Projekt entstand im Rahmen einer Bachelorarbeit an der Hochschule für Technik und Wirtschaft Berlin mit dem Titel
+Es entstand im Rahmen einer Bachelorarbeit an der Hochschule für Technik und Wirtschaft Berlin mit dem Titel
 "Entwicklung einer markenübergreifenden Suche für Fahrzeuge mit Hilfe einer Graphdatenbank".
 
 Verfasser: Eike Schulte-Kersmecke
 
-Eingereicht am 17. Februar 2014
+Eingereicht am 17. Februar 2015
 
 Voraussetzungen:
 ----------------
@@ -61,7 +61,7 @@ public void saveBatch(final Map<VehicleNode, VehicleMetaData> batchData);
 Die Methode ```save(VehicleNode vehicleNode)``` speichert ein Fahrzeug in Form eines Objekts vom Typ VehicleNode in der Datenbank,
 wobei dieses so angepasst wird, dass es über jeden Begriff (getrennt durch Leerzeichen) aus dem Namen zu finden ist.
 
-```save(VehicleNode vehicleNode, VehicleMetaData additionalMetaData)``` ermöglicht das Speichern eines Fahrzeuges mit zusätzlichen Metadaten.
+```save(VehicleNode vehicleNode, VehicleMetaData additionalMetaData)``` ermöglicht das Speichern eines Fahrzeugs mit zusätzlichen Metadaten.
 
 Für Datensätze bestehend aus mehreren Fahrzeug mit optionalen Metainformationen steht die Methode
 ``` saveBatch(final Map<VehicleNode, VehicleMetaData> batchData)``` zur Verfügung.
