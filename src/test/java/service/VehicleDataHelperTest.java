@@ -27,7 +27,8 @@ public class VehicleDataHelperTest {
     @Test
     public void fillDatabaseWithVehicleData() throws Exception {
         Map<VehicleNode, VehicleMetaData> batch = new HashMap<>();
-        batch.put(vehicleNodeWithName("Audi A4 B8 Kombi"), vehicleMetaDataWithTerms(new HashSet<>(Arrays.asList("Avant"))));
+        batch.put(vehicleNodeWithName("Audi A4 B6 Kombi"), vehicleMetaDataWithTermsAndBaujahr(new HashSet<>(Arrays.asList("Avant", "diesel")), 2001, 2004));
+        batch.put(vehicleNodeWithName("Audi A4 B7 Kombi"), vehicleMetaDataWithTermsAndBaujahr(new HashSet<>(Arrays.asList("Avant", "benzin", "2007")), 2001, 2008));
         batch.put(vehicleNodeWithName("Audi A6 B6 Kombi"), vehicleMetaDataWithTerms(new HashSet<>(Arrays.asList("Avant"))));
         batch.put(vehicleNodeWithName("Audi A3 8P Cabrio"), vehicleMetaDataWithTermsAndBaujahr(new HashSet<>(Arrays.asList("2003", "2013")), 2003, 2013));
         batch.put(vehicleNodeWithName("BMW 1er E87 Coupe"), vehicleMetaDataWithTerms(Collections.<String>emptySet()));

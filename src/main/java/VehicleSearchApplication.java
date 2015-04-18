@@ -35,7 +35,7 @@ public class VehicleSearchApplication implements CommandLineRunner {
                     stopwatch.start();
                     final Collection<VehicleNode> result = searchEngine.search(searchInput);
                     stopwatch.stop();
-                    System.out.print("Results: ");
+                    System.out.print("\nResults: ");
                     if (result.size() == 0) {
                         System.out.print("no results");
                     } else {
@@ -43,7 +43,7 @@ public class VehicleSearchApplication implements CommandLineRunner {
                             System.out.print(resultNode.getName() + "; ");
                         }
                     }
-                    System.out.println("\nElapsed time: " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + "ms");
+                    System.out.println("\n\nElapsed time: " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + "ms");
                     stopwatch.reset();
                     break;
                 }
@@ -53,7 +53,7 @@ public class VehicleSearchApplication implements CommandLineRunner {
                     stopwatch.start();
                     final Collection<String> result = searchEngine.autocomplete(searchInput);
                     stopwatch.stop();
-                    System.out.print("Results: ");
+                    System.out.print("\nResults: ");
                     if (result.size() == 0) {
                         System.out.print("no results");
                     } else {
@@ -61,7 +61,7 @@ public class VehicleSearchApplication implements CommandLineRunner {
                             System.out.print(autocompleteResult + "; ");
                         }
                     }
-                    System.out.println("\nElapsed time: " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + "ms");
+                    System.out.println("\n\nElapsed time: " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + "ms");
                     stopwatch.reset();
 
                     break;
